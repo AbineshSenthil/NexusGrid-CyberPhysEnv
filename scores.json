@@ -1,5 +1,5 @@
 {
-  "model": "deepseek-r1:8b",
+  "model": "deepseek-ai/DeepSeek-R1-Distill-Llama-8B",
   "seed": 42,
   "scores": {
     "0": 1.0,
@@ -10,5 +10,5 @@
     "5": 0.025
   },
   "average": 0.8041666666666667,
-  "total_time_seconds": 765.8
+  "total_time_seconds": 598.3
 }

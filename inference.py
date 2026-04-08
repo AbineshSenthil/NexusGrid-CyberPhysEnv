@@ -26,9 +26,9 @@ from openai import OpenAI
 # Configuration from environment
 # ---------------------------------------------------------------------------
 
-API_BASE_URL = os.getenv("API_BASE_URL","http://localhost:11434/v1")
-MODEL_NAME = os.getenv("MODEL_NAME","deepseek-r1:8b")
-API_KEY = os.getenv("HF_TOKEN") or os.getenv("API_KEY") or "ollama"
+API_BASE_URL = os.getenv("API_BASE_URL","https://router.huggingface.co/v1")
+MODEL_NAME = os.getenv("MODEL_NAME","deepseek-ai/DeepSeek-R1-Distill-Llama-8B")
+API_KEY = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
 
 # Validate required environment variables
 if not API_BASE_URL:
