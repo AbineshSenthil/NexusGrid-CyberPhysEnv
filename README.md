@@ -13,6 +13,7 @@ tags:
   - cybersecurity
   - energy
   - scada
+  - reinforcement-learning
 ---
 
 # ⚡ NexusGrid-CyberPhysEnv
