@@ -25,12 +25,12 @@ tasks:
     name: smoke_test
     difficulty: trivial
     max_ticks: 3
-    baseline_score: 1.00
+    baseline_score: 0.99
   - id: 1
     name: duck_curve
     difficulty: easy
     max_ticks: 15
-    baseline_score: 1.00
+    baseline_score: 0.99
   - id: 2
     name: cascade_overload
     difficulty: medium
@@ -40,12 +40,12 @@ tasks:
     name: phantom_inject
     difficulty: hard
     max_ticks: 18
-    baseline_score: 1.00
+    baseline_score: 0.99
   - id: 4
     name: stuxnet_resonance
     difficulty: very_hard
     max_ticks: 12
-    baseline_score: 1.00
+    baseline_score: 0.99
   - id: 5
     name: black_start
     difficulty: expert
