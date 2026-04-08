@@ -474,6 +474,9 @@ def run_task(client: OpenAI, task_id: int, seed: int, env) -> float:
         print(f"[DEBUG] Error getting score: {e}", flush=True)
         score = max(0.0, min(1.0, float(cumulative_reward)))
 
+    # Clamp score to strictly (0, 1) — validator rejects exactly 0.0 and 1.0
+    score = max(0.001, min(0.999, float(score)))
+
     log_end(task_id, score, tick, rewards_history)
 
     return score
