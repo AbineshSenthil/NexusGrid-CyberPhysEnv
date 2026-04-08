@@ -1,10 +1,8 @@
 """
 NexusGrid-CyberPhysEnv — Inference Script.
-
 Runs an LLM agent against all 6 tasks using the OpenAI-compatible client.
 Reads API_BASE_URL and MODEL_NAME from environment variables.
 Uses Ollama for local testing (API_KEY="ollama").
-
 Structured logging: [START] / [STEP] / [END] format.
 Per-task time budgets enforced. Total runtime < 20 minutes.
 """
@@ -56,8 +54,8 @@ EPISODE_SEED = int(os.getenv("EPISODE_SEED", "42"))
 # Structured logging
 # ---------------------------------------------------------------------------
 
-def log_start(task_id: int, episode_seed: int) -> None:
-    print(f"[START] task_id={task_id} episode_seed={episode_seed}", flush=True)
+def log_start(task_id: int, episode_seed: int, model_name: str) -> None:
+    print(f"[START] task={task_id} env=NexusGrid-CyberPhysEnv model={model_name}", flush=True)
 
 
 def log_step(
@@ -66,20 +64,24 @@ def log_step(
     action: str,
     params: Dict[str, Any],
     reward: float,
-    score: float,
     done: bool,
+    error: Optional[str] = None
 ) -> None:
-    params_json = json.dumps(params, default=str)
-    done_str = str(done).lower()
+    # Build complete action dict and stringify
+    action_dict = {"action_type": action, **params}
+    action_str = json.dumps(action_dict, separators=(',', ':'))
+    error_val = str(error) if error else "null"
+    done_val = str(done).lower()
     print(
-        f"[STEP] task_id={task_id} tick={tick} action={action} "
-        f"params={params_json} reward={reward:.2f} score={score:.2f} done={done_str}",
+        f"[STEP] step={tick + 1} action={action_str} reward={reward:.2f} done={done_val} error={error_val}",
         flush=True,
     )
 
 
-def log_end(task_id: int, score: float, ticks: int) -> None:
-    print(f"[END] task_id={task_id} score={score:.2f} ticks={ticks}", flush=True)
+def log_end(task_id: int, score: float, ticks: int, rewards: List[float]) -> None:
+    success = score >= 0.1 # assuming anything > 0 handles some task constraints, or score > 0.0
+    rewards_str = ",".join(f"{r:.2f}" for r in rewards) if rewards else "0.00"
+    print(f"[END] success={str(success).lower()} steps={ticks} score={score:.3f} rewards={rewards_str}", flush=True)
 
 
 # ---------------------------------------------------------------------------
@@ -87,29 +89,20 @@ def log_end(task_id: int, score: float, ticks: int) -> None:
 # ---------------------------------------------------------------------------
 
 SYSTEM_PROMPT = """You are an AI agent defending a national power grid against physical faults and SCADA cyberattacks.
-
 You interact with the NexusGrid-CyberPhysEnv through actions. Each turn, you receive an observation of the grid state and must choose exactly ONE action.
-
 AVAILABLE ACTIONS (respond with EXACTLY one JSON object):
-
 1. dispatch_generation - Ramp a power plant up or down
    {"action_type": "dispatch_generation", "node_id": "NODE_XX", "mw": <float>}
-
 2. toggle_circuit_breaker - Open or close a transmission line
    {"action_type": "toggle_circuit_breaker", "edge_id": "LINE_XX", "status": "OPEN" or "CLOSED"}
-
 3. run_state_estimation - Check if telemetry is consistent with physics (Kirchhoff's laws)
    {"action_type": "run_state_estimation", "subgraph": ["NODE_XX", "NODE_YY"]}
-
 4. quarantine_scada_node - Disconnect a spoofed sensor (MUST run state_estimation first!)
    {"action_type": "quarantine_scada_node", "node_id": "NODE_XX"}
-
 5. inject_counter_signal - Inject destructive interference to counter resonance attack
    {"action_type": "inject_counter_signal", "node_id": "NODE_XX", "hz_offset": <float>, "duration": <int>}
-
 6. advance_tick - Step the simulation forward one time unit
    {"action_type": "advance_tick"}
-
 KEY RULES:
 - grid_frequency_hz must stay above 59.0 Hz or the episode TERMINATES
 - Nominal frequency is 60.0 Hz; keep it between 59.7 and 60.3 Hz
@@ -371,13 +364,11 @@ def build_observation_prompt(obs_dict: Dict[str, Any], task_id: int) -> str:
 def run_task(client: OpenAI, task_id: int, seed: int, env) -> float:
     """
     Run a single task episode and return the grader score.
-
     Args:
         client: OpenAI client
         task_id: Task ID (0-5)
         seed: Episode seed
         env: NexusgridEnvironment instance
-
     Returns:
         Final grader score [0.0, 1.0]
     """
@@ -387,15 +378,25 @@ def run_task(client: OpenAI, task_id: int, seed: int, env) -> float:
     budget = TASK_BUDGETS.get(task_id, 180)
     start_time = time.time()
 
-    log_start(task_id, seed)
+    log_start(task_id, seed, MODEL_NAME)
 
-    # Reset environment
-    obs = env.reset(seed=seed, task_id=task_id)
-    obs_dict = obs.model_dump() if hasattr(obs, "model_dump") else obs.__dict__
+    # Reset environment safely
+    try:
+        obs = env.reset(seed=seed, task_id=task_id)
+        if hasattr(obs, "observation"):
+            obs_obj = obs.observation
+        else:
+            obs_obj = obs
+        obs_dict = obs_obj.model_dump() if hasattr(obs_obj, "model_dump") else obs_obj.__dict__
+    except Exception as e:
+        print(f"[DEBUG] env.reset failed: {e}", flush=True)
+        log_end(task_id, 0.0, 0, [])
+        return 0.0
 
     cumulative_reward = 0.0
     tick = 0
     done = False
+    rewards_history = []
 
     conversation_history = [
         {"role": "system", "content": SYSTEM_PROMPT},
@@ -442,13 +443,24 @@ def run_task(client: OpenAI, task_id: int, seed: int, env) -> float:
             action = GridAction(**action_dict)
 
         # Execute action
-        obs = env.step(action)
-        obs_dict = obs.model_dump() if hasattr(obs, "model_dump") else obs.__dict__
+        try:
+            obs = env.step(action)
+            if hasattr(obs, "observation"):
+                obs_obj = obs.observation
+            else:
+                obs_obj = obs
+            obs_dict = obs_obj.model_dump() if hasattr(obs_obj, "model_dump") else obs_obj.__dict__
 
-        reward = obs_dict.get("reward", 0.0)
-        done = obs_dict.get("done", False)
+            reward = getattr(obs, "reward", obs_dict.get("reward", 0.0))
+            done = getattr(obs, "done", obs_dict.get("done", False))
+        except Exception as e:
+            print(f"[DEBUG] env.step failed: {e}", flush=True)
+            done = True
+            reward = 0.0
+
         cumulative_reward += reward
         tick += 1
+        rewards_history.append(reward)
 
         # Build action params for logging (exclude None values)
         log_params = {k: v for k, v in action_dict.items() if k != "action_type" and v is not None}
@@ -459,13 +471,18 @@ def run_task(client: OpenAI, task_id: int, seed: int, env) -> float:
             action=action_dict.get("action_type", "unknown"),
             params=log_params,
             reward=reward,
-            score=cumulative_reward,
             done=done,
+            error=obs_dict.get("last_action_error")
         )
 
-    # Get grader score
-    score = env.get_score()
-    log_end(task_id, score, tick)
+    # Get grader score safely
+    try:
+        score = env.get_score() if hasattr(env, "get_score") else max(0.0, min(1.0, float(cumulative_reward)))
+    except Exception as e:
+        print(f"[DEBUG] Error getting score: {e}", flush=True)
+        score = max(0.0, min(1.0, float(cumulative_reward)))
+
+    log_end(task_id, score, tick, rewards_history)
 
     return score
 
@@ -480,17 +497,35 @@ def main():
     print(f"[DEBUG] MODEL_NAME={MODEL_NAME}", flush=True)
     print(f"[DEBUG] EPISODE_SEED={EPISODE_SEED}", flush=True)
 
-    # Initialize OpenAI client
-    client = OpenAI(
-        base_url=API_BASE_URL,
-        api_key=API_KEY,
-    )
+    # Initialize OpenAI client safely
+    try:
+        client = OpenAI(
+            base_url=API_BASE_URL,
+            api_key=API_KEY or "dummy_key",
+        )
+    except Exception as e:
+        print(f"[ERROR] Failed to initialize OpenAI client: {e}", flush=True)
+        client = None
 
-    # Import environment directly (no Docker needed for local testing)
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-    from server.nexusgrid_environment import NexusgridEnvironment
-
-    env = NexusgridEnvironment()
+    # Connect to OpenEnv container on expected port or fallback locally
+    env_url = os.getenv("ENV_URL", "http://localhost:8000")
+    try:
+        # Check if local server folder exists. If not, we are likely evaluated in OpenEnv.
+        server_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "server")
+        if os.path.exists(server_path) and not os.getenv("USE_REMOTE_ENV"):
+            sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+            from server.nexusgrid_environment import NexusgridEnvironment
+            print(f"[DEBUG] Using local NexusgridEnvironment", flush=True)
+            env = NexusgridEnvironment()
+        else:
+            from client import NexusgridEnv
+            print(f"[DEBUG] Connecting to remote environment at {env_url}", flush=True)
+            env = NexusgridEnv(base_url=env_url).sync()
+    except Exception as e:
+        print(f"[DEBUG] Falling back to bare-minimum local NexusgridEnvironment: {e}", flush=True)
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from server.nexusgrid_environment import NexusgridEnvironment
+        env = NexusgridEnvironment()
     scores = {}
 
     total_start = time.time()
