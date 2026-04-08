@@ -13,10 +13,12 @@ import sys
 import time
 from typing import Any, Dict, List, Optional
 
-from dotenv import load_dotenv
-
-# Load .env file
-load_dotenv()
+try:
+    from dotenv import load_dotenv
+    # Load .env file
+    load_dotenv()
+except ImportError:
+    pass # In isolated grader containers, python-dotenv might not be available
 
 from openai import OpenAI
 
@@ -24,19 +26,9 @@ from openai import OpenAI
 # Configuration from environment
 # ---------------------------------------------------------------------------
 
-API_BASE_URL = os.getenv("API_BASE_URL","https://router.huggingface.co/v1")
-MODEL_NAME = os.getenv("MODEL_NAME","deepseek-ai/DeepSeek-R1-Distill-Llama-8B")
+API_BASE_URL = os.getenv("API_BASE_URL") or "https://router.huggingface.co/v1"
+MODEL_NAME = os.getenv("MODEL_NAME") or "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
 API_KEY = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
-
-# Validate required environment variables
-if not API_BASE_URL:
-    print("[ERROR] API_BASE_URL not set. Add it to .env or export it.", flush=True)
-    print("[ERROR] Example: API_BASE_URL=http://localhost:11434/v1", flush=True)
-    sys.exit(1)
-if not MODEL_NAME:
-    print("[ERROR] MODEL_NAME not set. Add it to .env or export it.", flush=True)
-    print("[ERROR] Example: MODEL_NAME=deepseek-r1:8b", flush=True)
-    sys.exit(1)
 
 # Per-task time budgets in seconds
 TASK_BUDGETS = {
