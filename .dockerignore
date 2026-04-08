@@ -1,0 +1,18 @@
+# NexusGrid Docker Ignore
+.env
+.git
+.gitignore
+__pycache__
+*.pyc
+*.pyo
+.pytest_cache
+.venv
+venv
+node_modules
+scores.json
+uv.lock
+*.egg-info
+.mypy_cache
+.ruff_cache
+_*.py
+*.log
