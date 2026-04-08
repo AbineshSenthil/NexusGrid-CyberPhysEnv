@@ -11,7 +11,6 @@ tags:
   - openenv
   - critical-infrastructure
   - cybersecurity
-  - energy
   - scada
   - reinforcement-learning
 ---
