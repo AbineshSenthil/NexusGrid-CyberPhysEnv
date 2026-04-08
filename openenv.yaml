@@ -1,0 +1,64 @@
+# NexusGrid-CyberPhysEnv — OpenEnv Specification
+# All fields required for openenv validate to pass
+
+spec_version: 1
+name: NexusGrid-CyberPhysEnv
+type: space
+runtime: fastapi
+app: server.app:app
+port: 8000
+version: "1.0.0"
+description: >
+  National power grid defense — physics vs. cyberattack paradox.
+  A 20-node transmission network with DC power flow physics running alongside
+  a deterministic SCADA sensor spoofing engine. The agent must distinguish
+  real grid failures from adversarially fabricated telemetry.
+tags:
+  - openenv
+  - critical-infrastructure
+  - cybersecurity
+  - energy
+  - scada
+
+tasks:
+  - id: 0
+    name: smoke_test
+    difficulty: trivial
+    max_ticks: 3
+    baseline_score: 1.00
+  - id: 1
+    name: duck_curve
+    difficulty: easy
+    max_ticks: 15
+    baseline_score: 1.00
+  - id: 2
+    name: cascade_overload
+    difficulty: medium
+    max_ticks: 20
+    baseline_score: 0.80
+  - id: 3
+    name: phantom_inject
+    difficulty: hard
+    max_ticks: 18
+    baseline_score: 1.00
+  - id: 4
+    name: stuxnet_resonance
+    difficulty: very_hard
+    max_ticks: 12
+    baseline_score: 1.00
+  - id: 5
+    name: black_start
+    difficulty: expert
+    max_ticks: 50
+    baseline_score: 0.025
+
+observation_schema: GridObservation
+action_schema: GridAction
+reward_schema: GridReward
+
+hardware:
+  max_vcpu: 2
+  max_memory_gb: 8
+
+inference_timeout_seconds: 1200
+baseline_model: deepseek-r1:8b
