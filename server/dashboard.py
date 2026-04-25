@@ -21,11 +21,19 @@ Responsive : 320 → 768 → 1280 → 1920 → ∞
 from __future__ import annotations
 
 import gradio as gr
-import plotly.graph_objects as go
-from plotly.subplots import make_subplots
 import json
 import math
 from typing import Dict, Any, List
+
+try:
+    import plotly.graph_objects as go
+    from plotly.subplots import make_subplots
+
+    PLOTLY_AVAILABLE = True
+except ImportError:
+    go = None  # type: ignore[assignment]
+    make_subplots = None  # type: ignore[assignment]
+    PLOTLY_AVAILABLE = False
 
 # ═══════════════════════════════════════════════════════════════════
 # COLOUR PALETTE
@@ -1361,6 +1369,28 @@ IDLE_TRACE = (
 # BUILD GRADIO APP
 # ═══════════════════════════════════════════════════════════════════
 def create_dashboard() -> gr.Blocks:
+    if not PLOTLY_AVAILABLE:
+        with gr.Blocks(title="NexusGrid Dashboard") as demo:
+            gr.Markdown(
+                """
+                # NexusGrid Dashboard
+
+                The dashboard is running in compatibility mode because `plotly` is not installed
+                in this local environment. The full Hugging Face Space image installs both
+                `gradio` and `plotly`, so `/web` will automatically render the full seven-panel UI.
+                """
+            )
+            gr.JSON(
+                {
+                    "status": "compatibility_mode",
+                    "dashboard_ready_in_space": True,
+                    "missing_dependency": "plotly",
+                    "available_endpoints": ["/health", "/reset", "/step", "/state", "/schema", "/web"],
+                },
+                label="Dashboard Status",
+            )
+        return demo
+
     import warnings
     with warnings.catch_warnings():
         warnings.filterwarnings("ignore")

@@ -50,7 +50,7 @@ def build_base_topology(engine: GridEngine) -> None:
     """
     # ---- NORTH region (nodes 01-04) ----
     engine.add_node("NODE_01", "hydro",   capacity_mw=1200, region="NORTH", critical=False,
-                    generation_mw=800, peak_load_mw=0)
+                    generation_mw=800, peak_load_mw=0, black_start_capable=True)
     engine.add_node("NODE_02", "gas",     capacity_mw=600,  region="NORTH", critical=False,
                     generation_mw=400, peak_load_mw=0)
     engine.add_node("NODE_03", "load",    capacity_mw=0,    region="NORTH", critical=True,
@@ -264,6 +264,9 @@ def _setup_cascade_overload(engine: GridEngine, seed: int) -> None:
     # Recompute -- secondary lines will be overloaded
     engine.compute_power_flow()
     engine.compute_frequency()
+    engine.set_forced_edge_load("LINE_29", engine.edges["LINE_29"]["capacity_mw"] * 1.50)
+    engine.set_forced_edge_load("LINE_34", engine.edges["LINE_34"]["capacity_mw"] * 0.88)
+    engine.set_forced_edge_load("LINE_22", engine.edges["LINE_22"]["capacity_mw"] * 0.82)
     engine._record_telemetry()
 
 

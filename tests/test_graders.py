@@ -16,6 +16,7 @@ from server.graders import (
     grade_black_start,
     grade_task,
 )
+from server.reward import RewardCalculator
 
 
 class TestSmokeTestGrader:
@@ -68,12 +69,13 @@ class TestCascadeOverloadGrader:
 class TestPhantomInjectionGrader:
     def test_correct_order_full_score(self):
         actions = [
+            {"action_type": "advance_tick", "tick": 0},
             {"action_type": "run_state_estimation", "tick": 1, "result": {"consistent": False}},
-            {"action_type": "quarantine_scada_node", "tick": 2},
-            {"action_type": "dispatch_generation", "tick": 3},
+            {"action_type": "quarantine_scada_node", "tick": 2, "node_id": "NODE_14"},
+            {"action_type": "dispatch_generation", "tick": 3, "node_id": "NODE_09", "mw": 100},
         ]
-        score = grade_phantom_injection(actions, {})
-        assert score >= 0.8
+        score = grade_phantom_injection(actions, {"spoof_target": "NODE_14"})
+        assert score == 1.0
 
     def test_quarantine_without_estimation_scores_0(self):
         actions = [
@@ -87,25 +89,32 @@ class TestPhantomInjectionGrader:
             {"action_type": "run_state_estimation", "tick": 1, "result": {"consistent": False}},
         ]
         score = grade_phantom_injection(actions, {})
-        assert score == 0.3
+        assert score == 0.2
 
 
 class TestStuxnetResonanceGrader:
-    def test_correct_injection(self):
+    def test_correct_injection_requires_ramp_down_and_reroute_for_full_score(self):
         actions = [
-            {"action_type": "inject_counter_signal", "hz_offset": -0.5},
-            {"action_type": "dispatch_generation", "tick": 1},
-            {"action_type": "dispatch_generation", "tick": 2},
+            {"action_type": "inject_counter_signal", "tick": 0, "hz_offset": -0.5},
+            {"action_type": "dispatch_generation", "tick": 1, "node_id": "NODE_17", "mw": -200},
+            {"action_type": "dispatch_generation", "tick": 2, "node_id": "NODE_09", "mw": 300},
         ]
         score = grade_stuxnet_resonance(actions, {})
-        assert score >= 0.7
+        assert score == 1.0
+
+    def test_correct_injection_without_ramp_down_stays_partial(self):
+        actions = [
+            {"action_type": "inject_counter_signal", "tick": 0, "hz_offset": -0.5},
+        ]
+        score = grade_stuxnet_resonance(actions, {})
+        assert score == 0.4
 
     def test_wrong_offset_partial(self):
         actions = [
             {"action_type": "inject_counter_signal", "hz_offset": -0.3},
         ]
         score = grade_stuxnet_resonance(actions, {})
-        assert score == 0.4
+        assert score == 0.2
 
     def test_cutting_turbine_scores_0(self):
         actions = [
@@ -125,6 +134,43 @@ class TestBlackStartGrader:
 
     def test_no_action_scores_0(self):
         assert grade_black_start([], {}) == 0.0
+
+    def test_critical_restore_requires_checkpoint_c(self):
+        actions = [
+            {"action_type": "dispatch_generation", "node_id": "NODE_01", "mw": 500},
+        ]
+        state = {
+            "hydro_stable_ticks": 3,
+            "energized_node_count": 10,
+            "max_island_count": 1,
+            "successful_mergers": 0,
+            "premature_mergers": 0,
+            "critical_nodes_restored": True,
+            "load_restored_fraction": 0.84,
+            "transformer_failures": 0,
+        }
+        assert grade_black_start(actions, state) == 0.42
+
+
+class TestRewardCalculator:
+    def test_fault_isolation_reward_only_paid_once_per_episode(self):
+        reward_calc = RewardCalculator()
+        base_kwargs = {
+            "action_type": "toggle_circuit_breaker",
+            "action_params": {},
+            "frequency_hz": 60.0,
+            "overloaded_edges": [],
+            "critical_nodes_shed": 0,
+            "is_proactive": False,
+            "spoof_detected": False,
+            "has_read_logs_before_estimation": False,
+        }
+
+        first = reward_calc.compute_tick_reward(fault_isolated=True, **base_kwargs)
+        second = reward_calc.compute_tick_reward(fault_isolated=True, **base_kwargs)
+
+        assert first["fault_isolation"] == 0.20
+        assert second["fault_isolation"] == 0.0
 
 
 class TestGradeTaskRouter:

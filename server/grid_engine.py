@@ -61,6 +61,7 @@ class GridEngine:
         # Track dispatches for proactive detection
         self._dispatch_ticks: List[int] = []
         self._first_frequency_drop_tick: Optional[int] = None
+        self._forced_edge_loads: Dict[str, float] = {}
 
     def reset(self, seed: int = 42) -> None:
         """Reset engine to initial state with given seed."""
@@ -72,6 +73,7 @@ class GridEngine:
         self._counter_signals = []
         self._dispatch_ticks = []
         self._first_frequency_drop_tick = None
+        self._forced_edge_loads = {}
 
     # ------------------------------------------------------------------
     # Topology builders
@@ -87,6 +89,7 @@ class GridEngine:
         peak_load_mw: float = 0.0,
         generation_mw: float = 0.0,
         consumption_mw: float = 0.0,
+        black_start_capable: bool = False,
     ) -> None:
         """Add a substation node to the grid."""
         self.nodes[node_id] = {
@@ -97,11 +100,14 @@ class GridEngine:
             "region": region,
             "critical": critical,
             "generation_mw": generation_mw,
+            "base_generation_mw": generation_mw,
             "consumption_mw": consumption_mw,
+            "base_consumption_mw": consumption_mw,
             "voltage_kv": 345.0,
             "phase_angle_deg": 0.0,
             "energized": True,
             "quarantined": False,
+            "black_start_capable": black_start_capable,
         }
 
     def add_edge(
@@ -123,6 +129,102 @@ class GridEngine:
             "reactance": reactance,
         }
 
+    def _build_live_adjacency(self) -> Dict[str, List[str]]:
+        """Build an undirected adjacency map for currently live lines."""
+        adjacency: Dict[str, List[str]] = {node_id: [] for node_id in self.nodes}
+        for edge in self.edges.values():
+            if edge["status"] != "LIVE":
+                continue
+            adjacency[edge["source"]].append(edge["target"])
+            adjacency[edge["target"]].append(edge["source"])
+        return adjacency
+
+    def _get_powered_components(self) -> Tuple[List[List[str]], List[List[str]]]:
+        """
+        Return (all_components, powered_components) over live topology.
+
+        A component is considered powered if it contains a generator currently
+        producing positive power.
+        """
+        adjacency = self._build_live_adjacency()
+        visited: set[str] = set()
+        components: List[List[str]] = []
+        powered_components: List[List[str]] = []
+
+        for start_node in self.nodes:
+            if start_node in visited:
+                continue
+
+            stack = [start_node]
+            component: List[str] = []
+            while stack:
+                node_id = stack.pop()
+                if node_id in visited:
+                    continue
+                visited.add(node_id)
+                component.append(node_id)
+                for neighbor in adjacency.get(node_id, []):
+                    if neighbor not in visited:
+                        stack.append(neighbor)
+
+            if not component:
+                continue
+
+            components.append(component)
+            if any(
+                self.nodes[node_id]["node_type"] in ("hydro", "solar", "gas", "battery")
+                and self.nodes[node_id]["generation_mw"] > 0
+                for node_id in component
+            ):
+                powered_components.append(component)
+
+        return components, powered_components
+
+    def _recompute_energization(self) -> List[str]:
+        """
+        Propagate energized state through live lines from powered islands.
+
+        Returns:
+            List of node IDs that transitioned from de-energized to energized.
+        """
+        previous_state = {
+            node_id: bool(node["energized"])
+            for node_id, node in self.nodes.items()
+        }
+        components, powered_components = self._get_powered_components()
+        powered_nodes = {
+            node_id
+            for component in powered_components
+            for node_id in component
+        }
+
+        for component in components:
+            component_powered = any(node_id in powered_nodes for node_id in component)
+            for node_id in component:
+                node = self.nodes[node_id]
+                can_self_boot = node.get("black_start_capable", False) and previous_state[node_id]
+                node["energized"] = component_powered or can_self_boot
+                node["voltage_kv"] = 345.0 if component_powered else 0.0
+                if can_self_boot and not component_powered:
+                    node["voltage_kv"] = 345.0
+                if not node["energized"]:
+                    node["phase_angle_deg"] = 0.0
+                if (
+                    node["energized"]
+                    and not previous_state[node_id]
+                    and node["node_type"] == "load"
+                    and node["consumption_mw"] <= 0
+                    and node.get("base_consumption_mw", 0) > 0
+                ):
+                    node["consumption_mw"] = node["base_consumption_mw"]
+
+        newly_energized = [
+            node_id
+            for node_id, was_energized in previous_state.items()
+            if not was_energized and self.nodes[node_id]["energized"]
+        ]
+        return newly_energized
+
     # ------------------------------------------------------------------
     # Core physics
     # ------------------------------------------------------------------
@@ -132,6 +234,8 @@ class GridEngine:
         Simplified DC power flow: distribute generation to match loads
         through live transmission lines. Updates edge loads and node states.
         """
+        self._recompute_energization()
+
         # Calculate total generation and consumption
         total_gen = sum(
             n["generation_mw"] for n in self.nodes.values()
@@ -183,6 +287,11 @@ class GridEngine:
         for edge in live_edges:
             # Distribute flow proportional to edge capacity
             edge["current_load_mw"] = (edge["capacity_mw"] / total_capacity) * flow_needed
+
+        for edge_id, forced_load in self._forced_edge_loads.items():
+            edge = self.edges.get(edge_id)
+            if edge is not None and edge["status"] == "LIVE":
+                edge["current_load_mw"] = forced_load
 
         # Update phase angles based on flow
         for i, node in enumerate(self.nodes.values()):
@@ -282,8 +391,9 @@ class GridEngine:
 
         self._dispatch_ticks.append(self.tick)
 
-        # Recompute flow immediately
+        # Recompute flow and frequency immediately so observations reflect the control action.
         self.compute_power_flow()
+        self.compute_frequency()
 
         return {"success": True, "new_generation_mw": new_gen}
 
@@ -297,16 +407,34 @@ class GridEngine:
             return {"success": False, "error": f"Invalid status: {status}. Use OPEN or CLOSED."}
 
         old_status = edge["status"]
+        pre_energized = {
+            node_id for node_id, node in self.nodes.items()
+            if node["energized"]
+        }
+        pre_components = self.get_stable_islands()
         if status == "OPEN":
             edge["status"] = "TRIPPED"
             edge["current_load_mw"] = 0.0
         else:
             edge["status"] = "LIVE"
 
-        # Recompute flow
+        # Recompute flow and frequency after topology changes.
         self.compute_power_flow()
+        self.compute_frequency()
+        post_components = self.get_stable_islands()
+        newly_energized = [
+            node_id for node_id, node in self.nodes.items()
+            if node["energized"] and node_id not in pre_energized
+        ]
 
-        return {"success": True, "old_status": old_status, "new_status": edge["status"]}
+        return {
+            "success": True,
+            "old_status": old_status,
+            "new_status": edge["status"],
+            "newly_energized_nodes": newly_energized,
+            "island_count_before": len(pre_components),
+            "island_count_after": len(post_components),
+        }
 
     def run_state_estimation(self, subgraph: List[str], spoofed_telemetry: Dict[str, Dict]) -> Dict[str, Any]:
         """
@@ -356,8 +484,15 @@ class GridEngine:
         if node_id not in self.nodes:
             return {"success": False, "error": f"Unknown node: {node_id}"}
 
+        if self.nodes[node_id]["quarantined"]:
+            return {
+                "success": False,
+                "error": f"Node {node_id} is already quarantined",
+                "already_quarantined": True,
+            }
+
         self.nodes[node_id]["quarantined"] = True
-        return {"success": True, "node_id": node_id}
+        return {"success": True, "node_id": node_id, "already_quarantined": False}
 
     def inject_counter_signal(
         self, node_id: str, hz_offset: float, duration: int
@@ -374,6 +509,8 @@ class GridEngine:
         node = self.nodes[node_id]
         if node["node_type"] != "battery":
             return {"success": False, "error": f"Node {node_id} is not a battery"}
+        if not node["energized"]:
+            return {"success": False, "error": f"Node {node_id} is not energized"}
 
         # Calculate effectiveness based on offset accuracy
         # Perfect offset = -0.5Hz (to counter +0.5Hz attack)
@@ -390,6 +527,7 @@ class GridEngine:
             "accuracy": accuracy,
             "power_injection_mw": power_injection,
         })
+        self.compute_frequency()
 
         return {
             "success": True,
@@ -524,6 +662,19 @@ class GridEngine:
             e["id"] for e in self.edges.values()
             if e["status"] == "LIVE" and e["current_load_mw"] >= 0.95 * e["capacity_mw"]
         ]
+
+    def set_forced_edge_load(self, edge_id: str, load_mw: float) -> None:
+        """Force an edge load after power-flow computation for scenario scripting."""
+        if edge_id not in self.edges:
+            raise ValueError(f"Unknown edge: {edge_id}")
+        self._forced_edge_loads[edge_id] = load_mw
+        edge = self.edges[edge_id]
+        if edge["status"] == "LIVE":
+            edge["current_load_mw"] = load_mw
+
+    def clear_forced_edge_load(self, edge_id: str) -> None:
+        """Remove a previously forced edge load override."""
+        self._forced_edge_loads.pop(edge_id, None)
 
     def is_dispatch_proactive(self) -> bool:
         """Check if any dispatch happened before the first frequency drop."""

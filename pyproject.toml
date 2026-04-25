@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "openenv-nexusgrid"
-version = "1.0.0"
+version = "2.0.0"
 description = "NexusGrid-CyberPhysEnv: National power grid defense environment for OpenEnv"
 requires-python = ">=3.10"
 dependencies = [
@@ -22,6 +22,9 @@ dependencies = [
     "openai>=1.0.0",
     # Environment variable loading
     "python-dotenv>=1.0.0",
+    # Dashboard for HF Spaces
+    "gradio>=4.0.0",
+    "plotly>=5.18.0",
 ]
 
 [project.optional-dependencies]
@@ -37,12 +40,12 @@ dashboard = [
 ]
 
 [project.scripts]
-server = "nexusgrid.server.app:main"
+server = "server.app:main"
 
 [tool.setuptools]
 include-package-data = true
-packages = ["nexusgrid", "nexusgrid.server"]
-package-dir = { "nexusgrid" = ".", "nexusgrid.server" = "server" }
+packages = ["server"]
+py-modules = ["client", "inference", "models"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

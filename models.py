@@ -148,6 +148,10 @@ class GridObservation(BaseModel):
         description="Result of most recent run_state_estimation call"
     )
     weather_summary: str = Field("", description="Natural language weather summary")
+    metadata: Dict[str, Any] = Field(
+        default_factory=dict,
+        description="Auxiliary environment metadata such as reward/rubric breakdowns."
+    )
 
 
 # ---------------------------------------------------------------------------
