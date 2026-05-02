@@ -1,5 +1,5 @@
-# NexusGrid-CyberPhysEnv — OpenEnv Specification
-# All fields required for openenv validate to pass
+# NexusGrid-CyberPhysEnv - OpenEnv Specification
+# Phase 2 HF Space-ready manifest with rubric discovery metadata.
 
 spec_version: 1
 name: NexusGrid-CyberPhysEnv
@@ -7,50 +7,116 @@ type: space
 runtime: fastapi
 app: server.app:app
 port: 8000
-version: "1.0.0"
+version: "2.0.0"
 description: >
-  National power grid defense — physics vs. cyberattack paradox.
-  A 20-node transmission network with DC power flow physics running alongside
-  a deterministic SCADA sensor spoofing engine. The agent must distinguish
-  real grid failures from adversarially fabricated telemetry.
+  National power grid cyber-physical defense benchmark with DC power flow,
+  deterministic SCADA spoofing, curriculum-ready task progression, and
+  composable task rubrics for training and evaluation.
 tags:
   - openenv
   - critical-infrastructure
   - cybersecurity
   - energy
   - scada
+  - reinforcement-learning
 
 tasks:
   - id: 0
     name: smoke_test
     difficulty: trivial
     max_ticks: 3
-    baseline_score: 0.99
+    baseline_score: 0.999
+    rubrics:
+      - name: valid_dispatch
+        weight: 1.0
+        description: Agent issues any valid positive dispatch action.
   - id: 1
     name: duck_curve
     difficulty: easy
     max_ticks: 15
-    baseline_score: 0.99
+    baseline_score: 0.999
+    rubrics:
+      - name: avoid_collapse
+        weight: 0.30
+        description: Grid frequency never crosses the 59.0Hz failure floor.
+      - name: recover_nominal_band
+        weight: 0.20
+        description: Frequency stays or recovers above 59.5Hz quickly.
+      - name: hold_nominal_band
+        weight: 0.42
+        description: Frequency remains inside the nominal band.
+      - name: proactive_dispatch
+        weight: 0.08
+        description: Dispatch support before the largest demand shock lands.
   - id: 2
     name: cascade_overload
     difficulty: medium
     max_ticks: 20
-    baseline_score: 0.80
+    baseline_score: 0.800
+    rubrics:
+      - name: fault_isolation
+        weight: 0.40
+        description: Open the correct breaker path to isolate the overload.
+      - name: protect_critical_load
+        weight: 0.40
+        description: Keep all critical loads energized throughout the response.
+      - name: fast_restoration
+        weight: 0.20
+        description: Restore service within eight ticks of the incident.
   - id: 3
     name: phantom_inject
     difficulty: hard
     max_ticks: 18
-    baseline_score: 0.99
+    baseline_score: 0.600
+    rubrics:
+      - name: log_inspection
+        weight: 0.10
+        description: Inspect packet behavior before trusting SCADA telemetry.
+      - name: state_estimation
+        weight: 0.20
+        description: Run a Kirchhoff consistency check and detect the anomaly.
+      - name: correct_quarantine
+        weight: 0.30
+        description: Quarantine the spoofed node after confirmation.
+      - name: reroute_dispatch
+        weight: 0.40
+        description: Redispatch generation after quarantine to stabilize load.
   - id: 4
     name: stuxnet_resonance
     difficulty: very_hard
     max_ticks: 12
-    baseline_score: 0.99
+    baseline_score: 0.400
+    rubrics:
+      - name: counter_signal_attempted
+        weight: 0.20
+        description: Attempt a counter-signal instead of cutting the turbine.
+      - name: correct_frequency_match
+        weight: 0.20
+        description: Match the resonance-canceling frequency offset.
+      - name: target_ramp_down
+        weight: 0.30
+        description: Ramp down the affected turbine after injection.
+      - name: support_reroute
+        weight: 0.30
+        description: Dispatch alternate support generation after mitigation.
   - id: 5
     name: black_start
     difficulty: expert
     max_ticks: 50
-    baseline_score: 0.025
+    baseline_score: 0.060
+    rubrics:
+      - name: hydro_bootstrap
+        weight: 0.25
+        description: Restart the hydro source to begin black start recovery.
+      - name: secondary_energized
+        weight: 0.25
+        description: Sustain a second energized node after hydro startup.
+      - name: safe_islanding
+        weight: 0.30
+        description: Form stable islands and complete a safe merger.
+      - name: critical_restoration
+        weight: 0.20
+        description: Restore all critical infrastructure after synchronization.
 
 observation_schema: GridObservation
 action_schema: GridAction
