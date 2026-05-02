@@ -6,7 +6,10 @@ from openenv.core import EnvClient
 from openenv.core.client_types import StepResult
 from openenv.core.env_server.types import State
 
-from .models import GridAction, GridObservation
+try:
+    from .models import GridAction, GridObservation
+except ImportError:
+    from models import GridAction, GridObservation
 
 
 class NexusgridEnv(
@@ -19,7 +22,7 @@ class NexusgridEnv(
     enabling efficient multi-step interactions with lower latency.
 
     Example:
-        >>> with NexusgridEnv(base_url="http://localhost:8000") as env:
+        >>> with NexusgridEnv(base_url="http://localhost:8000").sync() as env:
         ...     result = env.reset()
         ...     result = env.step(GridAction(
         ...         action_type="dispatch_generation",
@@ -68,6 +71,7 @@ class NexusgridEnv(
             last_action_error=obs_data.get("last_action_error"),
             last_state_estimation=obs_data.get("last_state_estimation"),
             weather_summary=obs_data.get("weather_summary", ""),
+            metadata=obs_data.get("metadata", {}),
         )
 
         return StepResult(
@@ -78,6 +82,8 @@ class NexusgridEnv(
 
     def _parse_state(self, payload: Dict) -> State:
         """Parse server response into State object."""
+        if hasattr(State, "model_validate"):
+            return State.model_validate(payload)
         return State(
             episode_id=payload.get("episode_id"),
             step_count=payload.get("step_count", 0),
