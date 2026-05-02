@@ -1,6 +1,5 @@
 """
 FastAPI application for the NexusGrid-CyberPhysEnv.
-
 Endpoints:
     - POST /reset: Reset the environment
     - POST /step: Execute an action
@@ -9,12 +8,10 @@ Endpoints:
     - GET /schema: Get action/observation schemas
     - GET /web: Gradio visual dashboard
     - WS /ws: WebSocket endpoint for persistent sessions
-
 Usage:
     uvicorn server.app:app --reload --host 0.0.0.0 --port 8000
 """
 
-from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 
 try:
@@ -42,22 +39,34 @@ app = create_app(
 )
 
 
-# Add /health endpoint — returns immediately, no computation
-@app.get("/health")
-async def health_check():
-    """
-    Health check endpoint.
-    Returns HTTP 200 immediately — independent of environment state.
-    Required for HF Space HEALTHCHECK and Phase 1 automated validation.
-    """
-    return JSONResponse(
-        content={
-            "status": "ok",
-            "environment": "NexusGrid-CyberPhysEnv",
-            "version": "1.0.0",
-        },
-        status_code=200,
-    )
+if not any(getattr(route, "path", None) == "/health" for route in app.routes):
+    @app.get("/health")
+    async def health_check():
+        """
+        Health check endpoint.
+        Returns HTTP 200 immediately — independent of environment state.
+        Required for HF Space HEALTHCHECK and Phase 1 automated validation.
+        """
+        return JSONResponse(
+            content={
+                "status": "healthy",
+                "environment": "NexusGrid-CyberPhysEnv",
+                "version": "2.0.0",
+            },
+            status_code=200,
+        )
+
+
+@app.get("/manifest.json")
+async def manifest():
+    return JSONResponse(content={
+        "name": "NexusGrid — CyberPhys Env",
+        "short_name": "NexusGrid",
+        "start_url": "/web/",
+        "display": "standalone",
+        "background_color": "#030711",
+        "theme_color": "#00f5d4",
+    })
 
 
 # ---------------------------------------------------------------------------
@@ -79,7 +88,6 @@ except Exception as e:
 def main():
     """
     Entry point for direct execution.
-
     Usage:
         uv run --project . server
         python -m server.app
