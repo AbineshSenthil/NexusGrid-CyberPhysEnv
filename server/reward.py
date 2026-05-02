@@ -47,6 +47,7 @@ class RewardCalculator:
         self._estimation_subgraphs: List[set] = []
         self._last_action_was_estimation = False
         self._actions_since_estimation = 0
+        self._fault_isolation_awarded = False
 
     def reset(self) -> None:
         """Reset reward state for a new episode."""
@@ -56,6 +57,7 @@ class RewardCalculator:
         self._estimation_subgraphs = []
         self._last_action_was_estimation = False
         self._actions_since_estimation = 0
+        self._fault_isolation_awarded = False
 
     def compute_tick_reward(
         self,
@@ -89,8 +91,9 @@ class RewardCalculator:
         # --- Positive signals ---
 
         # Fault isolation (toggle_circuit_breaker that isolates without dropping critical)
-        if fault_isolated and critical_nodes_shed == 0:
+        if fault_isolated and critical_nodes_shed == 0 and not self._fault_isolation_awarded:
             breakdown["fault_isolation"] = REWARD_FAULT_ISOLATION
+            self._fault_isolation_awarded = True
 
         # Cyber detection (quarantine after state estimation found violation)
         if spoof_detected and action_type == "quarantine_scada_node":
