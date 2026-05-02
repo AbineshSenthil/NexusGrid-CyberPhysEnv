@@ -10,8 +10,17 @@ from __future__ import annotations
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
-from openenv.core.env_server.interfaces import Environment
-from openenv.core.env_server.types import State
+try:
+    from openenv.core.env_server.interfaces import Environment
+    from openenv.core.env_server.types import State
+except ImportError:
+    class Environment:  # type: ignore[override]
+        """Lightweight fallback for local testing without openenv-core."""
+
+    class State:  # type: ignore[override]
+        def __init__(self, episode_id: str, step_count: int):
+            self.episode_id = episode_id
+            self.step_count = step_count
 
 try:
     from ..models import GridAction, GridObservation, ActionType
@@ -23,6 +32,8 @@ from .scenarios import build_scenario, MAX_TICKS, TASK_NAMES
 from .spoof_engine import SpoofEngine
 from .reward import RewardCalculator
 from .graders import grade_task
+from .rubric import evaluate_task_rubrics
+from .training_logger import TrainingLogger
 
 
 class NexusgridEnvironment(Environment):
@@ -78,9 +89,11 @@ class NexusgridEnvironment(Environment):
         self._successful_mergers = 0
         self._premature_mergers = 0
         self._transformer_failures = 0
+        self._full_restoration_tick: Optional[int] = None
 
         # Track if packet logs have been "read" (agent called advance_tick to observe)
         self._logs_read_this_episode = False
+        self._logs_read_before_estimation = False
 
         # Internal OpenEnv state
         self._state = State(episode_id=self._episode_id, step_count=0)
@@ -113,6 +126,8 @@ class NexusgridEnvironment(Environment):
         self._state_estimation_run = False
         self._last_estimation_result = None
         self._logs_read_this_episode = False
+        self._logs_read_before_estimation = False
+        self._full_restoration_tick = None
 
         # Black Start tracking
         self._hydro_stable_ticks = 0
@@ -176,6 +191,7 @@ class NexusgridEnvironment(Environment):
         error_msg = None
         fault_isolated = False
         spoof_detected = False
+        pre_islands = self._engine.get_stable_islands() if self._task_id == 5 else []
 
         # Execute the action
         if action_type == "dispatch_generation":
@@ -195,8 +211,10 @@ class NexusgridEnvironment(Environment):
                 if not result["success"]:
                     error_msg = result.get("error", "toggle failed")
                 else:
-                    if action.status == "OPEN":
+                    if action.status == "OPEN" and result.get("old_status") == "LIVE":
                         fault_isolated = True
+                    elif action.status == "CLOSED":
+                        self._track_black_start_merger(action.edge_id, pre_islands)
                 action_record["result"] = result
 
         elif action_type == "run_state_estimation":
@@ -221,14 +239,21 @@ class NexusgridEnvironment(Environment):
                 # Check anti-hallucination gate
                 if not self._state_estimation_run:
                     error_msg = "Must run state_estimation before quarantine (anti-hallucination penalty applies)"
+                    result = {
+                        "success": False,
+                        "error": error_msg,
+                        "skipped": True,
+                    }
+                else:
+                    result = self._engine.quarantine_node(action.node_id)
+                    if result.get("success"):
+                        self._spoof.quarantine_node(action.node_id)
 
-                result = self._engine.quarantine_node(action.node_id)
-                self._spoof.quarantine_node(action.node_id)
+                    if self._last_estimation_result and not self._last_estimation_result.get("consistent", True):
+                        if result.get("success") and not result.get("already_quarantined", False):
+                            spoof_detected = True
+
                 action_record["result"] = result
-
-                if self._state_estimation_run and self._last_estimation_result:
-                    if not self._last_estimation_result.get("consistent", True):
-                        spoof_detected = True
 
         elif action_type == "inject_counter_signal":
             if not action.node_id or action.hz_offset is None or action.duration is None:
@@ -246,6 +271,8 @@ class NexusgridEnvironment(Environment):
             self._engine.advance_tick()
             self._spoof.advance_tick()
             self._logs_read_this_episode = True  # Agent observes packet logs
+            if not self._state_estimation_run:
+                self._logs_read_before_estimation = True
 
             # Apply resonance effect if active
             if self._spoof.is_resonance_active():
@@ -255,6 +282,9 @@ class NexusgridEnvironment(Environment):
 
         else:
             error_msg = f"Unknown action type: {action_type}"
+
+        if action_type != "advance_tick":
+            self._engine._record_telemetry()
 
         # Record action
         self._action_history.append(action_record)
@@ -298,6 +328,7 @@ class NexusgridEnvironment(Environment):
 
         # Update Black Start tracking
         self._update_black_start_tracking()
+        self._update_full_restoration_tracking()
 
         # Check termination conditions
         if self._engine.frequency_hz < 59.0:
@@ -365,7 +396,11 @@ class NexusgridEnvironment(Environment):
             "last_kirchhoff_result": self._last_estimation_result,
             "episode_seed": self._seed,
             "reward_breakdown": reward_breakdown or {},
+            "rubric_breakdown": self.get_rubric_breakdown(),
+            "curriculum_ready": True,
         }
+        if self._done:
+            info["episode_summary"] = self.get_episode_summary()
 
         obs = GridObservation(
             topology_graph=self._engine.get_topology(),
@@ -398,6 +433,7 @@ class NexusgridEnvironment(Environment):
         # Check if all critical nodes are restored
         critical_nodes = [n for n in self._engine.nodes.values() if n["critical"]]
         critical_restored = all(n["energized"] for n in critical_nodes)
+        recovered_above_59_5_in_3_ticks = _check_recovery(self._frequency_history, threshold=59.5, window=3)
 
         return {
             "frequency_history": self._frequency_history,
@@ -414,7 +450,37 @@ class NexusgridEnvironment(Environment):
             "premature_mergers": self._premature_mergers,
             "transformer_failures": self._transformer_failures,
             "critical_nodes_restored": critical_restored,
+            "logs_read_before_estimation": self._logs_read_before_estimation,
+            "spoof_target": self._attack_config.get("target_node"),
+            "recovered_above_59_5_in_3_ticks": recovered_above_59_5_in_3_ticks,
         }
+
+    def _track_black_start_merger(self, edge_id: str, pre_islands: List[List[str]]) -> None:
+        """Record Task 5 island merger outcomes when a breaker is closed."""
+        if self._task_id != 5 or self._engine is None:
+            return
+
+        edge = self._engine.edges.get(edge_id)
+        if edge is None:
+            return
+
+        def find_island(node_id: str) -> Optional[List[str]]:
+            for island in pre_islands:
+                if node_id in island:
+                    return island
+            return None
+
+        source_island = find_island(edge["source"])
+        target_island = find_island(edge["target"])
+
+        if not source_island or not target_island or source_island == target_island:
+            return
+
+        if self._engine.check_phase_angle_compatible(source_island, target_island):
+            self._successful_mergers += 1
+        else:
+            self._premature_mergers += 1
+            self._transformer_failures += 1
 
     def _update_black_start_tracking(self) -> None:
         """Track Black Start milestones for Task 5 grading."""
@@ -432,12 +498,100 @@ class NexusgridEnvironment(Environment):
         islands = self._engine.get_stable_islands()
         self._max_island_count = max(self._max_island_count, len(islands))
 
-    def _get_full_restoration_tick(self) -> Optional[int]:
-        """Get the tick at which full load was restored (for Task 2)."""
-        if self._engine is None:
-            return None
+    def _update_full_restoration_tracking(self) -> None:
+        """Persist the first tick where load restoration crosses the grading threshold."""
+        if self._engine is None or self._full_restoration_tick is not None:
+            return
+
+        if self._task_id == 2:
+            isolation_ticks = [
+                action.get("tick", 999)
+                for action in self._action_history
+                if action.get("action_type") == "toggle_circuit_breaker"
+                and str(action.get("status", "")).upper() == "OPEN"
+            ]
+            fault_isolated = bool(isolation_ticks)
+            first_isolation_tick = min(isolation_ticks) if isolation_ticks else None
+            restorative_dispatches = sum(
+                1
+                for action in self._action_history
+                if action.get("action_type") == "dispatch_generation"
+                and (action.get("mw") or 0) > 0
+                and first_isolation_tick is not None
+                and action.get("tick", 999) > first_isolation_tick
+            )
+            frequency_stable = (
+                len(self._frequency_history) >= 2
+                and all(freq >= 59.7 for freq in self._frequency_history[-2:])
+            )
+            if (
+                fault_isolated
+                and restorative_dispatches >= 2
+                and frequency_stable
+                and not self._engine.get_overloaded_edges()
+                and self._engine.get_critical_nodes_shed() == 0
+            ):
+                self._full_restoration_tick = self._tick
+            return
+
         total_possible = self._engine.get_total_possible_mwh()
         total_served = self._engine.get_mwh_served()
         if total_possible > 0 and total_served >= total_possible * 0.95:
-            return self._tick
-        return None
+            self._full_restoration_tick = self._tick
+
+    def _get_full_restoration_tick(self) -> Optional[int]:
+        """Get the tick at which full load was restored (for Task 2)."""
+        return self._full_restoration_tick
+
+    def get_rubric_breakdown(self) -> Dict[str, Any]:
+        """Return the current rubric breakdown for the active episode."""
+        return evaluate_task_rubrics(self._task_id, self._action_history, self._build_episode_state())
+
+    def get_episode_summary(self) -> Dict[str, Any]:
+        """Build a compact summary suitable for training logs and dashboards."""
+        rubric_eval = self.get_rubric_breakdown()
+        frequency_history = self._frequency_history or [60.0]
+        return {
+            "task_id": self._task_id,
+            "task_name": TASK_NAMES.get(self._task_id, f"task_{self._task_id}"),
+            "seed": self._seed,
+            "score": self.get_score(),
+            "rubrics": rubric_eval["rubrics"],
+            "weighted_rubric_score": rubric_eval["weighted_score"],
+            "actions_taken": [action.get("action_type", "unknown") for action in self._action_history],
+            "frequency_min": min(frequency_history),
+            "ticks_used": self._tick,
+            "done": self._done,
+        }
+
+    def emit_training_log(self, episode: int, logger: Optional[TrainingLogger] = None) -> str:
+        """Write the current episode summary as one JSONL line."""
+        summary = self.get_episode_summary()
+        training_logger = logger or TrainingLogger()
+        record = training_logger.build_record(
+            episode=episode,
+            task_id=self._task_id,
+            seed=self._seed,
+            score=summary["score"],
+            rubrics=summary["rubrics"],
+            actions_taken=summary["actions_taken"],
+            frequency_min=summary["frequency_min"],
+            ticks_used=summary["ticks_used"],
+            extra={"task_name": summary["task_name"], "done": summary["done"]},
+        )
+        return training_logger.write_episode(record)
+
+
+def _check_recovery(freq_history: List[float], threshold: float, window: int) -> bool:
+    """Check if frequency recovered above threshold within `window` ticks after dipping."""
+    dip_started = False
+    ticks_since_dip = 0
+    for freq in freq_history:
+        if freq < threshold:
+            dip_started = True
+            ticks_since_dip = 0
+        elif dip_started:
+            ticks_since_dip += 1
+            if freq >= threshold and ticks_since_dip <= window:
+                return True
+    return False
