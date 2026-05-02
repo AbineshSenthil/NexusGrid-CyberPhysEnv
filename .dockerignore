@@ -14,5 +14,6 @@ uv.lock
 *.egg-info
 .mypy_cache
 .ruff_cache
-_*.py
 *.log
+.server_pid
+tests/
