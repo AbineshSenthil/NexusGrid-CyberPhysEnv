@@ -1,0 +1,13 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+scores.json
+uv.lock
+.venv/
+venv/
+*.egg-info/
+.ruff_cache/
+.mypy_cache/
+.server_pid
