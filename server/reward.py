@@ -13,6 +13,10 @@ few small physical terms:
 Because the progress term telescopes, the sum of progress rewards over an
 episode equals the final rubric score, so maximising return and maximising
 the graded score point in the same direction.
+
+When an episode ends early because the task was completed (black start), the
+in-band bonus for the remaining ticks is paid at once. Otherwise the per-tick
+bonus would reward an agent for delaying completion.
 """
 
 from __future__ import annotations
@@ -49,10 +53,12 @@ class RewardCalculator:
         overloaded_count: int,
         events: List[Dict[str, Any]],
         invalid_action: bool,
+        completed_ticks_remaining: int = 0,
     ) -> Dict[str, float]:
+        in_band = REWARD_IN_BAND if 59.8 <= frequency_hz <= 60.2 else 0.0
         breakdown = {
             "progress": round(score_now - score_prev, 6),
-            "frequency_band": REWARD_IN_BAND if 59.8 <= frequency_hz <= 60.2 else 0.0,
+            "frequency_band": round(in_band + REWARD_IN_BAND * max(0, int(completed_ticks_remaining)), 6),
             "overload": PENALTY_PER_OVERLOAD * int(overloaded_count),
             "events": sum(EVENT_PENALTIES.get(e.get("type", ""), 0.0) for e in events),
             "invalid_action": PENALTY_INVALID_ACTION if invalid_action else 0.0,

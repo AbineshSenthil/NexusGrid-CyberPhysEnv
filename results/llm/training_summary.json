@@ -1,0 +1,18 @@
+{
+  "minutes": 31.4,
+  "steps": 100,
+  "sft": {
+    "examples": 1098,
+    "episodes": 200,
+    "epochs": 1,
+    "optimizer_steps": 138,
+    "loss_first": 1.0364,
+    "loss_last": 0.151,
+    "minutes": 12.8,
+    "adapter": "runs\\grpo\\qwen3-1.7b\\sft_adapter"
+  },
+  "prompts": 1091,
+  "adapter": "runs\\grpo\\qwen3-1.7b\\adapter",
+  "reward_first_10pct": 0.12832995001226663,
+  "reward_last_10pct": 0.12017984874546528
+}

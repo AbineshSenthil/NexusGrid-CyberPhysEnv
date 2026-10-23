@@ -99,36 +99,15 @@ def clamp_submission_score(score: float) -> float:
 # Prompting
 # ---------------------------------------------------------------------------
 
-SYSTEM_PROMPT = """You are the control-room operator of a 20-bus transmission grid (DC power flow, one tick = 5 minutes).
-Each turn you see the grid and send exactly ONE action as a JSON object.
-
-ACTIONS
-- {"action_type":"dispatch_generation","node_id":"NODE_01","mw":120}
-  Change a generator or battery setpoint by mw (+ raise, - lower). Limited by its ramp per tick and capacity.
-- {"action_type":"shed_load","node_id":"NODE_07","mw":100}
-  Shed load at a non-critical load bus. Negative mw restores shed load (also load cut by UFLS relays).
-- {"action_type":"toggle_circuit_breaker","edge_id":"LINE_12","status":"OPEN"}   (status OPEN or CLOSED)
-- {"action_type":"run_state_estimation","subgraph":["NODE_09","NODE_10"]}
-  Kirchhoff consistency check of up to 6 buses. A violation proves that bus's telemetry is falsified.
-- {"action_type":"quarantine_scada_node","node_id":"NODE_09"}
-  Isolate a compromised SCADA channel. Refused (and penalised) unless state estimation proved that bus first.
-- {"action_type":"inject_counter_signal","node_id":"NODE_20","hz_offset":-0.45,"duration":4}
-  Damping signal from a battery within 2 line hops of an oscillating unit; hz_offset must be the negative of the oscillation mode.
-- {"action_type":"advance_tick"}   Do nothing this tick.
-
-GRID FACTS
-- Keep frequency inside 59.8-60.2 Hz. Island frequency ~ 60 + mismatch / (0.25 x online dispatchable MW), where
-  mismatch = generation setpoints - demand. A mismatch of -300 MW is fixed by dispatching about +300 MW in total.
-- Demand and solar change over time: the forecast shows what is coming, act before frequency moves.
-- Below 59.2 Hz relays shed load automatically (UFLS). Below 59.0 Hz the episode ends.
-- Lines above 100% loading trip after 3 ticks, instantly at 140%. Relieve them by raising generation near the
-  receiving end and lowering it near the sending end, or by shedding non-critical load. Lines marked out of service cannot be closed.
-- Critical loads (hospitals, water, data centre) must stay energised.
-- Closing a breaker between two live islands needs matching frequency (<=0.2 Hz) and phase angle (<=20 deg).
-- In a blackout, energise lines outward from the black-start unit, raise generation before picking up load,
-  and restore critical loads first.
-
-Answer with the JSON object only."""
+SYSTEM_PROMPT = """You operate a 20-bus power grid (DC power flow, 1 tick = 5 min). Reply with exactly one JSON action:
+{"action_type":"dispatch_generation","node_id":"NODE_13","mw":120}  change a unit's setpoint (+/-, ramp-limited)
+{"action_type":"shed_load","node_id":"NODE_07","mw":100}  cut non-critical load (negative mw restores)
+{"action_type":"toggle_circuit_breaker","edge_id":"LINE_12","status":"OPEN"}  or "CLOSED"
+{"action_type":"run_state_estimation","subgraph":["NODE_09","NODE_10"]}  Kirchhoff check of up to 6 buses
+{"action_type":"quarantine_scada_node","node_id":"NODE_09"}  only after an estimation violation at that bus
+{"action_type":"inject_counter_signal","node_id":"NODE_20","hz_offset":-0.45,"duration":4}  battery within 2 hops of the oscillating unit, offset = -mode
+{"action_type":"advance_tick"}
+Rules: keep 59.8-60.2 Hz. Frequency ~ 60 + mismatch/(0.25 x online MW), so a mismatch of -300 MW needs about +300 MW of dispatch; use the forecast to act early. Lines over 100% trip after 3 ticks (140% at once): raise generation near the overloaded line's receiving end or shed load there. Keep critical loads energised. Blackout: close lines outward from the black-start unit and add generation before picking up load."""
 
 ACTION_ALIASES = {
     "dispatch": "dispatch_generation",
@@ -160,7 +139,7 @@ def _obs_dict(obs: Any) -> Dict[str, Any]:
 
 
 def render_observation(obs: Any, history: Optional[List[str]] = None) -> str:
-    """Compact text rendering of an observation for language models."""
+    """Compact text rendering of an observation for language models (about 700 tokens)."""
     d = _obs_dict(obs)
     topo = d.get("topology_graph") or {}
     nodes = topo.get("nodes", [])
@@ -168,115 +147,121 @@ def render_observation(obs: Any, history: Optional[List[str]] = None) -> str:
     stream = d.get("telemetry_stream") or []
     tele = {r["node_id"]: r for r in (stream[-1] if stream else [])}
     task_id = int(d.get("task_id", 0))
-    lines: List[str] = []
-    lines.append(f"TASK {task_id} {TASK_NAMES.get(task_id, '')} | tick {d.get('tick', 0)}/{d.get('max_ticks', '?')} | "
-                 f"system frequency {float(d.get('grid_frequency_hz', 60.0)):.3f} Hz (target 59.8-60.2)")
+    out: List[str] = [f"T{task_id} {TASK_NAMES.get(task_id, '')} | tick {d.get('tick', 0)}/{d.get('max_ticks', '?')} | "
+                      f"f {float(d.get('grid_frequency_hz', 60.0)):.3f} Hz"]
     if d.get("task_brief"):
-        lines.append(f"BRIEF: {d['task_brief']}")
+        out.append(f"Brief: {d['task_brief']}")
 
     islands = d.get("islands") or []
-    if islands:
-        lines.append("ISLANDS:")
-        for isl in islands:
-            lines.append(f"  #{isl['island']} {len(isl['nodes'])} buses f={isl['frequency_hz']:.3f} Hz "
-                         f"gen {isl['generation_mw']:.0f} MW load {isl['load_mw']:.0f} MW "
-                         f"mismatch {isl['setpoint_mismatch_mw']:+.0f} MW")
-    else:
-        lines.append("ISLANDS: none energised")
-    fc = d.get("forecast") or {}
-    if fc.get("system_demand_mw"):
-        dem = ", ".join(f"{v:.0f}" for v in fc["system_demand_mw"][:4])
-        sol = ", ".join(f"{v:.0f}" for v in (fc.get("solar_available_mw") or [])[:4])
-        lines.append(f"FORECAST next ticks: demand {dem} MW | solar {sol} MW")
+    for isl in islands:
+        out.append(f"Island {isl['island']}: {len(isl['nodes'])} buses, f {isl['frequency_hz']:.3f}, "
+                   f"gen {isl['generation_mw']:.0f}, load {isl['load_mw']:.0f}, "
+                   f"mismatch {round(isl['setpoint_mismatch_mw']) + 0:+d} MW")
+    if not islands:
+        out.append("No energised island.")
 
-    lines.append("GENERATORS (id type region | capacity setpoint measured ramp):")
+    fc = d.get("forecast") or {}
+    demand_now = sum(tele.get(n["id"], {}).get("consumption_mw", 0.0) + n.get("shed_mw", 0.0)
+                     for n in nodes if n["node_type"] == "load" and n.get("energized"))
+    solar_now = sum(tele.get(n["id"], {}).get("generation_mw", 0.0) for n in nodes if n["node_type"] == "solar")
+    if fc.get("system_demand_mw") and islands and task_id != 5:
+        dem = ",".join(f"{round(v - demand_now) + 0:+d}" for v in fc["system_demand_mw"][:3])
+        sol = ",".join(f"{round(v - solar_now) + 0:+d}" for v in (fc.get("solar_available_mw") or [])[:3])
+        out.append(f"Forecast change vs now (next 3 ticks): demand {dem} MW; solar {sol} MW")
+
+    units = []
     for n in nodes:
         if n["node_type"] == "load":
             continue
         r = tele.get(n["id"], {})
-        flags = []
-        if not n.get("energized"):
-            flags.append("DARK")
-        if n.get("tripped"):
-            flags.append("TRIPPED")
-        if n.get("quarantined"):
-            flags.append("QUARANTINED")
-        if n.get("black_start_capable"):
-            flags.append("black-start")
+        item = f"{n['id']} {n['node_type']} {n.get('setpoint_mw', 0):.0f}/{n['capacity_mw']:.0f}"
+        meas = float(r.get("generation_mw", 0.0))
+        if abs(meas - float(n.get("setpoint_mw", 0.0))) > 15 and n["node_type"] != "solar":
+            item += f" meas {meas:.0f}"
+        if n["node_type"] == "solar":
+            item += f" out {meas:.0f}"
+        else:
+            item += f" r{n.get('ramp_mw_per_tick', 0):.0f}"
+        flags = [flag for flag, on in (("dark", not n.get("energized")), ("tripped", n.get("tripped")),
+                                       ("quarantined", n.get("quarantined")),
+                                       ("black-start", n.get("black_start_capable"))) if on]
         if n["node_type"] == "battery":
             flags.append(f"soc {n.get('soc_pct', 0):.0f}%")
-        lines.append(f"  {n['id']} {n['node_type']} {n['region']} | cap {n['capacity_mw']:.0f} "
-                     f"set {n.get('setpoint_mw', 0):.0f} meas {r.get('generation_mw', 0):.0f} "
-                     f"ramp {n.get('ramp_mw_per_tick', 0):.0f}" + (f" [{', '.join(flags)}]" if flags else ""))
-    lines.append("LOADS (id region | served MW):")
+        units.append(item + (f" ({', '.join(flags)})" if flags else ""))
+    out.append("Units (setpoint/capacity MW, ramp per tick): " + "; ".join(units))
+
+    loads = []
     for n in nodes:
         if n["node_type"] != "load":
             continue
-        r = tele.get(n["id"], {})
-        flags = ["CRITICAL"] if n.get("critical") else []
-        if not n.get("energized"):
-            flags.append(f"DARK, peak {n.get('peak_load_mw', 0):.0f}")
+        item = f"{n['id']}{'*' if n.get('critical') else ''} "
+        if n.get("energized"):
+            item += f"{tele.get(n['id'], {}).get('consumption_mw', 0):.0f}"
+        else:
+            item += f"dark (peak {n.get('peak_load_mw', 0):.0f})"
         if n.get("shed_mw"):
-            flags.append(f"shed {n['shed_mw']:.0f}")
+            item += f" shed {n['shed_mw']:.0f}"
         if n.get("ufls_shed_pct"):
-            flags.append(f"UFLS {n['ufls_shed_pct']:.0f}%")
-        lines.append(f"  {n['id']} {n['region']} | {r.get('consumption_mw', 0):.0f}" +
-                     (f" [{', '.join(flags)}]" if flags else ""))
+            item += f" ufls {n['ufls_shed_pct']:.0f}%"
+        loads.append(item)
+    out.append("Loads MW (* critical): " + "; ".join(loads))
 
-    adjacency: Dict[str, List[str]] = {n["id"]: [] for n in nodes}
-    for e in edges:
-        if e["status"] == "LIVE":
-            adjacency[e["source"]].append(e["target"])
-            adjacency[e["target"]].append(e["source"])
-    connected = [f"{nid}-{'/'.join(nbs)}" for nid, nbs in adjacency.items() if nbs]
-    lines.append("LIVE CONNECTIONS: " + ("; ".join(connected) if connected else "none"))
+    if task_id in (2, 4, 5):
+        pairs = [f"{e['source'][-2:]}-{e['target'][-2:]}" for e in edges if e["status"] == "LIVE"]
+        out.append("Live links (bus numbers): " + (" ".join(pairs) if pairs else "none"))
 
-    shown = []
+    energized = {n["id"] for n in nodes if n.get("energized")}
+    shown, hidden_open = [], 0
     for e in edges:
         load = float(e.get("loading_pct", 0.0))
         if e["status"] == "LIVE" and load < 80.0:
             continue
-        state = "LIVE" if e["status"] == "LIVE" else ("OUT OF SERVICE" if e.get("out_of_service") else "OPEN")
-        detail = f" {load:.0f}% ({abs(e.get('flow_mw', 0)):.0f}/{e['capacity_mw']:.0f} MW)" if e["status"] == "LIVE" \
-            else f" cap {e['capacity_mw']:.0f}"
-        shown.append(f"  {e['id']} {e['source']}-{e['target']} {state}{detail}")
+        if (e["status"] != "LIVE" and not e.get("out_of_service")
+                and e["source"] not in energized and e["target"] not in energized):
+            hidden_open += 1
+            continue
+        ends = f"{e['source'][-2:]}-{e['target'][-2:]}"
+        if e["status"] == "LIVE":
+            shown.append(f"{e['id']} {ends} {load:.0f}% of {e['capacity_mw']:.0f}")
+        elif e.get("out_of_service"):
+            shown.append(f"{e['id']} {ends} out of service")
+        else:
+            shown.append(f"{e['id']} {ends} open, cap {e['capacity_mw']:.0f}")
     if shown:
-        lines.append("LINES (loaded >= 80% or not live):")
-        lines.extend(shown)
+        out.append("Lines (>=80% loaded or open next to live buses): " + "; ".join(shown)
+                   + (f"; +{hidden_open} open lines between dark buses" if hidden_open else ""))
 
     packets = d.get("network_packet_logs") or []
     if packets:
         last = max(int(p["timestamp"]) // 300 for p in packets)
         flagged = [p for p in packets if int(p["timestamp"]) // 300 == last and p.get("anomaly_flag")]
         if flagged:
-            lines.append("SCADA PACKET ANOMALIES: " + ", ".join(
-                f"{p['source_node']} {p['latency_ms']:.0f} ms" for p in flagged))
+            out.append("Packet anomalies: " + ", ".join(f"{p['source_node']} {p['latency_ms']:.0f} ms" for p in flagged))
     se = d.get("last_state_estimation")
     if se:
         if se.get("consistent", True):
-            lines.append(f"LAST STATE ESTIMATION: consistent for {', '.join(se.get('checked_nodes', []))}")
+            out.append(f"Last estimation: consistent ({', '.join(se.get('checked_nodes', []))})")
         else:
-            lines.append(f"LAST STATE ESTIMATION: VIOLATION at {se.get('violation_node')} - reported "
-                         f"{se.get('reported_mw', 0):.0f} MW, physics says {se.get('estimated_true_mw', 0):.0f} MW")
-    osc = [(nid, r) for nid, r in tele.items() if r.get("oscillation_amplitude_hz", 0) > 0]
+            out.append(f"Last estimation: VIOLATION at {se.get('violation_node')} (reported "
+                       f"{se.get('reported_mw', 0):.0f} MW, physics {se.get('estimated_true_mw', 0):.0f} MW)")
+    osc = sorted(((nid, r) for nid, r in tele.items() if r.get("oscillation_amplitude_hz", 0) > 0),
+                 key=lambda item: -item[1]["oscillation_amplitude_hz"])
     if osc:
-        osc.sort(key=lambda item: -item[1]["oscillation_amplitude_hz"])
-        lines.append("PMU OSCILLATION: " + "; ".join(
-            f"{nid} mode {r['oscillation_hz']:.2f} Hz amplitude {r['oscillation_amplitude_hz']:.3f} Hz" for nid, r in osc[:5]))
+        out.append("PMU oscillation: " + "; ".join(
+            f"{nid} {r['oscillation_hz']:.2f} Hz amp {r['oscillation_amplitude_hz']:.3f}" for nid, r in osc[:4]))
     signals = d.get("active_counter_signals") or []
     if signals:
-        lines.append("COUNTER-SIGNALS: " + "; ".join(
-            f"{s['node_id']} {s['hz_offset']:+.2f} Hz ({s['remaining_ticks']} ticks left)" for s in signals))
+        out.append("Counter-signals: " + "; ".join(
+            f"{s['node_id']} {s['hz_offset']:+.2f} Hz ({s['remaining_ticks']} left)" for s in signals))
     events = d.get("events") or []
     if events:
-        lines.append("EVENTS LAST TICK: " + "; ".join(
+        out.append("Events: " + "; ".join(
             f"{e['type']} {e.get('edge') or e.get('node') or ','.join(e.get('nodes', [])[:4])}" for e in events))
     if d.get("last_action_error"):
-        lines.append(f"LAST ACTION ERROR: {d['last_action_error']}")
+        out.append(f"Last error: {d['last_action_error']}")
     if history:
-        lines.append("YOUR RECENT ACTIONS: " + " | ".join(history[-4:]))
-    lines.append("Reply with one JSON action.")
-    return "\n".join(lines)
+        out.append("Your recent actions: " + " | ".join(history[-3:]))
+    return "\n".join(out)
 
 
 # ---------------------------------------------------------------------------

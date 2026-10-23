@@ -33,3 +33,29 @@ def tee_output(path: Optional[str]) -> None:
     handle = open(path, "a", encoding="utf-8")
     sys.stdout = _Tee(sys.stdout, handle)
     sys.stderr = _Tee(sys.stderr, handle)
+
+
+def windows_compile_guard() -> None:
+    """
+    torch.compile needs the MSVC compiler (cl.exe) on Windows. Without it, Unsloth's compiled
+    helpers fail at the first training step, so fall back to eager mode. Call before importing torch.
+    """
+    import os
+    import shutil
+
+    if os.name == "nt" and shutil.which("cl") is None and "TORCHDYNAMO_DISABLE" not in os.environ:
+        os.environ["TORCHDYNAMO_DISABLE"] = "1"
+        print("[nexusgrid] cl.exe not found: torch.compile disabled (eager mode)", flush=True)
+
+
+def quiet_transformers() -> None:
+    """
+    Show only transformers errors. Qwen3 ships ``max_length=40960`` in its generation config, so
+    every generate() call with ``max_new_tokens`` logs a harmless notice that floods the console.
+    """
+    try:
+        from transformers.utils import logging as hf_logging
+
+        hf_logging.set_verbosity_error()
+    except Exception:
+        pass

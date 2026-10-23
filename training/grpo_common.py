@@ -7,7 +7,10 @@ Prompts
     States are collected from expert trajectories with epsilon-exploration
     (random catalogue actions), so the model also sees off-nominal situations.
     Each record stores how to rebuild the state exactly: task, seed and the
-    action prefix (the simulator is deterministic).
+    action prefix (the simulator is deterministic). With ``min_gap`` > 0 only
+    *decisive* states are kept: those where the expert's action earns at least
+    ``min_gap`` more reward than waiting. The expert only selects which states
+    become prompts; it never contributes to the reward.
 
 Reward
     The model's own action is executed in the rebuilt environment, followed by
@@ -51,9 +54,27 @@ def build_messages(obs: Any, history: Sequence[str]) -> List[Dict[str, str]]:
             {"role": "user", "content": render_observation(obs, list(history))}]
 
 
+def rollout_reward(env: NexusgridEnvironment, action: GridAction, horizon: int = 2) -> float:
+    """Reward of ``action`` plus ``horizon`` passive ticks, on a copy of ``env`` (left untouched)."""
+    env = copy.deepcopy(env)
+    obs = env.step(action)
+    total = float(obs.reward)
+    for _ in range(horizon):
+        if obs.done:
+            break
+        obs = env.step(GridAction(action_type=ActionType.ADVANCE_TICK))
+        total += float(obs.reward)
+    return total
+
+
 def collect_states(tasks: Sequence[int], episodes: int, epsilon: float = 0.25, max_states_per_episode: int = 6,
-                   seed: int = 0, seed_range: Tuple[int, int] = TRAIN_SEED_RANGE) -> List[Dict[str, Any]]:
-    """Roll out the expert with exploration and sample decision states from each episode."""
+                   seed: int = 0, seed_range: Tuple[int, int] = TRAIN_SEED_RANGE, min_gap: float = 0.0,
+                   horizon: int = 2) -> List[Dict[str, Any]]:
+    """Roll out the expert with exploration and sample decision states from each episode.
+
+    ``min_gap`` > 0 keeps only states where acting like the expert beats waiting by at least that much
+    reward (plus one quiet state per episode), so most prompts have an answer that measurably matters.
+    """
     rng = random.Random(seed)
     env = NexusgridEnvironment()
     records: List[Dict[str, Any]] = []
@@ -67,6 +88,10 @@ def collect_states(tasks: Sequence[int], episodes: int, epsilon: float = 0.25, m
         candidates: List[Dict[str, Any]] = []
         while not obs.done:
             expert_action = expert.act(obs)
+            gap = None
+            if min_gap > 0 and expert_action.action_type != ActionType.ADVANCE_TICK:
+                gap = (rollout_reward(env, expert_action, horizon)
+                       - rollout_reward(env, GridAction(action_type=ActionType.ADVANCE_TICK), horizon))
             candidates.append({
                 "task_id": task_id,
                 "seed": ep_seed,
@@ -74,6 +99,7 @@ def collect_states(tasks: Sequence[int], episodes: int, epsilon: float = 0.25, m
                 "prefix": json.dumps(prefix),
                 "messages": build_messages(obs, history),
                 "expert_action": json.dumps(action_to_dict(expert_action)),
+                "gap": None if gap is None else round(gap, 6),
             })
             if rng.random() < epsilon:
                 view = GridView(obs)
@@ -85,8 +111,9 @@ def collect_states(tasks: Sequence[int], episodes: int, epsilon: float = 0.25, m
             prefix.append(action_to_dict(action))
             obs = env.step(action)
         # Prefer states where the expert actually acted; keep a few quiet ones too.
-        active = [c for c in candidates if json.loads(c["expert_action"])["action_type"] != "advance_tick"]
-        quiet = [c for c in candidates if c not in active]
+        acted = [c for c in candidates if json.loads(c["expert_action"])["action_type"] != "advance_tick"]
+        quiet = [c for c in candidates if c not in acted]
+        active = [c for c in acted if min_gap <= 0 or c["gap"] >= min_gap]
         rng.shuffle(active)
         rng.shuffle(quiet)
         keep = active[: max_states_per_episode - 1] + quiet[:1]

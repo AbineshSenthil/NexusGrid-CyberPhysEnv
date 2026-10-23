@@ -148,6 +148,7 @@ class NexusgridEnvironment(Environment):
             overloaded_count=len(self._engine.get_overloaded_edges(1.0)),
             events=self._tick_events,
             invalid_action=error is not None,
+            completed_ticks_remaining=(self._max_ticks - self._tick) if self._completed_early else 0,
         )
         self._score_prev = score_now
         self._state = self._make_state()
@@ -483,6 +484,7 @@ class NexusgridEnvironment(Environment):
             if (state["load_restored_fraction"] >= 0.98 and state["critical_energized_fraction"] >= 1.0
                     and len(recent) == 3 and all(59.5 <= f <= 60.5 for f in recent)):
                 self._done = True
+                self._completed_early = True
 
     def _current_score(self) -> float:
         return grade_task(self._task_id, self._action_history, self._build_episode_state())
@@ -614,3 +616,4 @@ class NexusgridEnvironment(Environment):
         self._turbine_destroyed = False
         self._best_counter_signal = "none"
         self._score_prev = 0.0
+        self._completed_early = False

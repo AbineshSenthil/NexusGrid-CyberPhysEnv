@@ -31,7 +31,7 @@ class HFLocalPolicy(LLMPolicy):
     """LLMPolicy that generates with a local transformers (or Unsloth) model instead of an HTTP endpoint."""
 
     def __init__(self, model_name: str, adapter: str | None = None, load_in_4bit: bool = False,
-                 max_new_tokens: int = 96, backend: str = "hf"):
+                 max_new_tokens: int = 64, backend: str = "hf"):
         super().__init__(model=model_name if not adapter else f"{model_name}+{Path(adapter).name}",
                          api_base="local", client=object())
         import torch
@@ -41,7 +41,7 @@ class HFLocalPolicy(LLMPolicy):
             from unsloth import FastLanguageModel
 
             model, tokenizer = FastLanguageModel.from_pretrained(
-                model_name=adapter or model_name, max_seq_length=4096, load_in_4bit=load_in_4bit or "bnb" in model_name)
+                model_name=adapter or model_name, max_seq_length=2048, load_in_4bit=load_in_4bit or "bnb" in model_name)
             FastLanguageModel.for_inference(model)
             self.tokenizer, self.hf_model = tokenizer, model
         else:
@@ -65,6 +65,9 @@ class HFLocalPolicy(LLMPolicy):
                 model = PeftModel.from_pretrained(model, adapter)
             self.hf_model = model.eval()
         self.max_new_tokens = max_new_tokens
+        from training.logutil import quiet_transformers
+
+        quiet_transformers()
 
     def complete(self, prompt: str) -> str:
         messages = [{"role": "system", "content": SYSTEM_PROMPT}, {"role": "user", "content": prompt}]
@@ -87,16 +90,20 @@ def main(argv=None) -> int:
     p.add_argument("--backend", choices=["hf", "unsloth"], default="hf")
     p.add_argument("--out", default="results/llm/local")
     p.add_argument("--log", default=None, help="also write all output to this UTF-8 file")
+    p.add_argument("--label", default=None, help="policy name in the results (default llm-base / llm-grpo)")
     args = p.parse_args(argv)
 
-    from training.logutil import tee_output
+    from training.logutil import tee_output, windows_compile_guard
 
     tee_output(args.log)
+    windows_compile_guard()
+    if args.backend == "unsloth":
+        import unsloth  # noqa: F401  (import before transformers)
     policy = HFLocalPolicy(args.model, args.adapter, args.load_in_4bit, backend=args.backend)
     env = NexusgridEnvironment()
     records = []
     started = time.time()
-    label = "llm-grpo" if args.adapter else "llm-base"
+    label = args.label or ("llm-grpo" if args.adapter else "llm-base")
     for task_id in [int(t) for t in args.tasks.split(",")]:
         for seed in range(EVAL_SEED_START, EVAL_SEED_START + args.seeds):
             before = dict(policy.stats())

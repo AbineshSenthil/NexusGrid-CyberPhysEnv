@@ -1,5 +1,4 @@
-# NexusGrid-CyberPhysEnv - OpenEnv Specification
-# Phase 2 HF Space-ready manifest with rubric discovery metadata.
+# NexusGrid-CyberPhysEnv - OpenEnv specification (v3)
 
 spec_version: 1
 name: NexusGrid-CyberPhysEnv
@@ -7,116 +6,90 @@ type: space
 runtime: fastapi
 app: server.app:app
 port: 8000
-version: "2.0.0"
+version: "3.0.0"
 description: >
-  National power grid cyber-physical defense benchmark with DC power flow,
-  deterministic SCADA spoofing, curriculum-ready task progression, and
-  composable task rubrics for training and evaluation.
+  Power-grid operations benchmark: DC power flow on a 20-bus network with
+  protection relays, frequency dynamics and seeded cyber-physical attacks.
+  Six graded operator tasks; every seed draws a new scenario and seeds
+  >= 10000 are held out for evaluation.
 tags:
   - openenv
+  - power-systems
   - critical-infrastructure
   - cybersecurity
-  - energy
-  - scada
   - reinforcement-learning
+  - llm-agents
+
+evaluation:
+  eval_seed_start: 10000
+  score_range: [0.0, 1.0]
+  # Mean score on 100 held-out seeds per task (scripts/evaluate.py --seeds 100)
+  baselines:
+    noop:   {0: 0.000, 1: 0.131, 2: 0.050, 3: 0.000, 4: 0.036, 5: 0.000}
+    random: {0: 0.130, 1: 0.157, 2: 0.046, 3: 0.046, 4: 0.054, 5: 0.026}
+    expert: {0: 1.000, 1: 1.000, 2: 1.000, 3: 0.999, 4: 0.997, 5: 1.000}
 
 tasks:
   - id: 0
     name: smoke_test
     difficulty: trivial
     max_ticks: 3
-    baseline_score: 0.999
+    randomised: load level, solar
     rubrics:
-      - name: valid_dispatch
-        weight: 1.0
-        description: Agent issues any valid positive dispatch action.
+      - {name: valid_dispatch, weight: 0.70}
+      - {name: stable_after_dispatch, weight: 0.30}
   - id: 1
     name: duck_curve
     difficulty: easy
     max_ticks: 15
-    baseline_score: 0.999
+    randomised: load ramp size and timing, sunset speed, cloud cover, per-bus demand
     rubrics:
-      - name: avoid_collapse
-        weight: 0.30
-        description: Grid frequency never crosses the 59.0Hz failure floor.
-      - name: recover_nominal_band
-        weight: 0.20
-        description: Frequency stays or recovers above 59.5Hz quickly.
-      - name: hold_nominal_band
-        weight: 0.42
-        description: Frequency remains inside the nominal band.
-      - name: proactive_dispatch
-        weight: 0.08
-        description: Dispatch support before the largest demand shock lands.
+      - {name: band_time, weight: 0.50}
+      - {name: no_emergency, weight: 0.25}
+      - {name: proactive_response, weight: 0.15}
+      - {name: no_overshoot, weight: 0.10}
   - id: 2
     name: cascade_overload
     difficulty: medium
     max_ticks: 20
-    baseline_score: 0.800
+    randomised: one of 240 validated contingencies (192 train / 48 held out)
     rubrics:
-      - name: fault_isolation
-        weight: 0.40
-        description: Open the correct breaker path to isolate the overload.
-      - name: protect_critical_load
-        weight: 0.40
-        description: Keep all critical loads energized throughout the response.
-      - name: fast_restoration
-        weight: 0.20
-        description: Restore service within eight ticks of the incident.
+      - {name: relieve_overload, weight: 0.35}
+      - {name: protect_critical_load, weight: 0.25}
+      - {name: serve_load, weight: 0.20}
+      - {name: frequency_band, weight: 0.20}
   - id: 3
     name: phantom_inject
     difficulty: hard
     max_ticks: 18
-    baseline_score: 0.600
+    randomised: compromised plant, attack start, loss rate and size, decoy traffic
     rubrics:
-      - name: log_inspection
-        weight: 0.10
-        description: Inspect packet behavior before trusting SCADA telemetry.
-      - name: state_estimation
-        weight: 0.20
-        description: Run a Kirchhoff consistency check and detect the anomaly.
-      - name: correct_quarantine
-        weight: 0.30
-        description: Quarantine the spoofed node after confirmation.
-      - name: reroute_dispatch
-        weight: 0.40
-        description: Redispatch generation after quarantine to stabilize load.
+      - {name: evidence, weight: 0.25}
+      - {name: correct_quarantine, weight: 0.30}
+      - {name: recovery, weight: 0.30}
+      - {name: triage, weight: 0.15}
   - id: 4
     name: stuxnet_resonance
     difficulty: very_hard
     max_ticks: 12
-    baseline_score: 0.400
+    randomised: oscillating unit, mode frequency, growth rate, onset
     rubrics:
-      - name: counter_signal_attempted
-        weight: 0.20
-        description: Attempt a counter-signal instead of cutting the turbine.
-      - name: correct_frequency_match
-        weight: 0.20
-        description: Match the resonance-canceling frequency offset.
-      - name: target_ramp_down
-        weight: 0.30
-        description: Ramp down the affected turbine after injection.
-      - name: support_reroute
-        weight: 0.30
-        description: Dispatch alternate support generation after mitigation.
+      - {name: mitigate_oscillation, weight: 0.35}
+      - {name: turbine_saved, weight: 0.20}
+      - {name: detune_unit, weight: 0.15}
+      - {name: frequency_band, weight: 0.15}
+      - {name: support_dispatch, weight: 0.15}
   - id: 5
     name: black_start
     difficulty: expert
     max_ticks: 50
-    baseline_score: 0.060
+    randomised: black-start unit, load level, per-bus demand
     rubrics:
-      - name: hydro_bootstrap
-        weight: 0.25
-        description: Restart the hydro source to begin black start recovery.
-      - name: secondary_energized
-        weight: 0.25
-        description: Sustain a second energized node after hydro startup.
-      - name: safe_islanding
-        weight: 0.30
-        description: Form stable islands and complete a safe merger.
-      - name: critical_restoration
-        weight: 0.20
-        description: Restore all critical infrastructure after synchronization.
+      - {name: bootstrap, weight: 0.10}
+      - {name: critical_restored, weight: 0.30}
+      - {name: load_restored, weight: 0.30}
+      - {name: stability, weight: 0.20}
+      - {name: frequency_band, weight: 0.10}
 
 observation_schema: GridObservation
 action_schema: GridAction
@@ -124,7 +97,4 @@ reward_schema: GridReward
 
 hardware:
   max_vcpu: 2
-  max_memory_gb: 8
-
-inference_timeout_seconds: 1200
-baseline_model: deepseek-r1:8b
+  max_memory_gb: 4

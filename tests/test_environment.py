@@ -130,3 +130,14 @@ class TestDeterminism:
             return out, env.get_score()
 
         assert trajectory() == trajectory()
+
+
+def test_early_completion_pays_remaining_band_bonus():
+    """Finishing the black start early must not earn less than stalling in band until the horizon."""
+    env = NexusgridEnvironment()
+    policy = ExpertPolicy()
+    obs = env.reset(seed=10_000, task_id=5)
+    while not obs.done:
+        obs = env.step(policy.act(obs))
+    assert obs.tick < obs.max_ticks  # completed early
+    assert obs.reward_breakdown["frequency_band"] >= 0.02 * (obs.max_ticks - obs.tick)

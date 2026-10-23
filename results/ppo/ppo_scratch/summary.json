@@ -1,0 +1,82 @@
+{
+  "policies": [
+    "ppo"
+  ],
+  "tasks": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "seeds_per_task": 50,
+  "split": "eval",
+  "eval_seed_start": 10000,
+  "rows": [
+    {
+      "policy": "ppo",
+      "task_id": 1,
+      "task_name": "duck_curve",
+      "split": "eval",
+      "episodes": 50,
+      "mean_score": 1.0,
+      "std": 0.0,
+      "ci95": 0.0,
+      "success_rate": 1.0,
+      "mean_invalid_actions": 0,
+      "mean_steps": 15
+    },
+    {
+      "policy": "ppo",
+      "task_id": 2,
+      "task_name": "cascade_overload",
+      "split": "eval",
+      "episodes": 50,
+      "mean_score": 0.6442,
+      "std": 0.2636,
+      "ci95": 0.0738,
+      "success_rate": 0.68,
+      "mean_invalid_actions": 0,
+      "mean_steps": 20
+    },
+    {
+      "policy": "ppo",
+      "task_id": 3,
+      "task_name": "phantom_inject",
+      "split": "eval",
+      "episodes": 50,
+      "mean_score": 1.0,
+      "std": 0.0,
+      "ci95": 0.0,
+      "success_rate": 1.0,
+      "mean_invalid_actions": 0,
+      "mean_steps": 18
+    },
+    {
+      "policy": "ppo",
+      "task_id": 4,
+      "task_name": "stuxnet_resonance",
+      "split": "eval",
+      "episodes": 50,
+      "mean_score": 0.9586,
+      "std": 0.0984,
+      "ci95": 0.0275,
+      "success_rate": 0.86,
+      "mean_invalid_actions": 0,
+      "mean_steps": 12
+    },
+    {
+      "policy": "ppo",
+      "task_id": 5,
+      "task_name": "black_start",
+      "split": "eval",
+      "episodes": 50,
+      "mean_score": 0.9845,
+      "std": 0.0398,
+      "ci95": 0.0112,
+      "success_rate": 0.98,
+      "mean_invalid_actions": 0,
+      "mean_steps": 30.58
+    }
+  ]
+}

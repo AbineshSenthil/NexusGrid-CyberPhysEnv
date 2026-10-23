@@ -1,0 +1,16 @@
+{
+  "tasks": "1,2,3,4,5",
+  "timesteps": 600000,
+  "n_envs": 4,
+  "subproc": false,
+  "bc_episodes": 0,
+  "bc_epochs": 30,
+  "bc_only": false,
+  "eval_every": 50000,
+  "val_seeds": 10,
+  "learning_rate": 0.0003,
+  "ent_coef": 0.01,
+  "seed": 0,
+  "threads": 1,
+  "out": "runs/ppo/multitask_scratch"
+}

@@ -75,8 +75,8 @@ def test_render_observation_covers_key_signals(env):
     for _ in range(2):
         obs = env.step(noop())
     text = render_observation(obs, ["t0 {\"action_type\":\"advance_tick\"}"])
-    for marker in ("TASK 4", "ISLANDS", "GENERATORS", "LOADS", "LIVE CONNECTIONS", "PMU OSCILLATION",
-                   "YOUR RECENT ACTIONS"):
+    for marker in ("T4 stuxnet_resonance", "Island 0", "Units", "Loads MW", "Live links", "PMU oscillation",
+                   "Your recent actions"):
         assert marker in text
     assert "target_node" not in text
 

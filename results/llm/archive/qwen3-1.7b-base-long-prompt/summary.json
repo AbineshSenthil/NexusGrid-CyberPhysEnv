@@ -1,0 +1,93 @@
+{
+  "model": "unsloth/Qwen3-1.7B-unsloth-bnb-4bit",
+  "adapter": null,
+  "rows": [
+    {
+      "policy": "llm-base",
+      "task_id": 0,
+      "task_name": "smoke_test",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 1.0,
+      "std": 0.0,
+      "ci95": 0.0,
+      "success_rate": 1.0,
+      "mean_invalid_actions": 0,
+      "mean_steps": 3
+    },
+    {
+      "policy": "llm-base",
+      "task_id": 1,
+      "task_name": "duck_curve",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 0.2695,
+      "std": 0.0237,
+      "ci95": 0.0232,
+      "success_rate": 0.0,
+      "mean_invalid_actions": 0,
+      "mean_steps": 15
+    },
+    {
+      "policy": "llm-base",
+      "task_id": 2,
+      "task_name": "cascade_overload",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 0.035,
+      "std": 0.07,
+      "ci95": 0.0686,
+      "success_rate": 0.0,
+      "mean_invalid_actions": 0.6,
+      "mean_steps": 20
+    },
+    {
+      "policy": "llm-base",
+      "task_id": 3,
+      "task_name": "phantom_inject",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 0.0,
+      "std": 0.0,
+      "ci95": 0.0,
+      "success_rate": 0.0,
+      "mean_invalid_actions": 5.8,
+      "mean_steps": 18
+    },
+    {
+      "policy": "llm-base",
+      "task_id": 4,
+      "task_name": "stuxnet_resonance",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 0.0803,
+      "std": 0.0087,
+      "ci95": 0.0085,
+      "success_rate": 0.0,
+      "mean_invalid_actions": 3,
+      "mean_steps": 12
+    },
+    {
+      "policy": "llm-base",
+      "task_id": 5,
+      "task_name": "black_start",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 0.1,
+      "std": 0.0,
+      "ci95": 0.0,
+      "success_rate": 0.0,
+      "mean_invalid_actions": 0.8,
+      "mean_steps": 50
+    }
+  ],
+  "policy_stats": {
+    "calls": 590,
+    "invalid_outputs": 15,
+    "fallbacks": 0,
+    "api_errors": 0,
+    "latency_s": 836.17,
+    "mean_latency_s": 1.417
+  },
+  "minutes": 14.0
+}

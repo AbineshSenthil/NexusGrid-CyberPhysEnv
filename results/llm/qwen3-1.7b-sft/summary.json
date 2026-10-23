@@ -1,0 +1,93 @@
+{
+  "model": "unsloth/Qwen3-1.7B-unsloth-bnb-4bit",
+  "adapter": "runs\\grpo\\qwen3-1.7b\\sft_adapter",
+  "rows": [
+    {
+      "policy": "llm-sft",
+      "task_id": 0,
+      "task_name": "smoke_test",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 1.0,
+      "std": 0.0,
+      "ci95": 0.0,
+      "success_rate": 1.0,
+      "mean_invalid_actions": 0,
+      "mean_steps": 3
+    },
+    {
+      "policy": "llm-sft",
+      "task_id": 1,
+      "task_name": "duck_curve",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 0.7133,
+      "std": 0.0653,
+      "ci95": 0.064,
+      "success_rate": 0.0,
+      "mean_invalid_actions": 0,
+      "mean_steps": 15
+    },
+    {
+      "policy": "llm-sft",
+      "task_id": 2,
+      "task_name": "cascade_overload",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 0.4058,
+      "std": 0.2575,
+      "ci95": 0.2524,
+      "success_rate": 0.2,
+      "mean_invalid_actions": 0,
+      "mean_steps": 20
+    },
+    {
+      "policy": "llm-sft",
+      "task_id": 3,
+      "task_name": "phantom_inject",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 0.6,
+      "std": 0.4899,
+      "ci95": 0.4801,
+      "success_rate": 0.6,
+      "mean_invalid_actions": 0,
+      "mean_steps": 18
+    },
+    {
+      "policy": "llm-sft",
+      "task_id": 4,
+      "task_name": "stuxnet_resonance",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 0.615,
+      "std": 0.4139,
+      "ci95": 0.4057,
+      "success_rate": 0.6,
+      "mean_invalid_actions": 0,
+      "mean_steps": 12
+    },
+    {
+      "policy": "llm-sft",
+      "task_id": 5,
+      "task_name": "black_start",
+      "split": "eval",
+      "episodes": 5,
+      "mean_score": 0.2433,
+      "std": 0.1489,
+      "ci95": 0.1459,
+      "success_rate": 0.0,
+      "mean_invalid_actions": 0,
+      "mean_steps": 50
+    }
+  ],
+  "policy_stats": {
+    "calls": 590,
+    "invalid_outputs": 0,
+    "fallbacks": 0,
+    "api_errors": 0,
+    "latency_s": 1014.28,
+    "mean_latency_s": 1.719
+  },
+  "minutes": 16.9
+}
