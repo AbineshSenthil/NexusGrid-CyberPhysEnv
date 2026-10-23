@@ -2,19 +2,20 @@
 FastAPI application for the NexusGrid-CyberPhysEnv.
 
 Endpoints:
-    - POST /reset: Reset the environment
-    - POST /step: Execute an action
-    - GET /state: Get current environment state
-    - GET /health: Health check (returns immediately)
-    - GET /schema: Get action/observation schemas
-    - GET /web: Gradio visual dashboard
-    - WS /ws: WebSocket endpoint for persistent sessions
+    - WS /ws: persistent sessions (reset/step/state) - use this for multi-step episodes
+    - POST /reset, POST /step: stateless HTTP calls (each request gets a fresh environment)
+    - GET /state, GET /schema, GET /metadata: OpenEnv introspection
+    - GET /health: health check (returns immediately)
+    - GET /tasks: task list with rubric weights and horizons
+    - GET /web: Gradio dashboard
 
 Usage:
     uvicorn server.app:app --reload --host 0.0.0.0 --port 8000
 """
 
 from fastapi.responses import JSONResponse
+
+ENV_VERSION = "3.0.0"
 
 try:
     from openenv.core.env_server.http_server import create_app
@@ -26,9 +27,13 @@ except Exception as e:
 try:
     from ..models import GridAction, GridObservation
     from .nexusgrid_environment import NexusgridEnvironment
+    from .rubric import get_task_rubric_specs
+    from .scenarios import EVAL_SEED_START, MAX_TICKS, TASK_DIFFICULTIES, TASK_NAMES
 except (ImportError, ModuleNotFoundError):
     from models import GridAction, GridObservation
     from server.nexusgrid_environment import NexusgridEnvironment
+    from server.rubric import get_task_rubric_specs
+    from server.scenarios import EVAL_SEED_START, MAX_TICKS, TASK_DIFFICULTIES, TASK_NAMES
 
 
 # Create the OpenEnv app
@@ -37,7 +42,7 @@ app = create_app(
     GridAction,
     GridObservation,
     env_name="nexusgrid",
-    max_concurrent_envs=1,
+    max_concurrent_envs=16,
 )
 
 
@@ -53,10 +58,29 @@ if not any(getattr(route, "path", None) == "/health" for route in app.routes):
             content={
                 "status": "healthy",
                 "environment": "NexusGrid-CyberPhysEnv",
-                "version": "2.0.0",
+                "version": ENV_VERSION,
             },
             status_code=200,
         )
+
+
+@app.get("/tasks")
+async def tasks():
+    """Tasks, horizons and rubric weights. Seeds >= eval_seed_start are held out for evaluation."""
+    return JSONResponse(content={
+        "version": ENV_VERSION,
+        "eval_seed_start": EVAL_SEED_START,
+        "tasks": [
+            {
+                "id": task_id,
+                "name": TASK_NAMES[task_id],
+                "difficulty": TASK_DIFFICULTIES[task_id],
+                "max_ticks": MAX_TICKS[task_id],
+                "rubrics": get_task_rubric_specs(task_id),
+            }
+            for task_id in sorted(TASK_NAMES)
+        ],
+    })
 
 
 @app.get("/manifest.json")

@@ -1,6 +1,6 @@
 """NexusGrid-CyberPhysEnv Environment Client."""
 
-from typing import Any, Dict, List
+from typing import Dict
 
 from openenv.core import EnvClient
 from openenv.core.client_types import StepResult
@@ -23,12 +23,13 @@ class NexusgridEnv(
 
     Example:
         >>> with NexusgridEnv(base_url="http://localhost:8000").sync() as env:
-        ...     result = env.reset()
+        ...     result = env.reset(seed=10_000, task_id=1)
         ...     result = env.step(GridAction(
         ...         action_type="dispatch_generation",
         ...         node_id="NODE_01",
         ...         mw=100.0,
         ...     ))
+        ...     print(result.observation.score, result.observation.grid_frequency_hz)
     """
 
     def _step_payload(self, action: GridAction) -> Dict:
@@ -55,30 +56,14 @@ class NexusgridEnv(
         return payload
 
     def _parse_result(self, payload: Dict) -> StepResult[GridObservation]:
-        """Parse server response into StepResult[GridObservation]."""
-        obs_data = payload.get("observation", payload)
-
-        observation = GridObservation(
-            topology_graph=obs_data.get("topology_graph", {}),
-            telemetry_stream=obs_data.get("telemetry_stream", []),
-            weather_forecast_matrix=obs_data.get("weather_forecast_matrix", []),
-            network_packet_logs=obs_data.get("network_packet_logs", []),
-            grid_frequency_hz=obs_data.get("grid_frequency_hz", 60.0),
-            tick=obs_data.get("tick", 0),
-            task_id=obs_data.get("task_id", 0),
-            done=payload.get("done", obs_data.get("done", False)),
-            reward=payload.get("reward", obs_data.get("reward", 0.0)),
-            last_action_error=obs_data.get("last_action_error"),
-            last_state_estimation=obs_data.get("last_state_estimation"),
-            weather_summary=obs_data.get("weather_summary", ""),
-            metadata=obs_data.get("metadata", {}),
-        )
-
-        return StepResult(
-            observation=observation,
-            reward=payload.get("reward", obs_data.get("reward", 0.0)),
-            done=payload.get("done", obs_data.get("done", False)),
-        )
+        """Parse a server response into StepResult[GridObservation]."""
+        obs_data = dict(payload.get("observation", payload))
+        done = payload.get("done", obs_data.get("done", False))
+        reward = payload.get("reward", obs_data.get("reward", 0.0))
+        obs_data["done"] = bool(done)
+        obs_data["reward"] = float(reward or 0.0)
+        observation = GridObservation.model_validate(obs_data)
+        return StepResult(observation=observation, reward=observation.reward, done=observation.done)
 
     def _parse_state(self, payload: Dict) -> State:
         """Parse server response into State object."""

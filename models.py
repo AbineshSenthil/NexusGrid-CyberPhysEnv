@@ -32,6 +32,7 @@ class EdgeStatus(str, Enum):
 
 class ActionType(str, Enum):
     DISPATCH_GENERATION = "dispatch_generation"
+    SHED_LOAD = "shed_load"
     TOGGLE_CIRCUIT_BREAKER = "toggle_circuit_breaker"
     RUN_STATE_ESTIMATION = "run_state_estimation"
     QUARANTINE_SCADA_NODE = "quarantine_scada_node"
@@ -69,12 +70,15 @@ class GridEdge(BaseModel):
 # ---------------------------------------------------------------------------
 
 class NodeTelemetry(BaseModel):
-    """Per-node telemetry reading (may be spoofed)."""
+    """Per-node SCADA/PMU reading (generation may be falsified by an attacker)."""
     node_id: str = Field(..., description="Node this reading belongs to")
-    voltage_kv: float = Field(345.0, ge=0.0, le=765.0, description="Voltage in kV (nominal 345)")
-    frequency_hz: float = Field(60.0, ge=58.0, le=62.0, description="Local frequency in Hz (nominal 60)")
+    voltage_kv: float = Field(345.0, ge=0.0, le=765.0, description="Voltage in kV (nominal 345, 0 when dark)")
+    frequency_hz: float = Field(60.0, ge=0.0, le=62.0, description="Local frequency in Hz (nominal 60, 0 when dark)")
+    phase_angle_deg: float = Field(0.0, ge=-180.0, le=180.0, description="PMU: voltage phase angle relative to the island reference")
     generation_mw: float = Field(0.0, ge=0.0, le=5000.0, description="Generation output in MW")
-    consumption_mw: float = Field(0.0, ge=0.0, le=5000.0, description="Consumption demand in MW")
+    consumption_mw: float = Field(0.0, ge=0.0, le=5000.0, description="Consumption in MW")
+    oscillation_hz: float = Field(0.0, ge=0.0, le=5.0, description="PMU: dominant oscillation mode at this bus (0 if none)")
+    oscillation_amplitude_hz: float = Field(0.0, ge=0.0, le=5.0, description="PMU: oscillation amplitude at this bus")
 
 
 class WeatherZone(BaseModel):
@@ -148,9 +152,30 @@ class GridObservation(BaseModel):
         description="Result of most recent run_state_estimation call"
     )
     weather_summary: str = Field("", description="Natural language weather summary")
+    task_brief: str = Field("", description="Operator briefing for the current scenario")
+    max_ticks: int = Field(0, ge=0, description="Episode horizon in ticks")
+    forecast: Dict[str, List[float]] = Field(
+        default_factory=dict,
+        description="Forecasts for the next ticks: system_demand_mw and solar_available_mw"
+    )
+    islands: List[Dict[str, Any]] = Field(
+        default_factory=list,
+        description="Energised electrical islands with their frequency, generation and load"
+    )
+    events: List[Dict[str, Any]] = Field(
+        default_factory=list,
+        description="Grid events during the last tick (relay trips, UFLS, collapses, attack outcomes)"
+    )
+    active_counter_signals: List[Dict[str, Any]] = Field(
+        default_factory=list,
+        description="Damping counter-signals currently injected by batteries"
+    )
+    score: float = Field(0.0, ge=0.0, le=1.0, description="Task score so far (final grade once done)")
+    rubric_scores: Dict[str, float] = Field(default_factory=dict, description="Per-rubric scores in [0, 1]")
+    reward_breakdown: Dict[str, float] = Field(default_factory=dict, description="Components of the last reward")
     metadata: Dict[str, Any] = Field(
         default_factory=dict,
-        description="Auxiliary environment metadata such as reward/rubric breakdowns."
+        description="In-process extras (episode summary, rubric details). Not sent over HTTP/WebSocket."
     )
 
 
@@ -171,7 +196,7 @@ class GridAction(BaseModel):
     )
     node_id: Optional[str] = Field(
         None,
-        description="Target node ID (for dispatch_generation, quarantine_scada_node, inject_counter_signal)"
+        description="Target node ID (dispatch_generation, shed_load, quarantine_scada_node, inject_counter_signal)"
     )
     edge_id: Optional[str] = Field(
         None,
@@ -179,7 +204,7 @@ class GridAction(BaseModel):
     )
     mw: Optional[float] = Field(
         None, ge=-5000, le=5000,
-        description="Megawatts to dispatch (for dispatch_generation)"
+        description="Setpoint change in MW (dispatch_generation) or MW to shed, negative to restore (shed_load)"
     )
     status: Optional[str] = Field(
         None,
@@ -204,15 +229,13 @@ class GridAction(BaseModel):
 # ---------------------------------------------------------------------------
 
 class GridReward(BaseModel):
-    """Breakdown of reward signals for transparency."""
-    fault_isolation: float = Field(0.0, description="Reward for isolating transmission faults")
-    cyber_detection: float = Field(0.0, description="Reward for detecting spoofed sensors")
-    frequency_stable: float = Field(0.0, description="Reward for keeping frequency in nominal band")
-    proactive_dispatch: float = Field(0.0, description="Reward for proactive (early) dispatch")
-    reasoning_order: float = Field(0.0, description="Reward for correct investigation order")
-    stability_bonus: float = Field(0.0, description="Bonus for tight frequency control (±0.1Hz)")
-    penalties: float = Field(0.0, description="Sum of all penalties (negative value)")
-    total: float = Field(0.0, description="Total reward for this tick")
+    """Breakdown of the per-step reward (see server/reward.py)."""
+    progress: float = Field(0.0, description="Change in task score this step (sums to the final score)")
+    frequency_band: float = Field(0.0, description="+0.02 while frequency is inside 59.8-60.2 Hz")
+    overload: float = Field(0.0, description="-0.02 per line above its thermal rating")
+    events: float = Field(0.0, description="Penalties for relay trips, UFLS, collapses and similar events")
+    invalid_action: float = Field(0.0, description="-0.05 for a malformed or rejected action")
+    total: float = Field(0.0, description="Total reward for this step")
 
 
 # ---------------------------------------------------------------------------
@@ -228,7 +251,7 @@ class GridState(BaseModel):
     grid_frequency_hz: float = Field(60.0, ge=58.0, le=62.0, description="Current grid frequency")
     done: bool = Field(False, description="Whether episode is finished")
     total_reward: float = Field(0.0, description="Accumulated reward")
-    active_spoofs: List[str] = Field(default_factory=list, description="Currently spoofed node IDs")
+    active_spoofs: List[str] = Field(default_factory=list, description="Debug only: spoofed node IDs (never shown to agents)")
     quarantined_nodes: List[str] = Field(default_factory=list, description="Quarantined node IDs")
     state_estimation_run: bool = Field(False, description="Whether state estimation has been run this episode")
     action_history: List[Dict[str, Any]] = Field(default_factory=list, description="History of all actions taken")

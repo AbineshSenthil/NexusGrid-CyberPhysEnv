@@ -1,13 +1,22 @@
+# Secrets and local configuration
 .env
+.env.*
+!.env.example
+
+# Python
 __pycache__/
-*.pyc
-*.pyo
-.pytest_cache/
-scores.json
-uv.lock
+*.py[cod]
+*.egg-info/
 .venv/
 venv/
-*.egg-info/
+.pytest_cache/
 .ruff_cache/
 .mypy_cache/
 .server_pid
+
+# Training and evaluation artefacts (summaries and plots under results/ are tracked)
+runs/
+*.log
+scores.json
+unsloth_compiled_cache/
+wandb/

@@ -1,0 +1,6551 @@
+{
+ "description": "Validated N-1 contingencies for Task 2 (cascade_overload). The first 80% serve training seeds, the last 20% serve held-out evaluation seeds (>= 10000).",
+ "generator_seed": 2026,
+ "count": 240,
+ "configs": [
+  {
+   "load_factor": 0.9792,
+   "irradiance": 0.4437,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 986.89,
+    "NODE_02": 539.34,
+    "NODE_06": 404.99,
+    "NODE_09": 188.94,
+    "NODE_13": 209.94,
+    "NODE_14": 146.96,
+    "NODE_17": 314.91
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.248,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9727,
+   "irradiance": 0.2393,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 975.31,
+    "NODE_02": 543.25,
+    "NODE_06": 0.18,
+    "NODE_09": 0.33,
+    "NODE_13": 826.82,
+    "NODE_14": 626.4,
+    "NODE_17": 0.55
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_32"
+   ],
+   "trip_line": "LINE_38",
+   "max_loading": 1.065,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9738,
+   "irradiance": 0.2802,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1002.28,
+    "NODE_02": 511.14,
+    "NODE_06": 29.51,
+    "NODE_09": 53.13,
+    "NODE_13": 59.03,
+    "NODE_14": 41.32,
+    "NODE_17": 1239.85
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.243,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9806,
+   "irradiance": 0.261,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 998.63,
+    "NODE_02": 481.68,
+    "NODE_06": 12.41,
+    "NODE_09": 22.34,
+    "NODE_13": 825.7,
+    "NODE_14": 599.57,
+    "NODE_17": 37.23
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_36"
+   ],
+   "trip_line": "LINE_34",
+   "max_loading": 1.142,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.957,
+   "irradiance": 0.2713,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1034.09,
+    "NODE_02": 524.41,
+    "NODE_06": 73.06,
+    "NODE_09": 790.36,
+    "NODE_13": 146.13,
+    "NODE_14": 102.29,
+    "NODE_17": 219.19
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_36"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.286,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9882,
+   "irradiance": 0.249,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 309.16,
+    "NODE_02": 154.58,
+    "NODE_06": 420.12,
+    "NODE_09": 231.87,
+    "NODE_13": 865.03,
+    "NODE_14": 647.29,
+    "NODE_17": 386.45
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_37",
+   "max_loading": 1.086,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9471,
+   "irradiance": 0.3435,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 964.66,
+    "NODE_02": 568.39,
+    "NODE_06": 69.57,
+    "NODE_09": 737.32,
+    "NODE_13": 139.15,
+    "NODE_14": 97.4,
+    "NODE_17": 208.72
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.259,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9149,
+   "irradiance": 0.4201,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 996.15,
+    "NODE_02": 564.61,
+    "NODE_06": 435.52,
+    "NODE_09": 133.27,
+    "NODE_13": 148.07,
+    "NODE_14": 103.65,
+    "NODE_17": 222.11
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.314,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9027,
+   "irradiance": 0.4674,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1021.0,
+    "NODE_02": 504.9,
+    "NODE_06": 468.49,
+    "NODE_09": 114.53,
+    "NODE_13": 127.26,
+    "NODE_14": 89.08,
+    "NODE_17": 190.89
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.268,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9503,
+   "irradiance": 0.2041,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 975.93,
+    "NODE_02": 522.11,
+    "NODE_06": 462.3,
+    "NODE_09": 213.72,
+    "NODE_13": 237.47,
+    "NODE_14": 166.23,
+    "NODE_17": 356.2
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_36"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.232,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9926,
+   "irradiance": 0.3392,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 979.62,
+    "NODE_02": 505.72,
+    "NODE_06": 401.88,
+    "NODE_09": 231.03,
+    "NODE_13": 256.7,
+    "NODE_14": 179.69,
+    "NODE_17": 385.06
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_31"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.194,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8876,
+   "irradiance": 0.2212,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 974.96,
+    "NODE_02": 517.89,
+    "NODE_06": 417.68,
+    "NODE_09": 175.54,
+    "NODE_13": 195.04,
+    "NODE_14": 136.53,
+    "NODE_17": 292.56
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.256,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9906,
+   "irradiance": 0.2986,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 968.62,
+    "NODE_02": 529.79,
+    "NODE_06": 86.59,
+    "NODE_09": 834.06,
+    "NODE_13": 173.18,
+    "NODE_14": 121.23,
+    "NODE_17": 259.78
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.199,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9146,
+   "irradiance": 0.2173,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1138.57,
+    "NODE_02": 493.87,
+    "NODE_06": 45.13,
+    "NODE_09": 836.72,
+    "NODE_13": 90.27,
+    "NODE_14": 63.19,
+    "NODE_17": 135.4
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.07,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9075,
+   "irradiance": 0.2584,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 980.22,
+    "NODE_02": 542.58,
+    "NODE_06": 64.19,
+    "NODE_09": 741.1,
+    "NODE_13": 128.38,
+    "NODE_14": 89.87,
+    "NODE_17": 192.57
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.268,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9379,
+   "irradiance": 0.4432,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1130.73,
+    "NODE_02": 498.86,
+    "NODE_06": 26.16,
+    "NODE_09": 833.26,
+    "NODE_13": 52.31,
+    "NODE_14": 36.62,
+    "NODE_17": 78.47
+   },
+   "outages": [
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.068,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9946,
+   "irradiance": 0.417,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 966.55,
+    "NODE_02": 517.58,
+    "NODE_06": 29.37,
+    "NODE_09": 52.87,
+    "NODE_13": 58.75,
+    "NODE_14": 41.12,
+    "NODE_17": 1203.04
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.204,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9192,
+   "irradiance": 0.3585,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1124.62,
+    "NODE_02": 541.35,
+    "NODE_06": 435.45,
+    "NODE_09": 126.64,
+    "NODE_13": 140.71,
+    "NODE_14": 98.5,
+    "NODE_17": 211.07
+   },
+   "outages": [
+    "LINE_35",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.065,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9619,
+   "irradiance": 0.4006,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1126.0,
+    "NODE_02": 551.9,
+    "NODE_06": 421.4,
+    "NODE_09": 148.88,
+    "NODE_13": 165.43,
+    "NODE_14": 115.8,
+    "NODE_17": 248.14
+   },
+   "outages": [
+    "LINE_36",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.07,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.8973,
+   "irradiance": 0.2791,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 963.02,
+    "NODE_02": 495.45,
+    "NODE_06": 455.8,
+    "NODE_09": 169.13,
+    "NODE_13": 187.93,
+    "NODE_14": 131.55,
+    "NODE_17": 281.89
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.211,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.913,
+   "irradiance": 0.2282,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1066.44,
+    "NODE_02": 524.51,
+    "NODE_06": 60.73,
+    "NODE_09": 746.62,
+    "NODE_13": 121.47,
+    "NODE_14": 85.03,
+    "NODE_17": 182.2
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.347,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9005,
+   "irradiance": 0.3216,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1024.99,
+    "NODE_02": 503.61,
+    "NODE_06": 437.27,
+    "NODE_09": 150.89,
+    "NODE_13": 167.66,
+    "NODE_14": 117.36,
+    "NODE_17": 251.49
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.29,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.98,
+   "irradiance": 0.2758,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 979.82,
+    "NODE_02": 523.83,
+    "NODE_06": 3.23,
+    "NODE_09": 5.81,
+    "NODE_13": 874.64,
+    "NODE_14": 563.95,
+    "NODE_17": 9.68
+   },
+   "outages": [
+    "LINE_34"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.184,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9936,
+   "irradiance": 0.2498,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 1089.58,
+    "NODE_02": 487.57,
+    "NODE_06": 6.69,
+    "NODE_09": 12.04,
+    "NODE_13": 853.9,
+    "NODE_14": 561.6,
+    "NODE_17": 20.07
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.347,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_34",
+    "LINE_37",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9371,
+   "irradiance": 0.3236,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1051.0,
+    "NODE_02": 491.49,
+    "NODE_06": 412.37,
+    "NODE_09": 179.38,
+    "NODE_13": 199.31,
+    "NODE_14": 139.51,
+    "NODE_17": 298.96
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.29,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9383,
+   "irradiance": 0.2966,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 975.8,
+    "NODE_02": 505.2,
+    "NODE_06": 79.19,
+    "NODE_09": 735.74,
+    "NODE_13": 158.39,
+    "NODE_14": 110.87,
+    "NODE_17": 237.58
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.208,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9659,
+   "irradiance": 0.2799,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 964.59,
+    "NODE_02": 482.28,
+    "NODE_06": 4.26,
+    "NODE_09": 7.68,
+    "NODE_13": 861.5,
+    "NODE_14": 577.43,
+    "NODE_17": 12.79
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.207,
+   "overloaded": [
+    "LINE_02",
+    "LINE_34",
+    "LINE_37",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9406,
+   "irradiance": 0.2065,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 973.2,
+    "NODE_02": 562.62,
+    "NODE_06": 13.02,
+    "NODE_09": 23.44,
+    "NODE_13": 26.04,
+    "NODE_14": 18.23,
+    "NODE_17": 1282.99
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_32"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.292,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9188,
+   "irradiance": 0.2475,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 994.33,
+    "NODE_02": 484.89,
+    "NODE_06": 11.18,
+    "NODE_09": 20.13,
+    "NODE_13": 22.37,
+    "NODE_14": 15.66,
+    "NODE_17": 1238.57
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.241,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9231,
+   "irradiance": 0.381,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 965.95,
+    "NODE_02": 494.47,
+    "NODE_06": 59.59,
+    "NODE_09": 767.64,
+    "NODE_13": 119.19,
+    "NODE_14": 83.43,
+    "NODE_17": 178.78
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.184,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9978,
+   "irradiance": 0.3428,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1043.62,
+    "NODE_02": 534.68,
+    "NODE_06": 11.22,
+    "NODE_09": 20.2,
+    "NODE_13": 22.45,
+    "NODE_14": 15.71,
+    "NODE_17": 1305.3
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.294,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9925,
+   "irradiance": 0.265,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1041.81,
+    "NODE_02": 560.34,
+    "NODE_06": 15.24,
+    "NODE_09": 27.44,
+    "NODE_13": 30.49,
+    "NODE_14": 21.34,
+    "NODE_17": 1316.3
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.334,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9273,
+   "irradiance": 0.4281,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1010.86,
+    "NODE_02": 538.44,
+    "NODE_06": 418.08,
+    "NODE_09": 146.85,
+    "NODE_13": 163.17,
+    "NODE_14": 114.22,
+    "NODE_17": 244.75
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.297,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8872,
+   "irradiance": 0.4337,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 152.94,
+    "NODE_02": 76.47,
+    "NODE_06": 439.06,
+    "NODE_09": 114.71,
+    "NODE_13": 892.39,
+    "NODE_14": 631.64,
+    "NODE_17": 191.18
+   },
+   "outages": [
+    "LINE_37",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_34",
+   "max_loading": 1.077,
+   "overloaded": [
+    "LINE_30"
+   ]
+  },
+  {
+   "load_factor": 0.9082,
+   "irradiance": 0.4813,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1059.95,
+    "NODE_02": 512.28,
+    "NODE_06": 464.35,
+    "NODE_09": 106.24,
+    "NODE_13": 118.04,
+    "NODE_14": 82.63,
+    "NODE_17": 177.07
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.318,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9207,
+   "irradiance": 0.3087,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1023.06,
+    "NODE_02": 482.13,
+    "NODE_06": 1.71,
+    "NODE_09": 3.08,
+    "NODE_13": 3.42,
+    "NODE_14": 2.4,
+    "NODE_17": 1216.89
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.262,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9825,
+   "irradiance": 0.4678,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1131.29,
+    "NODE_02": 551.25,
+    "NODE_06": 447.73,
+    "NODE_09": 142.43,
+    "NODE_13": 158.25,
+    "NODE_14": 110.78,
+    "NODE_17": 237.38
+   },
+   "outages": [
+    "LINE_38",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.073,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9771,
+   "irradiance": 0.2433,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1087.93,
+    "NODE_02": 495.51,
+    "NODE_06": 86.67,
+    "NODE_09": 758.84,
+    "NODE_13": 173.35,
+    "NODE_14": 121.34,
+    "NODE_17": 260.02
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.31,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9537,
+   "irradiance": 0.3752,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 970.16,
+    "NODE_02": 488.42,
+    "NODE_06": 14.48,
+    "NODE_09": 26.06,
+    "NODE_13": 28.96,
+    "NODE_14": 20.27,
+    "NODE_17": 1227.31
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_32"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.198,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9085,
+   "irradiance": 0.4231,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 964.86,
+    "NODE_02": 558.89,
+    "NODE_06": 35.23,
+    "NODE_09": 794.87,
+    "NODE_13": 70.45,
+    "NODE_14": 49.32,
+    "NODE_17": 105.68
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.262,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.959,
+   "irradiance": 0.4261,
+   "exporters": [
+    "CENTRAL",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 30.51,
+    "NODE_02": 15.26,
+    "NODE_06": 12.71,
+    "NODE_09": 22.88,
+    "NODE_13": 841.05,
+    "NODE_14": 588.72,
+    "NODE_17": 1231.9
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_34",
+   "max_loading": 1.06,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9641,
+   "irradiance": 0.2985,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1005.39,
+    "NODE_02": 504.33,
+    "NODE_06": 86.7,
+    "NODE_09": 734.87,
+    "NODE_13": 173.39,
+    "NODE_14": 121.37,
+    "NODE_17": 260.09
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.23,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9434,
+   "irradiance": 0.4346,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1067.63,
+    "NODE_02": 488.44,
+    "NODE_06": 445.77,
+    "NODE_09": 149.51,
+    "NODE_13": 166.12,
+    "NODE_14": 116.29,
+    "NODE_17": 249.18
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.3,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9719,
+   "irradiance": 0.4986,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 993.17,
+    "NODE_02": 520.03,
+    "NODE_06": 61.97,
+    "NODE_09": 741.79,
+    "NODE_13": 123.93,
+    "NODE_14": 86.75,
+    "NODE_17": 185.9
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.224,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.898,
+   "irradiance": 0.4904,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1134.73,
+    "NODE_02": 561.95,
+    "NODE_06": 453.61,
+    "NODE_09": 71.93,
+    "NODE_13": 79.93,
+    "NODE_14": 55.95,
+    "NODE_17": 119.89
+   },
+   "outages": [
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.102,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9518,
+   "irradiance": 0.2731,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 995.08,
+    "NODE_02": 558.84,
+    "NODE_06": 426.92,
+    "NODE_09": 195.32,
+    "NODE_13": 217.02,
+    "NODE_14": 151.92,
+    "NODE_17": 325.53
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.293,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8821,
+   "irradiance": 0.3127,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1135.89,
+    "NODE_02": 538.02,
+    "NODE_06": 19.53,
+    "NODE_09": 782.76,
+    "NODE_13": 39.06,
+    "NODE_14": 27.34,
+    "NODE_17": 58.59
+   },
+   "outages": [
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.064,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.8999,
+   "irradiance": 0.3464,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1104.74,
+    "NODE_02": 540.87,
+    "NODE_06": 22.69,
+    "NODE_09": 813.17,
+    "NODE_13": 45.38,
+    "NODE_14": 31.77,
+    "NODE_17": 68.08
+   },
+   "outages": [
+    "LINE_32",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.077,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9715,
+   "irradiance": 0.206,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 997.97,
+    "NODE_02": 539.05,
+    "NODE_06": 37.44,
+    "NODE_09": 67.4,
+    "NODE_13": 74.88,
+    "NODE_14": 52.42,
+    "NODE_17": 1232.85
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.279,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8858,
+   "irradiance": 0.3263,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 164.19,
+    "NODE_02": 82.1,
+    "NODE_06": 464.46,
+    "NODE_09": 123.14,
+    "NODE_13": 900.09,
+    "NODE_14": 660.8,
+    "NODE_17": 205.24
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_34",
+   "max_loading": 1.162,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9464,
+   "irradiance": 0.3318,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 999.61,
+    "NODE_02": 552.69,
+    "NODE_06": 467.6,
+    "NODE_09": 170.09,
+    "NODE_13": 188.99,
+    "NODE_14": 132.3,
+    "NODE_17": 283.49
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.291,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.919,
+   "irradiance": 0.21,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 994.45,
+    "NODE_02": 535.3,
+    "NODE_06": 62.31,
+    "NODE_09": 833.82,
+    "NODE_13": 124.62,
+    "NODE_14": 87.23,
+    "NODE_17": 186.93
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_32"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.269,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9734,
+   "irradiance": 0.3301,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1073.32,
+    "NODE_02": 544.94,
+    "NODE_06": 60.74,
+    "NODE_09": 817.58,
+    "NODE_13": 121.47,
+    "NODE_14": 85.03,
+    "NODE_17": 182.21
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.344,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9588,
+   "irradiance": 0.3469,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 243.65,
+    "NODE_02": 121.83,
+    "NODE_06": 434.53,
+    "NODE_09": 182.74,
+    "NODE_13": 946.91,
+    "NODE_14": 586.23,
+    "NODE_17": 304.57
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.126,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9504,
+   "irradiance": 0.4775,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1053.09,
+    "NODE_02": 492.45,
+    "NODE_06": 432.96,
+    "NODE_09": 150.36,
+    "NODE_13": 167.07,
+    "NODE_14": 116.95,
+    "NODE_17": 250.6
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_32"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.285,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9298,
+   "irradiance": 0.4954,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1025.01,
+    "NODE_02": 489.84,
+    "NODE_06": 46.07,
+    "NODE_09": 722.05,
+    "NODE_13": 92.14,
+    "NODE_14": 64.5,
+    "NODE_17": 138.21
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.248,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9722,
+   "irradiance": 0.2539,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 985.41,
+    "NODE_02": 567.72,
+    "NODE_06": 31.49,
+    "NODE_09": 56.69,
+    "NODE_13": 62.99,
+    "NODE_14": 44.09,
+    "NODE_17": 1208.43
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.342,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9545,
+   "irradiance": 0.3267,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 965.1,
+    "NODE_02": 545.64,
+    "NODE_06": 73.87,
+    "NODE_09": 769.11,
+    "NODE_13": 147.73,
+    "NODE_14": 103.41,
+    "NODE_17": 221.6
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.23,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9832,
+   "irradiance": 0.2303,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 977.92,
+    "NODE_02": 510.37,
+    "NODE_06": 4.5,
+    "NODE_09": 8.11,
+    "NODE_13": 897.56,
+    "NODE_14": 604.65,
+    "NODE_17": 13.51
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.246,
+   "overloaded": [
+    "LINE_02",
+    "LINE_34",
+    "LINE_37",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9456,
+   "irradiance": 0.4804,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 987.76,
+    "NODE_02": 520.71,
+    "NODE_06": 403.82,
+    "NODE_09": 160.8,
+    "NODE_13": 178.66,
+    "NODE_14": 125.06,
+    "NODE_17": 267.99
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.295,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9572,
+   "irradiance": 0.4686,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1126.29,
+    "NODE_02": 552.59,
+    "NODE_06": 24.8,
+    "NODE_09": 832.38,
+    "NODE_13": 49.61,
+    "NODE_14": 34.73,
+    "NODE_17": 74.41
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.061,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9249,
+   "irradiance": 0.3522,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 989.57,
+    "NODE_02": 536.29,
+    "NODE_06": 58.34,
+    "NODE_09": 745.93,
+    "NODE_13": 116.68,
+    "NODE_14": 81.67,
+    "NODE_17": 175.01
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.262,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9751,
+   "irradiance": 0.3386,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 982.92,
+    "NODE_02": 515.25,
+    "NODE_06": 0.52,
+    "NODE_09": 0.94,
+    "NODE_13": 1.04,
+    "NODE_14": 0.73,
+    "NODE_17": 1381.09
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.233,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9189,
+   "irradiance": 0.466,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 971.26,
+    "NODE_02": 498.53,
+    "NODE_06": 445.76,
+    "NODE_09": 143.91,
+    "NODE_13": 159.89,
+    "NODE_14": 111.93,
+    "NODE_17": 239.84
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.211,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9997,
+   "irradiance": 0.4122,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1055.5,
+    "NODE_02": 533.74,
+    "NODE_06": 443.83,
+    "NODE_09": 188.32,
+    "NODE_13": 209.25,
+    "NODE_14": 146.47,
+    "NODE_17": 313.87
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.064,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9416,
+   "irradiance": 0.3267,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 966.21,
+    "NODE_02": 486.33,
+    "NODE_06": 11.21,
+    "NODE_09": 20.18,
+    "NODE_13": 22.43,
+    "NODE_14": 15.7,
+    "NODE_17": 1261.65
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.18,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9113,
+   "irradiance": 0.2963,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1074.76,
+    "NODE_02": 481.86,
+    "NODE_06": 47.9,
+    "NODE_09": 802.92,
+    "NODE_13": 95.8,
+    "NODE_14": 67.06,
+    "NODE_17": 143.71
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.301,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9831,
+   "irradiance": 0.2961,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1030.23,
+    "NODE_02": 535.71,
+    "NODE_06": 85.09,
+    "NODE_09": 755.43,
+    "NODE_13": 170.19,
+    "NODE_14": 119.13,
+    "NODE_17": 255.28
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.276,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8879,
+   "irradiance": 0.271,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1021.01,
+    "NODE_02": 552.89,
+    "NODE_06": 35.11,
+    "NODE_09": 828.01,
+    "NODE_13": 70.21,
+    "NODE_14": 49.15,
+    "NODE_17": 105.32
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.332,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9226,
+   "irradiance": 0.2551,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 964.14,
+    "NODE_02": 547.29,
+    "NODE_06": 67.56,
+    "NODE_09": 780.52,
+    "NODE_13": 135.13,
+    "NODE_14": 94.59,
+    "NODE_17": 202.69
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_30"
+   ],
+   "trip_line": "LINE_38",
+   "max_loading": 1.313,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9257,
+   "irradiance": 0.3894,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 974.15,
+    "NODE_02": 488.86,
+    "NODE_06": 434.96,
+    "NODE_09": 169.3,
+    "NODE_13": 188.11,
+    "NODE_14": 131.68,
+    "NODE_17": 282.17
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_36"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.203,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8915,
+   "irradiance": 0.3827,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1021.3,
+    "NODE_02": 496.61,
+    "NODE_06": 455.02,
+    "NODE_09": 129.56,
+    "NODE_13": 143.95,
+    "NODE_14": 100.77,
+    "NODE_17": 215.93
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.34,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9918,
+   "irradiance": 0.4572,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1011.98,
+    "NODE_02": 527.47,
+    "NODE_06": 436.49,
+    "NODE_09": 185.37,
+    "NODE_13": 205.97,
+    "NODE_14": 144.18,
+    "NODE_17": 308.96
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.255,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9086,
+   "irradiance": 0.29,
+   "exporters": [
+    "EAST",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 114.01,
+    "NODE_02": 57.01,
+    "NODE_06": 47.5,
+    "NODE_09": 826.75,
+    "NODE_13": 865.66,
+    "NODE_14": 657.69,
+    "NODE_17": 142.51
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_37",
+   "max_loading": 1.118,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9265,
+   "irradiance": 0.4757,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1011.83,
+    "NODE_02": 542.75,
+    "NODE_06": 464.94,
+    "NODE_09": 124.44,
+    "NODE_13": 138.27,
+    "NODE_14": 96.79,
+    "NODE_17": 207.4
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.301,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.95,
+   "irradiance": 0.4159,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1093.46,
+    "NODE_02": 568.83,
+    "NODE_06": 446.85,
+    "NODE_09": 134.83,
+    "NODE_13": 149.81,
+    "NODE_14": 104.86,
+    "NODE_17": 224.71
+   },
+   "outages": [
+    "LINE_32",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.069,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.955,
+   "irradiance": 0.3192,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1018.1,
+    "NODE_02": 546.79,
+    "NODE_06": 74.18,
+    "NODE_09": 721.6,
+    "NODE_13": 148.35,
+    "NODE_14": 103.85,
+    "NODE_17": 222.53
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.285,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9059,
+   "irradiance": 0.2793,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 206.59,
+    "NODE_02": 103.29,
+    "NODE_06": 424.1,
+    "NODE_09": 154.94,
+    "NODE_13": 923.45,
+    "NODE_14": 642.48,
+    "NODE_17": 258.23
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_38",
+   "max_loading": 1.151,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9399,
+   "irradiance": 0.2382,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1014.54,
+    "NODE_02": 508.25,
+    "NODE_06": 76.76,
+    "NODE_09": 774.97,
+    "NODE_13": 153.53,
+    "NODE_14": 107.47,
+    "NODE_17": 230.29
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.247,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9831,
+   "irradiance": 0.2364,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1134.96,
+    "NODE_02": 513.25,
+    "NODE_06": 69.44,
+    "NODE_09": 848.01,
+    "NODE_13": 138.87,
+    "NODE_14": 97.21,
+    "NODE_17": 208.31
+   },
+   "outages": [
+    "LINE_36",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.074,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9743,
+   "irradiance": 0.2242,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 1004.09,
+    "NODE_02": 487.62,
+    "NODE_06": 5.03,
+    "NODE_09": 9.05,
+    "NODE_13": 849.03,
+    "NODE_14": 623.22,
+    "NODE_17": 15.08
+   },
+   "outages": [
+    "LINE_32",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.143,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9088,
+   "irradiance": 0.258,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 963.6,
+    "NODE_02": 564.14,
+    "NODE_06": 424.12,
+    "NODE_09": 173.84,
+    "NODE_13": 193.16,
+    "NODE_14": 135.21,
+    "NODE_17": 289.73
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_31"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.279,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9533,
+   "irradiance": 0.3405,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1136.2,
+    "NODE_02": 531.9,
+    "NODE_06": 42.29,
+    "NODE_09": 827.84,
+    "NODE_13": 84.58,
+    "NODE_14": 59.2,
+    "NODE_17": 126.86
+   },
+   "outages": [
+    "LINE_35"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.061,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9999,
+   "irradiance": 0.3822,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 257.94,
+    "NODE_02": 128.97,
+    "NODE_06": 432.31,
+    "NODE_09": 193.45,
+    "NODE_13": 934.03,
+    "NODE_14": 652.06,
+    "NODE_17": 322.42
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_34",
+   "max_loading": 1.129,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9381,
+   "irradiance": 0.379,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 214.59,
+    "NODE_02": 107.3,
+    "NODE_06": 472.5,
+    "NODE_09": 160.94,
+    "NODE_13": 932.35,
+    "NODE_14": 564.45,
+    "NODE_17": 268.24
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_37",
+   "max_loading": 1.105,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9875,
+   "irradiance": 0.2088,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 1002.69,
+    "NODE_02": 485.43,
+    "NODE_06": 22.18,
+    "NODE_09": 39.92,
+    "NODE_13": 802.12,
+    "NODE_14": 633.25,
+    "NODE_17": 66.54
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_31"
+   ],
+   "trip_line": "LINE_37",
+   "max_loading": 1.063,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9123,
+   "irradiance": 0.4991,
+   "exporters": [
+    "EAST",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 318.38,
+    "NODE_02": 159.19,
+    "NODE_06": 466.77,
+    "NODE_09": 723.11,
+    "NODE_13": 265.32,
+    "NODE_14": 185.72,
+    "NODE_17": 397.98
+   },
+   "outages": [
+    "LINE_31",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_32",
+   "max_loading": 1.078,
+   "overloaded": [
+    "LINE_39"
+   ]
+  },
+  {
+   "load_factor": 0.9267,
+   "irradiance": 0.42,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1117.89,
+    "NODE_02": 568.52,
+    "NODE_06": 19.71,
+    "NODE_09": 810.07,
+    "NODE_13": 39.43,
+    "NODE_14": 27.6,
+    "NODE_17": 59.14
+   },
+   "outages": [
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.069,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9754,
+   "irradiance": 0.2906,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1005.95,
+    "NODE_02": 487.33,
+    "NODE_06": 89.03,
+    "NODE_09": 779.17,
+    "NODE_13": 178.07,
+    "NODE_14": 124.65,
+    "NODE_17": 267.1
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.205,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8932,
+   "irradiance": 0.4578,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 155.64,
+    "NODE_02": 77.82,
+    "NODE_06": 440.72,
+    "NODE_09": 116.73,
+    "NODE_13": 901.11,
+    "NODE_14": 607.7,
+    "NODE_17": 194.55
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.104,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.8843,
+   "irradiance": 0.4464,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1005.22,
+    "NODE_02": 524.5,
+    "NODE_06": 406.94,
+    "NODE_09": 118.44,
+    "NODE_13": 131.6,
+    "NODE_14": 92.12,
+    "NODE_17": 197.4
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.292,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8832,
+   "irradiance": 0.4486,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 986.5,
+    "NODE_02": 495.73,
+    "NODE_06": 428.88,
+    "NODE_09": 122.75,
+    "NODE_13": 136.39,
+    "NODE_14": 95.47,
+    "NODE_17": 204.58
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.224,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9337,
+   "irradiance": 0.3153,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1062.05,
+    "NODE_02": 501.5,
+    "NODE_06": 409.83,
+    "NODE_09": 174.68,
+    "NODE_13": 194.09,
+    "NODE_14": 135.86,
+    "NODE_17": 291.14
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.316,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9844,
+   "irradiance": 0.4201,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 973.92,
+    "NODE_02": 489.05,
+    "NODE_06": 412.55,
+    "NODE_09": 210.08,
+    "NODE_13": 233.42,
+    "NODE_14": 163.4,
+    "NODE_17": 350.14
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.175,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9608,
+   "irradiance": 0.452,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 994.1,
+    "NODE_02": 490.18,
+    "NODE_06": 439.2,
+    "NODE_09": 175.58,
+    "NODE_13": 195.09,
+    "NODE_14": 136.56,
+    "NODE_17": 292.64
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.205,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9874,
+   "irradiance": 0.4098,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1046.03,
+    "NODE_02": 549.16,
+    "NODE_06": 72.46,
+    "NODE_09": 721.31,
+    "NODE_13": 144.91,
+    "NODE_14": 101.44,
+    "NODE_17": 217.37
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_32"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.312,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9193,
+   "irradiance": 0.4293,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 972.13,
+    "NODE_02": 551.15,
+    "NODE_06": 49.36,
+    "NODE_09": 720.2,
+    "NODE_13": 98.72,
+    "NODE_14": 69.1,
+    "NODE_17": 148.07
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.26,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.984,
+   "irradiance": 0.2089,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 993.19,
+    "NODE_02": 513.88,
+    "NODE_06": 3.91,
+    "NODE_09": 7.04,
+    "NODE_13": 948.72,
+    "NODE_14": 561.96,
+    "NODE_17": 11.73
+   },
+   "outages": [
+    "LINE_35",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.081,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9002,
+   "irradiance": 0.2744,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1069.38,
+    "NODE_02": 507.29,
+    "NODE_06": 402.14,
+    "NODE_09": 158.07,
+    "NODE_13": 175.63,
+    "NODE_14": 122.94,
+    "NODE_17": 263.45
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.343,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9972,
+   "irradiance": 0.482,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1050.65,
+    "NODE_02": 539.33,
+    "NODE_06": 51.16,
+    "NODE_09": 845.03,
+    "NODE_13": 102.32,
+    "NODE_14": 71.62,
+    "NODE_17": 153.48
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.296,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9087,
+   "irradiance": 0.2027,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1104.84,
+    "NODE_02": 547.65,
+    "NODE_06": 55.27,
+    "NODE_09": 736.46,
+    "NODE_13": 110.54,
+    "NODE_14": 77.38,
+    "NODE_17": 165.82
+   },
+   "outages": [
+    "LINE_32",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.06,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9553,
+   "irradiance": 0.2995,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 989.09,
+    "NODE_02": 531.41,
+    "NODE_06": 68.18,
+    "NODE_09": 830.79,
+    "NODE_13": 136.37,
+    "NODE_14": 95.46,
+    "NODE_17": 204.55
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_32"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.24,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9237,
+   "irradiance": 0.3409,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1041.09,
+    "NODE_02": 498.46,
+    "NODE_06": 44.25,
+    "NODE_09": 843.51,
+    "NODE_13": 88.5,
+    "NODE_14": 61.95,
+    "NODE_17": 132.75
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_36"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.277,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8956,
+   "irradiance": 0.3185,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 993.08,
+    "NODE_02": 517.17,
+    "NODE_06": 426.63,
+    "NODE_09": 154.37,
+    "NODE_13": 171.53,
+    "NODE_14": 120.07,
+    "NODE_17": 257.29
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_32"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.272,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9652,
+   "irradiance": 0.2511,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 254.09,
+    "NODE_02": 127.05,
+    "NODE_06": 451.36,
+    "NODE_09": 190.57,
+    "NODE_13": 931.19,
+    "NODE_14": 664.85,
+    "NODE_17": 317.61
+   },
+   "outages": [
+    "LINE_37",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_34",
+   "max_loading": 1.093,
+   "overloaded": [
+    "LINE_30"
+   ]
+  },
+  {
+   "load_factor": 0.982,
+   "irradiance": 0.2196,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1027.38,
+    "NODE_02": 481.5,
+    "NODE_06": 99.06,
+    "NODE_09": 781.25,
+    "NODE_13": 198.12,
+    "NODE_14": 138.68,
+    "NODE_17": 297.18
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.222,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9933,
+   "irradiance": 0.3996,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1013.91,
+    "NODE_02": 501.41,
+    "NODE_06": 77.45,
+    "NODE_09": 793.82,
+    "NODE_13": 154.91,
+    "NODE_14": 108.44,
+    "NODE_17": 232.36
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.218,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9981,
+   "irradiance": 0.3291,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 996.12,
+    "NODE_02": 542.23,
+    "NODE_06": 465.43,
+    "NODE_09": 211.68,
+    "NODE_13": 235.2,
+    "NODE_14": 164.64,
+    "NODE_17": 352.8
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.252,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9977,
+   "irradiance": 0.3108,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1009.6,
+    "NODE_02": 519.55,
+    "NODE_06": 97.57,
+    "NODE_09": 733.43,
+    "NODE_13": 195.14,
+    "NODE_14": 136.6,
+    "NODE_17": 292.71
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_30"
+   ],
+   "trip_line": "LINE_38",
+   "max_loading": 1.288,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.8974,
+   "irradiance": 0.4427,
+   "exporters": [
+    "EAST",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 86.83,
+    "NODE_02": 43.41,
+    "NODE_06": 36.18,
+    "NODE_09": 725.53,
+    "NODE_13": 890.16,
+    "NODE_14": 632.37,
+    "NODE_17": 108.53
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_34",
+   "max_loading": 1.109,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9637,
+   "irradiance": 0.2476,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1017.22,
+    "NODE_02": 525.61,
+    "NODE_06": 5.27,
+    "NODE_09": 9.49,
+    "NODE_13": 10.55,
+    "NODE_14": 7.38,
+    "NODE_17": 1359.53
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.291,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8861,
+   "irradiance": 0.4753,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1035.53,
+    "NODE_02": 563.79,
+    "NODE_06": 403.13,
+    "NODE_09": 99.01,
+    "NODE_13": 110.02,
+    "NODE_14": 77.01,
+    "NODE_17": 165.02
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_38",
+   "max_loading": 1.094,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9541,
+   "irradiance": 0.4125,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1138.98,
+    "NODE_02": 531.37,
+    "NODE_06": 42.94,
+    "NODE_09": 752.23,
+    "NODE_13": 85.88,
+    "NODE_14": 60.11,
+    "NODE_17": 128.82
+   },
+   "outages": [
+    "LINE_32"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.064,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9437,
+   "irradiance": 0.2202,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 996.2,
+    "NODE_02": 549.63,
+    "NODE_06": 77.16,
+    "NODE_09": 779.4,
+    "NODE_13": 154.33,
+    "NODE_14": 108.03,
+    "NODE_17": 231.49
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.278,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.917,
+   "irradiance": 0.3758,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 172.63,
+    "NODE_02": 86.32,
+    "NODE_06": 459.76,
+    "NODE_09": 129.47,
+    "NODE_13": 938.1,
+    "NODE_14": 652.12,
+    "NODE_17": 215.79
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.173,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9941,
+   "irradiance": 0.4815,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1087.53,
+    "NODE_02": 560.16,
+    "NODE_06": 53.03,
+    "NODE_09": 763.71,
+    "NODE_13": 106.06,
+    "NODE_14": 74.24,
+    "NODE_17": 159.09
+   },
+   "outages": [
+    "LINE_32",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.071,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.8874,
+   "irradiance": 0.3944,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 968.36,
+    "NODE_02": 551.71,
+    "NODE_06": 427.92,
+    "NODE_09": 129.51,
+    "NODE_13": 143.9,
+    "NODE_14": 100.73,
+    "NODE_17": 215.85
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.278,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.888,
+   "irradiance": 0.4688,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1123.62,
+    "NODE_02": 547.3,
+    "NODE_06": 4.16,
+    "NODE_09": 764.61,
+    "NODE_13": 8.32,
+    "NODE_14": 5.82,
+    "NODE_17": 12.48
+   },
+   "outages": [
+    "LINE_31",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.064,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9942,
+   "irradiance": 0.2046,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 971.26,
+    "NODE_02": 541.45,
+    "NODE_06": 55.67,
+    "NODE_09": 100.2,
+    "NODE_13": 111.34,
+    "NODE_14": 77.94,
+    "NODE_17": 1220.5
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.245,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9908,
+   "irradiance": 0.2025,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1004.1,
+    "NODE_02": 504.13,
+    "NODE_06": 414.0,
+    "NODE_09": 251.81,
+    "NODE_13": 279.79,
+    "NODE_14": 195.85,
+    "NODE_17": 419.69
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.227,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9324,
+   "irradiance": 0.3803,
+   "exporters": [
+    "EAST",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 147.09,
+    "NODE_02": 73.55,
+    "NODE_06": 61.29,
+    "NODE_09": 760.42,
+    "NODE_13": 899.8,
+    "NODE_14": 574.22,
+    "NODE_17": 183.87
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.075,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9536,
+   "irradiance": 0.2947,
+   "exporters": [
+    "EAST",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 175.0,
+    "NODE_02": 87.5,
+    "NODE_06": 72.92,
+    "NODE_09": 786.46,
+    "NODE_13": 942.06,
+    "NODE_14": 572.33,
+    "NODE_17": 218.75
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_37",
+   "max_loading": 1.112,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9855,
+   "irradiance": 0.3549,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1051.74,
+    "NODE_02": 537.67,
+    "NODE_06": 16.24,
+    "NODE_09": 29.24,
+    "NODE_13": 32.48,
+    "NODE_14": 22.74,
+    "NODE_17": 1210.57
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.331,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9793,
+   "irradiance": 0.4574,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 972.36,
+    "NODE_02": 484.7,
+    "NODE_06": 465.69,
+    "NODE_09": 187.95,
+    "NODE_13": 208.84,
+    "NODE_14": 146.19,
+    "NODE_17": 313.26
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.149,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9702,
+   "irradiance": 0.4994,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1125.26,
+    "NODE_02": 555.41,
+    "NODE_06": 27.96,
+    "NODE_09": 819.76,
+    "NODE_13": 55.93,
+    "NODE_14": 39.15,
+    "NODE_17": 83.89
+   },
+   "outages": [
+    "LINE_31",
+    "LINE_36"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.072,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.8993,
+   "irradiance": 0.2825,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 195.45,
+    "NODE_02": 97.73,
+    "NODE_06": 406.37,
+    "NODE_09": 146.59,
+    "NODE_13": 942.17,
+    "NODE_14": 655.36,
+    "NODE_17": 244.31
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_38",
+   "max_loading": 1.184,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9931,
+   "irradiance": 0.4324,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1018.91,
+    "NODE_02": 550.19,
+    "NODE_06": 466.12,
+    "NODE_09": 178.67,
+    "NODE_13": 198.52,
+    "NODE_14": 138.97,
+    "NODE_17": 297.79
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.288,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8904,
+   "irradiance": 0.464,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1054.88,
+    "NODE_02": 493.47,
+    "NODE_06": 27.63,
+    "NODE_09": 726.27,
+    "NODE_13": 55.25,
+    "NODE_14": 38.68,
+    "NODE_17": 82.88
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.305,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9827,
+   "irradiance": 0.4837,
+   "exporters": [
+    "EAST",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 150.38,
+    "NODE_02": 75.19,
+    "NODE_06": 62.66,
+    "NODE_09": 784.32,
+    "NODE_13": 935.31,
+    "NODE_14": 568.26,
+    "NODE_17": 187.97
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_34",
+   "max_loading": 1.109,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9438,
+   "irradiance": 0.208,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1066.62,
+    "NODE_02": 532.02,
+    "NODE_06": 71.45,
+    "NODE_09": 781.28,
+    "NODE_13": 142.9,
+    "NODE_14": 100.03,
+    "NODE_17": 214.36
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.34,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9637,
+   "irradiance": 0.3472,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1050.03,
+    "NODE_02": 538.26,
+    "NODE_06": 440.06,
+    "NODE_09": 177.39,
+    "NODE_13": 197.1,
+    "NODE_14": 137.97,
+    "NODE_17": 295.66
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.326,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9837,
+   "irradiance": 0.2686,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 987.14,
+    "NODE_02": 482.37,
+    "NODE_06": 422.3,
+    "NODE_09": 238.96,
+    "NODE_13": 265.52,
+    "NODE_14": 185.86,
+    "NODE_17": 398.27
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.169,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9444,
+   "irradiance": 0.4247,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1079.82,
+    "NODE_02": 483.48,
+    "NODE_06": 471.21,
+    "NODE_09": 145.2,
+    "NODE_13": 161.34,
+    "NODE_14": 112.94,
+    "NODE_17": 242.01
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.308,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9005,
+   "irradiance": 0.2601,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 967.62,
+    "NODE_02": 529.63,
+    "NODE_06": 450.51,
+    "NODE_09": 168.21,
+    "NODE_13": 186.9,
+    "NODE_14": 130.83,
+    "NODE_17": 280.34
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_31"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.249,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9585,
+   "irradiance": 0.3729,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1031.93,
+    "NODE_02": 482.27,
+    "NODE_06": 472.64,
+    "NODE_09": 177.19,
+    "NODE_13": 196.88,
+    "NODE_14": 137.81,
+    "NODE_17": 295.32
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.247,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9674,
+   "irradiance": 0.3364,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1016.81,
+    "NODE_02": 541.19,
+    "NODE_06": 10.29,
+    "NODE_09": 18.53,
+    "NODE_13": 20.59,
+    "NODE_14": 14.41,
+    "NODE_17": 1237.41
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_36"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.306,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9004,
+   "irradiance": 0.435,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 998.09,
+    "NODE_02": 514.15,
+    "NODE_06": 35.49,
+    "NODE_09": 765.87,
+    "NODE_13": 70.99,
+    "NODE_14": 49.69,
+    "NODE_17": 106.48
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.328,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9325,
+   "irradiance": 0.4218,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 219.71,
+    "NODE_02": 109.85,
+    "NODE_06": 402.97,
+    "NODE_09": 164.78,
+    "NODE_13": 914.62,
+    "NODE_14": 572.97,
+    "NODE_17": 274.63
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_38",
+   "max_loading": 1.06,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9562,
+   "irradiance": 0.4345,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1123.92,
+    "NODE_02": 502.18,
+    "NODE_06": 48.97,
+    "NODE_09": 736.77,
+    "NODE_13": 97.93,
+    "NODE_14": 68.55,
+    "NODE_17": 146.9
+   },
+   "outages": [
+    "LINE_35",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.071,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9925,
+   "irradiance": 0.3225,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1019.76,
+    "NODE_02": 509.09,
+    "NODE_06": 84.51,
+    "NODE_09": 801.64,
+    "NODE_13": 169.03,
+    "NODE_14": 118.32,
+    "NODE_17": 253.54
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.235,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9925,
+   "irradiance": 0.2676,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1037.62,
+    "NODE_02": 486.58,
+    "NODE_06": 435.44,
+    "NODE_09": 230.66,
+    "NODE_13": 256.29,
+    "NODE_14": 179.4,
+    "NODE_17": 384.43
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.239,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9514,
+   "irradiance": 0.2334,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 990.69,
+    "NODE_02": 523.14,
+    "NODE_06": 83.97,
+    "NODE_09": 773.38,
+    "NODE_13": 167.95,
+    "NODE_14": 117.56,
+    "NODE_17": 251.92
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.219,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9955,
+   "irradiance": 0.4324,
+   "exporters": [
+    "CENTRAL",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 6.36,
+    "NODE_02": 3.18,
+    "NODE_06": 2.65,
+    "NODE_09": 4.77,
+    "NODE_13": 907.13,
+    "NODE_14": 616.82,
+    "NODE_17": 1316.15
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.144,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9618,
+   "irradiance": 0.3642,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1039.87,
+    "NODE_02": 508.35,
+    "NODE_06": 474.99,
+    "NODE_09": 173.44,
+    "NODE_13": 192.71,
+    "NODE_14": 134.9,
+    "NODE_17": 289.07
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.281,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9345,
+   "irradiance": 0.2516,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1029.26,
+    "NODE_02": 503.61,
+    "NODE_06": 10.47,
+    "NODE_09": 18.85,
+    "NODE_13": 20.94,
+    "NODE_14": 14.66,
+    "NODE_17": 1237.06
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.294,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9292,
+   "irradiance": 0.411,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 999.31,
+    "NODE_02": 490.89,
+    "NODE_06": 53.16,
+    "NODE_09": 775.97,
+    "NODE_13": 106.32,
+    "NODE_14": 74.43,
+    "NODE_17": 159.49
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.282,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.937,
+   "irradiance": 0.3558,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 965.18,
+    "NODE_02": 487.67,
+    "NODE_06": 448.58,
+    "NODE_09": 184.04,
+    "NODE_13": 204.49,
+    "NODE_14": 143.14,
+    "NODE_17": 306.74
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.23,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9195,
+   "irradiance": 0.3705,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1035.78,
+    "NODE_02": 520.96,
+    "NODE_06": 402.59,
+    "NODE_09": 155.44,
+    "NODE_13": 172.72,
+    "NODE_14": 120.9,
+    "NODE_17": 259.07
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.313,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9996,
+   "irradiance": 0.3782,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1060.39,
+    "NODE_02": 481.34,
+    "NODE_06": 79.65,
+    "NODE_09": 792.95,
+    "NODE_13": 159.3,
+    "NODE_14": 111.51,
+    "NODE_17": 238.95
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.348,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9361,
+   "irradiance": 0.4293,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 201.93,
+    "NODE_02": 100.96,
+    "NODE_06": 459.33,
+    "NODE_09": 151.45,
+    "NODE_13": 847.08,
+    "NODE_14": 651.02,
+    "NODE_17": 252.41
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.074,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9809,
+   "irradiance": 0.4253,
+   "exporters": [
+    "EAST",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 167.58,
+    "NODE_02": 83.79,
+    "NODE_06": 69.82,
+    "NODE_09": 734.9,
+    "NODE_13": 902.73,
+    "NODE_14": 647.63,
+    "NODE_17": 209.47
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_37",
+   "max_loading": 1.118,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9879,
+   "irradiance": 0.4442,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1044.61,
+    "NODE_02": 489.62,
+    "NODE_06": 459.43,
+    "NODE_09": 181.46,
+    "NODE_13": 201.63,
+    "NODE_14": 141.14,
+    "NODE_17": 302.44
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_32"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.255,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9339,
+   "irradiance": 0.2341,
+   "exporters": [
+    "CENTRAL",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 41.2,
+    "NODE_02": 20.6,
+    "NODE_06": 17.17,
+    "NODE_09": 30.9,
+    "NODE_13": 844.66,
+    "NODE_14": 594.86,
+    "NODE_17": 1300.7
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_38",
+   "max_loading": 1.082,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9965,
+   "irradiance": 0.2011,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1127.66,
+    "NODE_02": 480.3,
+    "NODE_06": 37.17,
+    "NODE_09": 66.91,
+    "NODE_13": 74.34,
+    "NODE_14": 52.04,
+    "NODE_17": 1250.8
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.334,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8948,
+   "irradiance": 0.4518,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1011.67,
+    "NODE_02": 487.2,
+    "NODE_06": 457.29,
+    "NODE_09": 120.62,
+    "NODE_13": 134.03,
+    "NODE_14": 93.82,
+    "NODE_17": 201.04
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.237,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.978,
+   "irradiance": 0.2433,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1118.98,
+    "NODE_02": 508.72,
+    "NODE_06": 82.34,
+    "NODE_09": 749.43,
+    "NODE_13": 164.68,
+    "NODE_14": 115.28,
+    "NODE_17": 247.02
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.069,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.8955,
+   "irradiance": 0.2621,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 978.28,
+    "NODE_02": 567.12,
+    "NODE_06": 53.54,
+    "NODE_09": 754.1,
+    "NODE_13": 107.08,
+    "NODE_14": 74.96,
+    "NODE_17": 160.62
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_36"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.297,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9497,
+   "irradiance": 0.4573,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 960.68,
+    "NODE_02": 528.33,
+    "NODE_06": 449.9,
+    "NODE_09": 162.94,
+    "NODE_13": 181.04,
+    "NODE_14": 126.73,
+    "NODE_17": 271.56
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.216,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9637,
+   "irradiance": 0.4756,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1006.0,
+    "NODE_02": 509.99,
+    "NODE_06": 61.8,
+    "NODE_09": 736.0,
+    "NODE_13": 123.61,
+    "NODE_14": 86.53,
+    "NODE_17": 185.41
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.293,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9969,
+   "irradiance": 0.3771,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 979.87,
+    "NODE_02": 541.1,
+    "NODE_06": 14.36,
+    "NODE_09": 25.84,
+    "NODE_13": 28.71,
+    "NODE_14": 20.1,
+    "NODE_17": 1306.48
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.238,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8986,
+   "irradiance": 0.3082,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 978.31,
+    "NODE_02": 546.07,
+    "NODE_06": 54.47,
+    "NODE_09": 732.8,
+    "NODE_13": 108.95,
+    "NODE_14": 76.26,
+    "NODE_17": 163.42
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.273,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9766,
+   "irradiance": 0.4717,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1003.94,
+    "NODE_02": 491.74,
+    "NODE_06": 3.57,
+    "NODE_09": 6.43,
+    "NODE_13": 7.14,
+    "NODE_14": 5.0,
+    "NODE_17": 1238.04
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.258,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9133,
+   "irradiance": 0.2112,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 996.1,
+    "NODE_02": 535.92,
+    "NODE_06": 11.35,
+    "NODE_09": 20.44,
+    "NODE_13": 22.71,
+    "NODE_14": 15.9,
+    "NODE_17": 1202.33
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.301,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9092,
+   "irradiance": 0.3285,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 976.14,
+    "NODE_02": 492.97,
+    "NODE_06": 59.83,
+    "NODE_09": 763.42,
+    "NODE_13": 119.67,
+    "NODE_14": 83.77,
+    "NODE_17": 179.5
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.2,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9011,
+   "irradiance": 0.3473,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 986.36,
+    "NODE_02": 539.01,
+    "NODE_06": 40.37,
+    "NODE_09": 805.56,
+    "NODE_13": 80.74,
+    "NODE_14": 56.52,
+    "NODE_17": 121.12
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.27,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8954,
+   "irradiance": 0.3857,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1049.53,
+    "NODE_02": 524.19,
+    "NODE_06": 414.97,
+    "NODE_09": 128.29,
+    "NODE_13": 142.54,
+    "NODE_14": 99.78,
+    "NODE_17": 213.81
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_38",
+   "max_loading": 1.078,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9881,
+   "irradiance": 0.4375,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1034.41,
+    "NODE_02": 548.72,
+    "NODE_06": 473.31,
+    "NODE_09": 169.26,
+    "NODE_13": 188.07,
+    "NODE_14": 131.65,
+    "NODE_17": 282.1
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.305,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9324,
+   "irradiance": 0.2038,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 980.16,
+    "NODE_02": 484.73,
+    "NODE_06": 83.37,
+    "NODE_09": 793.23,
+    "NODE_13": 166.73,
+    "NODE_14": 116.71,
+    "NODE_17": 250.1
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.293,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9244,
+   "irradiance": 0.3275,
+   "exporters": [
+    "EAST",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 129.59,
+    "NODE_02": 64.8,
+    "NODE_06": 54.0,
+    "NODE_09": 786.62,
+    "NODE_13": 880.74,
+    "NODE_14": 648.41,
+    "NODE_17": 161.99
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_37",
+   "max_loading": 1.116,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9085,
+   "irradiance": 0.2509,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 208.63,
+    "NODE_02": 104.32,
+    "NODE_06": 417.0,
+    "NODE_09": 156.47,
+    "NODE_13": 949.4,
+    "NODE_14": 653.09,
+    "NODE_17": 260.79
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.077,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9443,
+   "irradiance": 0.4112,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1048.23,
+    "NODE_02": 517.37,
+    "NODE_06": 414.85,
+    "NODE_09": 159.92,
+    "NODE_13": 177.69,
+    "NODE_14": 124.38,
+    "NODE_17": 266.53
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.311,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9289,
+   "irradiance": 0.4562,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 976.64,
+    "NODE_02": 548.73,
+    "NODE_06": 36.03,
+    "NODE_09": 821.92,
+    "NODE_13": 72.05,
+    "NODE_14": 50.44,
+    "NODE_17": 108.08
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.234,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8825,
+   "irradiance": 0.4872,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1041.29,
+    "NODE_02": 506.31,
+    "NODE_06": 19.79,
+    "NODE_09": 736.02,
+    "NODE_13": 39.57,
+    "NODE_14": 27.7,
+    "NODE_17": 59.36
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.306,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9632,
+   "irradiance": 0.2456,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 992.02,
+    "NODE_02": 503.37,
+    "NODE_06": 86.55,
+    "NODE_09": 799.51,
+    "NODE_13": 173.1,
+    "NODE_14": 121.17,
+    "NODE_17": 259.65
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.206,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8984,
+   "irradiance": 0.4317,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1100.97,
+    "NODE_02": 489.56,
+    "NODE_06": 16.18,
+    "NODE_09": 827.04,
+    "NODE_13": 32.35,
+    "NODE_14": 22.65,
+    "NODE_17": 48.53
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.328,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9885,
+   "irradiance": 0.2199,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 1015.25,
+    "NODE_02": 532.47,
+    "NODE_06": 5.09,
+    "NODE_09": 9.16,
+    "NODE_13": 834.53,
+    "NODE_14": 632.63,
+    "NODE_17": 15.27
+   },
+   "outages": [
+    "LINE_34"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.215,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9875,
+   "irradiance": 0.3527,
+   "exporters": [
+    "CENTRAL",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 47.51,
+    "NODE_02": 23.75,
+    "NODE_06": 19.79,
+    "NODE_09": 35.63,
+    "NODE_13": 869.78,
+    "NODE_14": 597.5,
+    "NODE_17": 1315.45
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.068,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9397,
+   "irradiance": 0.3182,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1040.14,
+    "NODE_02": 487.06,
+    "NODE_06": 59.44,
+    "NODE_09": 818.83,
+    "NODE_13": 118.87,
+    "NODE_14": 83.21,
+    "NODE_17": 178.31
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.251,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9769,
+   "irradiance": 0.451,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1125.28,
+    "NODE_02": 541.54,
+    "NODE_06": 45.98,
+    "NODE_09": 770.12,
+    "NODE_13": 91.95,
+    "NODE_14": 64.37,
+    "NODE_17": 137.93
+   },
+   "outages": [
+    "LINE_32"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.061,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9144,
+   "irradiance": 0.4496,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1012.24,
+    "NODE_02": 492.25,
+    "NODE_06": 427.87,
+    "NODE_09": 140.51,
+    "NODE_13": 156.12,
+    "NODE_14": 109.28,
+    "NODE_17": 234.18
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.251,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8829,
+   "irradiance": 0.3968,
+   "exporters": [
+    "EAST",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 71.83,
+    "NODE_02": 35.91,
+    "NODE_06": 29.93,
+    "NODE_09": 766.06,
+    "NODE_13": 883.88,
+    "NODE_14": 643.21,
+    "NODE_17": 89.78
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_34",
+   "max_loading": 1.119,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9268,
+   "irradiance": 0.4734,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 965.35,
+    "NODE_02": 501.41,
+    "NODE_06": 42.63,
+    "NODE_09": 807.55,
+    "NODE_13": 85.25,
+    "NODE_14": 59.68,
+    "NODE_17": 127.88
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.189,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.927,
+   "irradiance": 0.4792,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 962.24,
+    "NODE_02": 486.26,
+    "NODE_06": 49.19,
+    "NODE_09": 772.17,
+    "NODE_13": 98.38,
+    "NODE_14": 68.87,
+    "NODE_17": 147.57
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.231,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9912,
+   "irradiance": 0.2015,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 964.22,
+    "NODE_02": 546.59,
+    "NODE_06": 24.22,
+    "NODE_09": 43.6,
+    "NODE_13": 842.76,
+    "NODE_14": 577.41,
+    "NODE_17": 72.67
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.263,
+   "overloaded": [
+    "LINE_02",
+    "LINE_34",
+    "LINE_37",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9369,
+   "irradiance": 0.4615,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 202.77,
+    "NODE_02": 101.39,
+    "NODE_06": 432.58,
+    "NODE_09": 152.08,
+    "NODE_13": 914.08,
+    "NODE_14": 578.39,
+    "NODE_17": 253.47
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.065,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9639,
+   "irradiance": 0.378,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1005.85,
+    "NODE_02": 568.84,
+    "NODE_06": 56.74,
+    "NODE_09": 812.28,
+    "NODE_13": 113.47,
+    "NODE_14": 79.43,
+    "NODE_17": 170.21
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.289,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.886,
+   "irradiance": 0.24,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 195.85,
+    "NODE_02": 97.93,
+    "NODE_06": 457.17,
+    "NODE_09": 146.89,
+    "NODE_13": 909.63,
+    "NODE_14": 633.73,
+    "NODE_17": 244.82
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_38",
+   "max_loading": 1.138,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9921,
+   "irradiance": 0.3129,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1005.38,
+    "NODE_02": 539.16,
+    "NODE_06": 89.31,
+    "NODE_09": 758.65,
+    "NODE_13": 178.63,
+    "NODE_14": 125.04,
+    "NODE_17": 267.94
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.233,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.986,
+   "irradiance": 0.3404,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1123.58,
+    "NODE_02": 546.89,
+    "NODE_06": 57.33,
+    "NODE_09": 822.11,
+    "NODE_13": 114.65,
+    "NODE_14": 80.26,
+    "NODE_17": 171.98
+   },
+   "outages": [
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.068,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9979,
+   "irradiance": 0.2283,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 1039.42,
+    "NODE_02": 483.01,
+    "NODE_06": 18.02,
+    "NODE_09": 32.43,
+    "NODE_13": 804.07,
+    "NODE_14": 636.16,
+    "NODE_17": 54.05
+   },
+   "outages": [
+    "LINE_31",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.074,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9428,
+   "irradiance": 0.4657,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 966.78,
+    "NODE_02": 485.51,
+    "NODE_06": 449.09,
+    "NODE_09": 164.38,
+    "NODE_13": 182.65,
+    "NODE_14": 127.85,
+    "NODE_17": 273.97
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_31"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.172,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9787,
+   "irradiance": 0.3881,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 990.21,
+    "NODE_02": 536.27,
+    "NODE_06": 410.97,
+    "NODE_09": 199.32,
+    "NODE_13": 221.47,
+    "NODE_14": 155.03,
+    "NODE_17": 332.2
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.248,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9045,
+   "irradiance": 0.2483,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 976.03,
+    "NODE_02": 498.92,
+    "NODE_06": 462.71,
+    "NODE_09": 175.9,
+    "NODE_13": 195.45,
+    "NODE_14": 136.81,
+    "NODE_17": 293.17
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.208,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9075,
+   "irradiance": 0.2165,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 990.87,
+    "NODE_02": 557.46,
+    "NODE_06": 67.62,
+    "NODE_09": 731.59,
+    "NODE_13": 135.24,
+    "NODE_14": 94.67,
+    "NODE_17": 202.86
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.292,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9198,
+   "irradiance": 0.4387,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1080.71,
+    "NODE_02": 489.26,
+    "NODE_06": 424.74,
+    "NODE_09": 133.12,
+    "NODE_13": 147.91,
+    "NODE_14": 103.53,
+    "NODE_17": 221.86
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.329,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9052,
+   "irradiance": 0.4576,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1083.68,
+    "NODE_02": 486.14,
+    "NODE_06": 451.49,
+    "NODE_09": 112.61,
+    "NODE_13": 125.12,
+    "NODE_14": 87.58,
+    "NODE_17": 187.68
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.334,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9556,
+   "irradiance": 0.3725,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1136.75,
+    "NODE_02": 556.7,
+    "NODE_06": 41.37,
+    "NODE_09": 784.99,
+    "NODE_13": 82.73,
+    "NODE_14": 57.91,
+    "NODE_17": 124.1
+   },
+   "outages": [
+    "LINE_35"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.064,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9615,
+   "irradiance": 0.4197,
+   "exporters": [
+    "EAST",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 151.55,
+    "NODE_02": 75.77,
+    "NODE_06": 63.14,
+    "NODE_09": 726.89,
+    "NODE_13": 929.21,
+    "NODE_14": 621.46,
+    "NODE_17": 189.43
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_34",
+   "max_loading": 1.12,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8983,
+   "irradiance": 0.231,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1032.24,
+    "NODE_02": 509.2,
+    "NODE_06": 58.76,
+    "NODE_09": 759.53,
+    "NODE_13": 117.52,
+    "NODE_14": 82.27,
+    "NODE_17": 176.29
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.288,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9108,
+   "irradiance": 0.2789,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1042.93,
+    "NODE_02": 547.76,
+    "NODE_06": 47.33,
+    "NODE_09": 788.77,
+    "NODE_13": 94.65,
+    "NODE_14": 66.26,
+    "NODE_17": 141.98
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.335,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9127,
+   "irradiance": 0.2301,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1029.28,
+    "NODE_02": 506.32,
+    "NODE_06": 460.02,
+    "NODE_09": 173.09,
+    "NODE_13": 192.32,
+    "NODE_14": 134.62,
+    "NODE_17": 288.48
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.349,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9091,
+   "irradiance": 0.2161,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 983.62,
+    "NODE_02": 509.34,
+    "NODE_06": 11.61,
+    "NODE_09": 20.9,
+    "NODE_13": 23.22,
+    "NODE_14": 16.26,
+    "NODE_17": 1221.17
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_31"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.273,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8866,
+   "irradiance": 0.3164,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 981.27,
+    "NODE_02": 508.52,
+    "NODE_06": 403.05,
+    "NODE_09": 158.02,
+    "NODE_13": 175.58,
+    "NODE_14": 122.9,
+    "NODE_17": 263.36
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_31"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.248,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9187,
+   "irradiance": 0.3893,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1071.54,
+    "NODE_02": 487.1,
+    "NODE_06": 419.34,
+    "NODE_09": 146.69,
+    "NODE_13": 162.99,
+    "NODE_14": 114.09,
+    "NODE_17": 244.49
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.313,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9543,
+   "irradiance": 0.4527,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 988.49,
+    "NODE_02": 509.43,
+    "NODE_06": 49.5,
+    "NODE_09": 836.79,
+    "NODE_13": 98.99,
+    "NODE_14": 69.29,
+    "NODE_17": 148.49
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.305,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9953,
+   "irradiance": 0.3169,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1021.16,
+    "NODE_02": 501.47,
+    "NODE_06": 444.04,
+    "NODE_09": 220.41,
+    "NODE_13": 244.89,
+    "NODE_14": 171.43,
+    "NODE_17": 367.34
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.238,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9971,
+   "irradiance": 0.4854,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1050.58,
+    "NODE_02": 531.75,
+    "NODE_06": 402.13,
+    "NODE_09": 181.22,
+    "NODE_13": 201.36,
+    "NODE_14": 140.95,
+    "NODE_17": 302.03
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.302,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9732,
+   "irradiance": 0.4238,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1139.91,
+    "NODE_02": 519.37,
+    "NODE_06": 46.02,
+    "NODE_09": 792.25,
+    "NODE_13": 92.04,
+    "NODE_14": 64.43,
+    "NODE_17": 138.06
+   },
+   "outages": [
+    "LINE_31",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.064,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9838,
+   "irradiance": 0.2685,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1062.47,
+    "NODE_02": 509.28,
+    "NODE_06": 18.66,
+    "NODE_09": 33.59,
+    "NODE_13": 37.33,
+    "NODE_14": 26.13,
+    "NODE_17": 1293.15
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.315,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9564,
+   "irradiance": 0.2895,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 987.27,
+    "NODE_02": 480.3,
+    "NODE_06": 26.38,
+    "NODE_09": 47.49,
+    "NODE_13": 52.77,
+    "NODE_14": 36.94,
+    "NODE_17": 1238.33
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.201,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9072,
+   "irradiance": 0.3913,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1117.69,
+    "NODE_02": 525.42,
+    "NODE_06": 29.16,
+    "NODE_09": 747.38,
+    "NODE_13": 58.32,
+    "NODE_14": 40.82,
+    "NODE_17": 87.48
+   },
+   "outages": [
+    "LINE_35",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.069,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9137,
+   "irradiance": 0.3028,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 220.36,
+    "NODE_02": 110.18,
+    "NODE_06": 433.91,
+    "NODE_09": 165.27,
+    "NODE_13": 926.21,
+    "NODE_14": 584.24,
+    "NODE_17": 275.45
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_37",
+   "max_loading": 1.103,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9397,
+   "irradiance": 0.2073,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 992.8,
+    "NODE_02": 528.1,
+    "NODE_06": 80.25,
+    "NODE_09": 781.02,
+    "NODE_13": 160.5,
+    "NODE_14": 112.35,
+    "NODE_17": 240.75
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.314,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.963,
+   "irradiance": 0.4952,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1035.48,
+    "NODE_02": 545.96,
+    "NODE_06": 43.65,
+    "NODE_09": 783.05,
+    "NODE_13": 87.31,
+    "NODE_14": 61.12,
+    "NODE_17": 130.96
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.297,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9759,
+   "irradiance": 0.2365,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1003.62,
+    "NODE_02": 480.66,
+    "NODE_06": 88.76,
+    "NODE_09": 845.32,
+    "NODE_13": 177.53,
+    "NODE_14": 124.27,
+    "NODE_17": 266.29
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.194,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9975,
+   "irradiance": 0.383,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1034.67,
+    "NODE_02": 562.26,
+    "NODE_06": 73.28,
+    "NODE_09": 773.57,
+    "NODE_13": 146.56,
+    "NODE_14": 102.59,
+    "NODE_17": 219.84
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_32"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.307,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8911,
+   "irradiance": 0.2035,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1033.59,
+    "NODE_02": 528.01,
+    "NODE_06": 438.66,
+    "NODE_09": 162.19,
+    "NODE_13": 180.22,
+    "NODE_14": 126.15,
+    "NODE_17": 270.32
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.313,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9685,
+   "irradiance": 0.2205,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1013.77,
+    "NODE_02": 530.93,
+    "NODE_06": 31.14,
+    "NODE_09": 56.04,
+    "NODE_13": 62.27,
+    "NODE_14": 43.59,
+    "NODE_17": 1240.1
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.29,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9442,
+   "irradiance": 0.3725,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 992.05,
+    "NODE_02": 540.79,
+    "NODE_06": 443.3,
+    "NODE_09": 169.26,
+    "NODE_13": 188.07,
+    "NODE_14": 131.65,
+    "NODE_17": 282.11
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_31"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.265,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9117,
+   "irradiance": 0.4042,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1130.76,
+    "NODE_02": 543.61,
+    "NODE_06": 11.2,
+    "NODE_09": 851.09,
+    "NODE_13": 22.39,
+    "NODE_14": 15.67,
+    "NODE_17": 33.59
+   },
+   "outages": [
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.076,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.9076,
+   "irradiance": 0.454,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1012.28,
+    "NODE_02": 488.15,
+    "NODE_06": 424.88,
+    "NODE_09": 136.18,
+    "NODE_13": 151.32,
+    "NODE_14": 105.92,
+    "NODE_17": 226.97
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_39"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.253,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9861,
+   "irradiance": 0.3779,
+   "exporters": [
+    "CENTRAL",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 13.59,
+    "NODE_02": 6.79,
+    "NODE_06": 5.66,
+    "NODE_09": 10.19,
+    "NODE_13": 872.96,
+    "NODE_14": 633.95,
+    "NODE_17": 1336.74
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_38",
+   "max_loading": 1.133,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.8814,
+   "irradiance": 0.3132,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 983.49,
+    "NODE_02": 542.34,
+    "NODE_06": 33.39,
+    "NODE_09": 825.7,
+    "NODE_13": 66.79,
+    "NODE_14": 46.75,
+    "NODE_17": 100.18
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.26,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9429,
+   "irradiance": 0.3425,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1057.38,
+    "NODE_02": 535.3,
+    "NODE_06": 420.65,
+    "NODE_09": 166.62,
+    "NODE_13": 185.14,
+    "NODE_14": 129.6,
+    "NODE_17": 277.7
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_33"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.338,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9288,
+   "irradiance": 0.398,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 208.6,
+    "NODE_02": 104.3,
+    "NODE_06": 406.0,
+    "NODE_09": 156.45,
+    "NODE_13": 883.7,
+    "NODE_14": 651.04,
+    "NODE_17": 260.75
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_30",
+   "max_loading": 1.112,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.9559,
+   "irradiance": 0.3291,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 229.96,
+    "NODE_02": 114.98,
+    "NODE_06": 461.54,
+    "NODE_09": 172.47,
+    "NODE_13": 932.87,
+    "NODE_14": 629.28,
+    "NODE_17": 287.45
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_34",
+   "max_loading": 1.125,
+   "overloaded": [
+    "LINE_37"
+   ]
+  },
+  {
+   "load_factor": 0.971,
+   "irradiance": 0.3531,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 998.39,
+    "NODE_02": 567.73,
+    "NODE_06": 474.03,
+    "NODE_09": 178.84,
+    "NODE_13": 198.71,
+    "NODE_14": 139.1,
+    "NODE_17": 298.06
+   },
+   "outages": [
+    "LINE_29"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.294,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8812,
+   "irradiance": 0.2384,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1038.38,
+    "NODE_02": 514.4,
+    "NODE_06": 470.11,
+    "NODE_09": 142.49,
+    "NODE_13": 158.33,
+    "NODE_14": 110.83,
+    "NODE_17": 237.49
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_36"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.328,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9394,
+   "irradiance": 0.2722,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1059.18,
+    "NODE_02": 552.44,
+    "NODE_06": 468.55,
+    "NODE_09": 164.72,
+    "NODE_13": 183.02,
+    "NODE_14": 128.12,
+    "NODE_17": 274.53
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.347,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9097,
+   "irradiance": 0.3501,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 978.7,
+    "NODE_02": 552.0,
+    "NODE_06": 460.85,
+    "NODE_09": 145.72,
+    "NODE_13": 161.92,
+    "NODE_14": 113.34,
+    "NODE_17": 242.87
+   },
+   "outages": [
+    "LINE_28",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.263,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9742,
+   "irradiance": 0.2965,
+   "exporters": [
+    "CENTRAL",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 965.19,
+    "NODE_02": 509.19,
+    "NODE_06": 6.84,
+    "NODE_09": 12.3,
+    "NODE_13": 13.67,
+    "NODE_14": 9.57,
+    "NODE_17": 1404.53
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.201,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.932,
+   "irradiance": 0.265,
+   "exporters": [
+    "SOUTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 265.82,
+    "NODE_02": 132.91,
+    "NODE_06": 406.26,
+    "NODE_09": 199.37,
+    "NODE_13": 897.14,
+    "NODE_14": 579.3,
+    "NODE_17": 332.28
+   },
+   "outages": [
+    "LINE_30",
+    "LINE_34"
+   ],
+   "trip_line": "LINE_37",
+   "max_loading": 1.075,
+   "overloaded": [
+    "LINE_18",
+    "LINE_20",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.97,
+   "irradiance": 0.4709,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1138.59,
+    "NODE_02": 564.67,
+    "NODE_06": 32.85,
+    "NODE_09": 788.49,
+    "NODE_13": 65.7,
+    "NODE_14": 45.99,
+    "NODE_17": 98.55
+   },
+   "outages": [
+    "LINE_36",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.094,
+   "overloaded": [
+    "LINE_02"
+   ]
+  },
+  {
+   "load_factor": 0.886,
+   "irradiance": 0.2849,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 969.77,
+    "NODE_02": 493.6,
+    "NODE_06": 400.45,
+    "NODE_09": 170.76,
+    "NODE_13": 189.74,
+    "NODE_14": 132.82,
+    "NODE_17": 284.61
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_37"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.208,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9055,
+   "irradiance": 0.4889,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 967.79,
+    "NODE_02": 489.11,
+    "NODE_06": 411.13,
+    "NODE_09": 139.61,
+    "NODE_13": 155.12,
+    "NODE_14": 108.58,
+    "NODE_17": 232.68
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_31"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.195,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9827,
+   "irradiance": 0.2085,
+   "exporters": [
+    "NORTH",
+    "WEST"
+   ],
+   "setpoints": {
+    "NODE_01": 989.49,
+    "NODE_02": 544.68,
+    "NODE_06": 5.99,
+    "NODE_09": 10.79,
+    "NODE_13": 805.55,
+    "NODE_14": 661.92,
+    "NODE_17": 17.98
+   },
+   "outages": [
+    "LINE_33",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.106,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.8889,
+   "irradiance": 0.2093,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 965.5,
+    "NODE_02": 529.84,
+    "NODE_06": 437.3,
+    "NODE_09": 174.18,
+    "NODE_13": 193.54,
+    "NODE_14": 135.48,
+    "NODE_17": 290.3
+   },
+   "outages": [
+    "LINE_28"
+   ],
+   "trip_line": "LINE_29",
+   "max_loading": 1.257,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.9914,
+   "irradiance": 0.255,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 996.56,
+    "NODE_02": 484.34,
+    "NODE_06": 442.92,
+    "NODE_09": 240.4,
+    "NODE_13": 267.11,
+    "NODE_14": 186.98,
+    "NODE_17": 400.67
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_40"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.175,
+   "overloaded": [
+    "LINE_02",
+    "LINE_38"
+   ]
+  },
+  {
+   "load_factor": 0.8937,
+   "irradiance": 0.2963,
+   "exporters": [
+    "NORTH",
+    "SOUTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1117.44,
+    "NODE_02": 530.45,
+    "NODE_06": 455.37,
+    "NODE_09": 121.33,
+    "NODE_13": 134.81,
+    "NODE_14": 94.37,
+    "NODE_17": 202.21
+   },
+   "outages": [
+    "LINE_34",
+    "LINE_38"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.146,
+   "overloaded": [
+    "LINE_29"
+   ]
+  },
+  {
+   "load_factor": 0.9847,
+   "irradiance": 0.4436,
+   "exporters": [
+    "EAST",
+    "NORTH"
+   ],
+   "setpoints": {
+    "NODE_01": 1050.29,
+    "NODE_02": 558.14,
+    "NODE_06": 63.49,
+    "NODE_09": 732.2,
+    "NODE_13": 126.99,
+    "NODE_14": 88.89,
+    "NODE_17": 190.48
+   },
+   "outages": [
+    "LINE_29",
+    "LINE_35"
+   ],
+   "trip_line": "LINE_28",
+   "max_loading": 1.326,
+   "overloaded": [
+    "LINE_02",
+    "LINE_04",
+    "LINE_30",
+    "LINE_38"
+   ]
+  }
+ ]
+}

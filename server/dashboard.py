@@ -4,6 +4,11 @@ NexusGrid Gradio Dashboard — Pro Command Center
 Professional SCADA-style UI: dark glass panels, live KPIs, spacious charts.
 Seven panels: topology, frequency, Sankey, threat feed, action trace,
 reward breakdown, task radar.
+
+Every browser session gets its own environment (``gr.State``), so visitors of
+a shared Space never step each other's episodes. The "ground truth" lines in
+the threat monitor come from ``env.debug_state()`` and are shown to the human
+observer only; agents never receive them.
 """
 
 from __future__ import annotations
@@ -158,10 +163,17 @@ def _section(num: str, title: str, subtitle: str) -> str:
 # ═══════════════════════════════════════════════════════════════════
 # PANEL 1 — GRID TOPOLOGY
 # ═══════════════════════════════════════════════════════════════════
-def create_topology_graph(obs_dict: Dict[str, Any]) -> go.Figure:
+def _latest_telemetry(obs_dict: Dict[str, Any]) -> Dict[str, Dict[str, Any]]:
+    stream = obs_dict.get("telemetry_stream") or []
+    return {r.get("node_id"): r for r in (stream[-1] if stream else [])}
+
+
+def create_topology_graph(obs_dict: Dict[str, Any], spoofed: List[str] | None = None) -> go.Figure:
     topo = obs_dict.get("topology_graph", {})
     nodes = topo.get("nodes", [])
     edges = topo.get("edges", [])
+    telemetry = _latest_telemetry(obs_dict)
+    spoofed_set = set(spoofed or [])
 
     if not nodes:
         fig = go.Figure()
@@ -257,8 +269,10 @@ def create_topology_graph(obs_dict: Dict[str, Any]) -> go.Figure:
         crit = nd.get("critical", False)
         en = nd.get("energized", True)
         cap = nd.get("capacity_mw", 0)
-        gen = nd.get("generation_mw", 0)
-        spoof = nd.get("spoofed", False)
+        reading = telemetry.get(nid, {})
+        gen = reading.get("generation_mw", 0.0)
+        cons = reading.get("consumption_mw", 0.0)
+        spoof = nid in spoofed_set
         x, y = pos.get(nid, (0, 0))
 
         nx_l.append(x)
@@ -271,15 +285,19 @@ def create_topology_graph(obs_dict: Dict[str, Any]) -> go.Figure:
         tags = []
         if crit:
             tags.append("CRITICAL")
+        if nd.get("quarantined"):
+            tags.append("QUARANTINED")
         if spoof:
-            tags.append("SPOOFED")
+            tags.append("SPOOFED (ground truth)")
         tag_str = (" · " + " · ".join(tags)) if tags else ""
+        detail = (f"Consumption: {cons:,.0f} MW" if t == "load"
+                  else f"Generation: {gen:,.0f} MW · setpoint {nd.get('setpoint_mw', 0):,.0f} MW")
         hover_l.append(
             f"<b>{nid}</b>{tag_str}<br>"
             f"Type: {t.upper()}<br>"
             f"State: {'Live' if en else 'Dark'}<br>"
             f"Capacity: {cap:,.0f} MW<br>"
-            f"Generation: {gen:,.0f} MW"
+            f"{detail}"
         )
 
     node_trace = go.Scatter(
@@ -330,16 +348,18 @@ def _freq_zone(freq_hz: float) -> tuple[str, str]:
     """Return (accent_color, zone_label) for a grid frequency reading."""
     f = round(freq_hz, 3)
     if f < 59.0:
-        return C["crimson"], "BLACKOUT"
+        return C["crimson"], "COLLAPSE"
     if f < 59.2:
-        return C["red"], "CRITICAL"
+        return C["red"], "UFLS"
     if f < 59.5:
         return C["orange"], "DANGER"
-    if f < 59.7:
+    if f < 59.8:
         return C["amber"], "WARNING"
-    if f <= 60.3:
+    if f <= 60.2:
         return C["green"], "NOMINAL"
-    return C["amber"], "ELEVATED"
+    if f <= 60.5:
+        return C["amber"], "HIGH"
+    return C["red"], "OVER-FREQUENCY"
 
 
 def format_freq_status(freq_hz: float) -> str:
@@ -393,9 +413,10 @@ def create_frequency_gauge(freq_hz: float,
                 dict(range=[58.5, 59.0], color="rgba(251,113,133,0.55)"),
                 dict(range=[59.0, 59.2], color="rgba(248,113,113,0.50)"),
                 dict(range=[59.2, 59.5], color="rgba(251,146,60,0.45)"),
-                dict(range=[59.5, 59.7], color="rgba(251,191,36,0.40)"),
-                dict(range=[59.7, 60.3], color="rgba(52,211,153,0.48)"),
-                dict(range=[60.3, 61.5], color="rgba(251,191,36,0.40)"),
+                dict(range=[59.5, 59.8], color="rgba(251,191,36,0.40)"),
+                dict(range=[59.8, 60.2], color="rgba(52,211,153,0.48)"),
+                dict(range=[60.2, 60.5], color="rgba(251,191,36,0.40)"),
+                dict(range=[60.5, 61.5], color="rgba(248,113,113,0.45)"),
             ],
             threshold=dict(line=dict(color=C["text"], width=2), thickness=0.8, value=freq_hz),
         ),
@@ -664,8 +685,8 @@ def create_power_flow_sankey(obs_dict: Dict[str, Any]) -> go.Figure:
         title = "Grid Assets & Peak Demand (MW)"
         if task_id == 5:
             subtitle = (
-                f"Black start - grid de-energized - {n_tripped} lines TRIPPED - "
-                "dispatch NODE_01 hydro to restore flow"
+                f"Black start - grid de-energized - {n_tripped} lines open - "
+                "restart the black-start unit named in the brief"
             )
         else:
             subtitle = f"No live MW flow ({n_tripped} tripped / {len(edges)} lines)"
@@ -734,7 +755,8 @@ def create_task_radar(scores: Dict[int, float]) -> go.Figure:
         marker=dict(size=10, color=C["purple"], line=dict(width=2, color="#f8fafc")),
         mode="lines+markers",
         name="Mission score",
-        hovertemplate="<b>%{theta}</b><br>Score: %{r:.3f}<extra></extra>",
+        customdata=labels_c,
+        hovertemplate="<b>%{theta} · %{customdata}</b><br>Score: %{r:.3f}<extra></extra>",
     ))
     fig.add_trace(go.Scatterpolar(
         r=[0.5] * len(theta_c),
@@ -783,11 +805,8 @@ def create_task_radar(scores: Dict[int, float]) -> go.Figure:
 # PANEL 5 — REWARD BREAKDOWN
 # ═══════════════════════════════════════════════════════════════════
 def create_reward_breakdown(reward_history: List[Dict[str, float]]) -> go.Figure:
-    POS = [
-        "fault_isolation", "cyber_detection", "frequency_stable",
-        "proactive_dispatch", "reasoning_order", "stability_bonus",
-    ]
-    NEG = ["overload_penalty", "hallucination_penalty", "redundant_estimation"]
+    POS = ["progress", "frequency_band"]
+    NEG = ["overload", "events", "invalid_action"]
 
     acc: Dict[str, float] = {}
     for entry in reward_history:
@@ -795,11 +814,15 @@ def create_reward_breakdown(reward_history: List[Dict[str, float]]) -> go.Figure
             acc[k] = acc.get(k, 0.0) + v
 
     labels, values = [], []
-    for sig in POS:
-        labels.append(sig.replace("_", " ").title())
-        values.append(acc.get(sig, 0.0))
-    for sig in NEG:
-        labels.append(sig.replace("_", " ").title())
+    names = {
+        "progress": "Task progress",
+        "frequency_band": "Frequency in band",
+        "overload": "Line overloads",
+        "events": "Trips / UFLS / collapse",
+        "invalid_action": "Invalid actions",
+    }
+    for sig in POS + NEG:
+        labels.append(names[sig])
         values.append(acc.get(sig, 0.0))
 
     if not any(values):
@@ -860,7 +883,7 @@ def create_reward_breakdown(reward_history: List[Dict[str, float]]) -> go.Figure
 # ═══════════════════════════════════════════════════════════════════
 # TEXT FORMATTERS
 # ═══════════════════════════════════════════════════════════════════
-def format_threat_feed(packets: List[Dict], obs: Dict) -> str:
+def format_threat_feed(packets: List[Dict], obs: Dict, debug: Dict | None = None) -> str:
     hdr = "SCADA THREAT MONITOR · Kirchhoff Oracle\n" + ("─" * 52) + "\n\n"
     if not packets:
         return hdr + "  System offline — reset to begin monitoring.\n"
@@ -897,9 +920,18 @@ def format_threat_feed(packets: List[Dict], obs: Dict) -> str:
         else:
             lines.append("  All nodes Kirchhoff-consistent\n")
 
-    spoofs = obs.get("active_spoofs", [])
-    if spoofs:
-        lines.append(f"\n  Active spoofs: {', '.join(spoofs)}\n")
+    debug = debug or {}
+    spoofs = debug.get("active_spoofs", [])
+    attack = debug.get("attack") or {}
+    if attack:
+        lines.append(f"\n  Ground truth (observer only, hidden from agents)\n  {'─' * 36}\n")
+        lines.append(f"  Attack: {attack.get('type')} on {attack.get('target_node')}\n")
+        if spoofs:
+            lines.append(f"  Telemetry falsified at: {', '.join(spoofs)}\n")
+        if debug.get("hidden_loss_mw"):
+            lines.append(f"  Hidden generation loss: {debug['hidden_loss_mw']:.0f} MW\n")
+        if debug.get("resonance_amplitude_hz"):
+            lines.append(f"  Oscillation amplitude: {debug['resonance_amplitude_hz']:.3f} Hz\n")
     return "".join(lines)
 
 
@@ -937,7 +969,7 @@ def format_status_bar(state) -> str:
     return (
         f"TASK {state.task_id}  |  TICK {state.tick:03d}  |  "
         f"FREQ {state.frequency_hz:.3f} Hz  |  "
-        f"SCORE {state.cumulative_score:+.4f}  |  {done_str}"
+        f"SCORE {state.task_score:.3f}  |  REWARD {state.cumulative_reward:+.3f}  |  {done_str}"
     )
 
 
@@ -950,7 +982,6 @@ def format_kpi_html(obs: Dict[str, Any], state) -> str:
     n_energized = sum(1 for n in node_list if n.get("energized"))
     n_live_lines = sum(1 for e in edge_list if e.get("status") == "LIVE")
     packets = len(state.packet_log) if state.packet_log else 0
-    actions = len(state.action_log) if state.action_log else 0
     freq = state.frequency_hz
     if freq < 59.5:
         freq_col = C["crimson"]
@@ -958,8 +989,8 @@ def format_kpi_html(obs: Dict[str, Any], state) -> str:
         freq_col = C["amber"]
     else:
         freq_col = C["green"]
-    score_col = C["green"] if state.cumulative_score >= 0 else C["red"]
-    spoofs = len(obs.get("active_spoofs", [])) if obs else 0
+    score_col = C["green"] if state.task_score >= 0.5 else (C["amber"] if state.task_score > 0 else C["text_mid"])
+    spoofs = len((state.debug or {}).get("active_spoofs", []))
     lines_label = "Live Lines" if n_live_lines else "Lines (TRIPPED)"
     lines_val = f"{n_live_lines}/{n_edges}" if n_edges else "—"
     nodes_val = f"{n_energized}/{n_nodes}" if n_nodes else "—"
@@ -968,9 +999,9 @@ def format_kpi_html(obs: Dict[str, Any], state) -> str:
       <div class="kpi-pro"><span class="kpi-k">Energized Nodes</span><span class="kpi-v">{nodes_val}</span></div>
       <div class="kpi-pro"><span class="kpi-k">{lines_label}</span><span class="kpi-v">{lines_val}</span></div>
       <div class="kpi-pro"><span class="kpi-k">Grid Frequency</span><span class="kpi-v" style="color:{freq_col}">{freq:.3f} Hz</span></div>
-      <div class="kpi-pro"><span class="kpi-k">Episode Score</span><span class="kpi-v" style="color:{score_col}">{state.cumulative_score:+.3f}</span></div>
+      <div class="kpi-pro"><span class="kpi-k">Task Score</span><span class="kpi-v" style="color:{score_col}">{state.task_score:.3f}</span></div>
       <div class="kpi-pro"><span class="kpi-k">SCADA Packets</span><span class="kpi-v">{packets}</span></div>
-      <div class="kpi-pro"><span class="kpi-k">Active Spoofs</span><span class="kpi-v" style="color:{C['crimson'] if spoofs else C['green']}">{spoofs}</span></div>
+      <div class="kpi-pro"><span class="kpi-k">Spoofed (truth)</span><span class="kpi-v" style="color:{C['crimson'] if spoofs else C['green']}">{spoofs}</span></div>
     </div>
     """
 
@@ -1013,15 +1044,26 @@ def format_mission_board(scores: Dict[int, float], active_id: int) -> str:
 
 
 # ═══════════════════════════════════════════════════════════════════
-# DASHBOARD STATE
+# DASHBOARD STATE (one instance per browser session)
 # ═══════════════════════════════════════════════════════════════════
+def _ensure_root_on_path() -> None:
+    import os
+    import sys
+
+    root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if root not in sys.path:
+        sys.path.insert(0, root)
+
+
 class DashboardState:
     def __init__(self):
         self.task_scores: Dict[int, float] = {t["id"]: 0.0 for t in TASK_META}
+        self.env = None
         self.reset()
 
     def reset(self):
         self.current_obs: Dict[str, Any] = {}
+        self.debug: Dict[str, Any] = {}
         self.action_log: List[Dict] = []
         self.reward_history: List[Dict] = []
         self.packet_log: List[Dict] = []
@@ -1029,9 +1071,13 @@ class DashboardState:
         self.frequency_hz: float = 60.0
         self.task_id: int = 0
         self.tick: int = 0
-        self.cumulative_score: float = 0.0
+        self.task_score: float = 0.0
+        self.cumulative_reward: float = 0.0
         self.done: bool = False
-        self.env = None
+
+    def __deepcopy__(self, memo):
+        # gr.State deep-copies its default for every new session: start each one fresh.
+        return DashboardState()
 
     def _push_freq(self, hz: float):
         self.freq_history.append(hz)
@@ -1040,16 +1086,8 @@ class DashboardState:
 
     def init_env(self) -> bool:
         try:
-            import sys
-            import os
-
-            root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-            if root not in sys.path:
-                sys.path.insert(0, root)
-            try:
-                from server.nexusgrid_environment import NexusgridEnvironment
-            except ImportError:
-                from nexusgrid_environment import NexusgridEnvironment
+            _ensure_root_on_path()
+            from server.nexusgrid_environment import NexusgridEnvironment
             self.env = NexusgridEnvironment()
             return True
         except Exception:
@@ -1057,101 +1095,97 @@ class DashboardState:
             traceback.print_exc()
             return False
 
-    def do_reset(self, task_id: int, seed: int):
-        if self.env is None:
-            self.init_env()
-        if self.env is None:
-            return
-        env = self.env
-        self.action_log.clear()
-        self.reward_history.clear()
-        self.packet_log.clear()
-        self.freq_history = [60.0]
-        self.frequency_hz = 60.0
-        self.tick = 0
-        self.cumulative_score = 0.0
-        self.done = False
-        self.env = env
-        self.task_id = task_id
-
-        obs = self.env.reset(seed=seed, task_id=task_id)
-        od = obs.model_dump() if hasattr(obs, "model_dump") else obs.__dict__
-        self.current_obs = od
-        self.frequency_hz = od.get("grid_frequency_hz", 60.0)
-        self.tick = od.get("tick", 0)
-        self.packet_log = od.get("network_packet_logs", [])
-        self._push_freq(self.frequency_hz)
-
-    def do_step(self, action_dict: Dict[str, Any]):
-        if self.env is None:
-            return
-        import sys
-        import os
-
-        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-        if root not in sys.path:
-            sys.path.insert(0, root)
-        from models import GridAction
-        try:
-            action = GridAction(**action_dict)
-        except Exception as e:
-            print(f"[Dashboard] Bad action: {e}")
-            return
-        obs = self.env.step(action)
-        od = obs.model_dump() if hasattr(obs, "model_dump") else obs.__dict__
-        reward_val = od.get("reward", 0.0)
+    def _absorb(self, obs) -> Dict[str, Any]:
+        od = obs.model_dump() if hasattr(obs, "model_dump") else dict(obs.__dict__)
         self.current_obs = od
         self.frequency_hz = od.get("grid_frequency_hz", 60.0)
         self.tick = od.get("tick", 0)
         self.done = od.get("done", False)
-        self.cumulative_score += reward_val if isinstance(reward_val, (int, float)) else 0
+        self.task_score = float(od.get("score", 0.0) or 0.0)
+        self.packet_log = od.get("network_packet_logs", []) or self.packet_log
+        try:
+            self.debug = self.env.debug_state() if self.env is not None else {}
+        except Exception:
+            self.debug = {}
         self._push_freq(self.frequency_hz)
+        return od
 
+    def do_reset(self, task_id: int, seed: int):
+        if self.env is None and not self.init_env():
+            return
+        scores = self.task_scores
+        self.reset()
+        self.task_scores = scores
+        self.task_id = task_id
+        self.freq_history = []
+        self._absorb(self.env.reset(seed=seed, task_id=task_id))
+
+    def do_step(self, action_dict: Dict[str, Any]):
+        if self.env is None or not self.current_obs:
+            return
+        _ensure_root_on_path()
+        from models import GridAction
+        try:
+            action = GridAction(**action_dict)
+        except Exception as e:
+            self.action_log.append({"tick": self.tick, "action": "rejected", "params": json.dumps({"error": str(e)[:80]}),
+                                    "reward": "+0.000", "score": f"{self.task_score:.3f}"})
+            return
+        self._record(action, self.env.step(action), action_dict)
+
+    def _record(self, action, obs, action_dict: Dict[str, Any] | None = None):
+        od = self._absorb(obs)
+        reward_val = float(od.get("reward", 0.0) or 0.0)
+        self.cumulative_reward += reward_val
+        if action_dict is None:
+            action_dict = {k: v for k, v in action.model_dump().items() if v is not None}
+            action_dict["action_type"] = getattr(action.action_type, "value", action.action_type)
+        params = {k: v for k, v in action_dict.items() if k != "action_type" and v is not None}
+        if od.get("last_action_error"):
+            params["error"] = od["last_action_error"][:60]
         self.action_log.append({
             "tick": self.tick,
-            "action": action_dict.get("action_type", "?"),
-            "params": json.dumps({k: v for k, v in action_dict.items() if k != "action_type"}),
-            "reward": f"{reward_val:+.3f}" if isinstance(reward_val, (int, float)) else str(reward_val),
-            "score": f"{self.cumulative_score:.3f}",
+            "action": str(action_dict.get("action_type", "?")),
+            "params": json.dumps(params),
+            "reward": f"{reward_val:+.3f}",
+            "score": f"{self.task_score:.3f}",
         })
-        if pkts := od.get("network_packet_logs", []):
-            self.packet_log = pkts
-        meta = od.get("metadata", {})
-        if isinstance(meta, dict):
-            if bd := meta.get("reward_breakdown", {}):
-                self.reward_history.append(bd)
-
-        live_score = max(0.0, min(1.0, self.cumulative_score))
-        self.task_scores[self.task_id] = max(
-            self.task_scores.get(self.task_id, 0.0),
-            live_score,
-        )
-
+        if bd := od.get("reward_breakdown"):
+            self.reward_history.append(bd)
         if self.done and self.env is not None:
-            try:
-                graded = self.env.get_score()
-                if isinstance(graded, (int, float)):
-                    self.task_scores[self.task_id] = max(
-                        self.task_scores.get(self.task_id, 0.0),
-                        max(0.0, min(1.0, graded)),
-                    )
-            except Exception:
-                pass
+            self.task_score = float(self.env.get_score())
+        self.task_scores[self.task_id] = max(self.task_scores.get(self.task_id, 0.0), self.task_score if self.done else 0.0)
+
+    def run_policy(self, task_id: int, seed: int, num_steps: int, policy_name: str = "expert"):
+        self.do_reset(task_id, seed)
+        if self.env is None:
+            return
+        _ensure_root_on_path()
+        from policies import make_policy
+        policy = make_policy(policy_name, seed)
+        obs = self.current_obs
+        for _ in range(int(num_steps)):
+            if self.done:
+                break
+            action = policy.act(obs)
+            self._record(action, self.env.step(action))
+            obs = self.current_obs
 
 
 dashboard_state = DashboardState()
 
 
-def on_reset(task_id: int, seed: int):
-    dashboard_state.do_reset(int(task_id), int(seed))
-    return _refresh()
+def on_reset(task_id: int, seed: int, state: DashboardState | None = None):
+    state = state or dashboard_state
+    state.do_reset(int(task_id), int(seed))
+    return _refresh(state)
 
 
-def on_step(action_type, node_id, edge_id, mw, status, hz_offset, duration, subgraph):
+def _action_from_inputs(action_type, node_id, edge_id, mw, status, hz_offset, duration, subgraph) -> Dict[str, Any]:
     ad: Dict[str, Any] = {"action_type": action_type}
-    if action_type == "dispatch_generation":
+    if action_type in ("dispatch_generation", "shed_load"):
         ad["node_id"] = node_id
-        ad["mw"] = float(mw)
+        ad["mw"] = float(mw or 0.0)
     elif action_type == "toggle_circuit_breaker":
         ad["edge_id"] = edge_id
         ad["status"] = status
@@ -1159,51 +1193,41 @@ def on_step(action_type, node_id, edge_id, mw, status, hz_offset, duration, subg
         try:
             ad["subgraph"] = json.loads(subgraph)
         except Exception:
-            ad["subgraph"] = [s.strip() for s in subgraph.split(",") if s.strip()]
+            ad["subgraph"] = [s.strip() for s in str(subgraph).split(",") if s.strip()]
     elif action_type == "quarantine_scada_node":
         ad["node_id"] = node_id
     elif action_type == "inject_counter_signal":
         ad["node_id"] = node_id
-        ad["hz_offset"] = float(hz_offset)
-        ad["duration"] = int(duration)
-    dashboard_state.do_step(ad)
-    return _refresh()
+        ad["hz_offset"] = float(hz_offset or 0.0)
+        ad["duration"] = int(duration or 1)
+    return ad
 
 
-def on_auto_run(task_id: int, seed: int, num_steps: int):
-    import sys
-    import os
-
-    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-    dashboard_state.do_reset(int(task_id), int(seed))
-    try:
-        from inference import get_fallback_action
-    except ImportError:
-        def get_fallback_action(tid, t):
-            return (
-                {"action_type": "dispatch_generation", "node_id": "NODE_01", "mw": 100}
-                if tid == 0
-                else {"action_type": "advance_tick"}
-            )
-
-    for s in range(int(num_steps)):
-        if dashboard_state.done:
-            break
-        dashboard_state.do_step(get_fallback_action(int(task_id), s))
-    return _refresh()
+def on_step(action_type, node_id, edge_id, mw, status, hz_offset, duration, subgraph,
+            state: DashboardState | None = None):
+    state = state or dashboard_state
+    state.do_step(_action_from_inputs(action_type, node_id, edge_id, mw, status, hz_offset, duration, subgraph))
+    return _refresh(state)
 
 
-def _refresh():
-    obs = dashboard_state.current_obs
-    st = dashboard_state
+def on_auto_run(task_id: int, seed: int, num_steps: int, state: DashboardState | None = None,
+                policy_name: str = "expert"):
+    state = state or dashboard_state
+    state.run_policy(int(task_id), int(seed), int(num_steps), policy_name)
+    return _refresh(state)
+
+
+def _refresh(state: DashboardState | None = None):
+    st = state or dashboard_state
+    obs = st.current_obs
     return (
-        _safe_chart(create_topology_graph, obs),
+        _safe_chart(create_topology_graph, obs, st.debug.get("active_spoofs", [])),
         _safe_chart(create_frequency_gauge, st.frequency_hz, st.freq_history),
         format_freq_status(st.frequency_hz),
         _safe_chart(create_power_flow_sankey, obs),
         _safe_chart(create_task_radar, st.task_scores),
         _safe_chart(create_reward_breakdown, st.reward_history),
-        format_threat_feed(st.packet_log, obs),
+        format_threat_feed(st.packet_log, obs, st.debug),
         format_action_trace(st.action_log),
         format_status_bar(st),
         format_kpi_html(obs, st),
@@ -1773,7 +1797,7 @@ def create_dashboard() -> gr.Blocks:
     with demo:
         gr.HTML(f"<style>{CSS}</style>")
 
-        gr.HTML(f"""
+        gr.HTML("""
         <div class="pro-header">
           <div class="brand">
             <h1>NEXUSGRID</h1>
@@ -1793,7 +1817,7 @@ def create_dashboard() -> gr.Blocks:
         kpi_panel = gr.HTML(format_kpi_html({}, dashboard_state))
 
         status_bar = gr.Textbox(
-            value="TASK — | TICK 000 | FREQ 60.000 Hz | SCORE +0.0000 | IDLE",
+            value="TASK — | TICK 000 | FREQ 60.000 Hz | SCORE 0.000 | IDLE",
             label="",
             interactive=False,
             elem_id="status-bar",
@@ -1809,7 +1833,7 @@ def create_dashboard() -> gr.Blocks:
                 gr.HTML('<div class="ctrl-box"><h3>Manual Action</h3></div>')
                 action_type = gr.Dropdown(
                     [
-                        "dispatch_generation", "toggle_circuit_breaker",
+                        "dispatch_generation", "shed_load", "toggle_circuit_breaker",
                         "run_state_estimation", "quarantine_scada_node",
                         "inject_counter_signal", "advance_tick",
                     ],
@@ -1826,7 +1850,8 @@ def create_dashboard() -> gr.Blocks:
                 step_btn = gr.Button("Execute Step", elem_classes=["btn-step"])
 
                 gr.HTML('<div class="ctrl-box"><h3>Autonomous Agent</h3></div>')
-                auto_steps = gr.Slider(1, 50, value=10, step=1, label="Steps")
+                policy_choice = gr.Dropdown(["expert", "random", "noop"], value="expert", label="Baseline policy")
+                auto_steps = gr.Slider(1, 50, value=20, step=1, label="Steps")
                 auto_btn = gr.Button("Run Agent", elem_classes=["btn-auto"])
 
                 gr.HTML('<div class="ctrl-box"><h3>Mission Suite</h3></div>')
@@ -1840,11 +1865,11 @@ def create_dashboard() -> gr.Blocks:
                   <span style="color:{C['amber']}">━━</span> 80–95% &nbsp;
                   <span style="color:{C['crimson']}">━━</span> ≥95%<br><br>
                   <b style="color:{C['green']}">Frequency bands</b><br>
-                  <span style="color:{C['green']}">●</span> 59.7–60.3 NOMINAL<br>
-                  <span style="color:{C['amber']}">●</span> 59.5–59.7 WARNING<br>
+                  <span style="color:{C['green']}">●</span> 59.8–60.2 NOMINAL<br>
+                  <span style="color:{C['amber']}">●</span> 59.5–59.8 WARNING<br>
                   <span style="color:{C['orange']}">●</span> 59.2–59.5 DANGER<br>
-                  <span style="color:{C['red']}">●</span> 59.0–59.2 CRITICAL<br>
-                  <span style="color:{C['crimson']}">●</span> &lt;59.0 BLACKOUT
+                  <span style="color:{C['red']}">●</span> 59.0–59.2 UFLS<br>
+                  <span style="color:{C['crimson']}">●</span> &lt;59.0 COLLAPSE
                 </div>
                 """)
 
@@ -1892,12 +1917,24 @@ def create_dashboard() -> gr.Blocks:
             topo_plot, freq_plot, freq_status, sankey_plot, radar_plot, reward_plot,
             threat_feed, action_trace, status_bar, kpi_panel, mission_panel,
         ]
-        reset_btn.click(fn=on_reset, inputs=[task_select, seed_input], outputs=all_out)
+        session = gr.State(DashboardState())
+
+        def ui_reset(task, seed, st):
+            return (*on_reset(task, seed, st), st)
+
+        def ui_step(a_type, n_id, e_id, mw, status, hz, dur, sub, st):
+            return (*on_step(a_type, n_id, e_id, mw, status, hz, dur, sub, st), st)
+
+        def ui_auto(task, seed, steps, policy, st):
+            return (*on_auto_run(task, seed, steps, st, policy), st)
+
+        reset_btn.click(fn=ui_reset, inputs=[task_select, seed_input, session], outputs=all_out + [session])
         step_btn.click(
-            fn=on_step,
-            inputs=[action_type, node_id, edge_id, mw_val, breaker_status, hz_offset, duration, subgraph],
-            outputs=all_out,
+            fn=ui_step,
+            inputs=[action_type, node_id, edge_id, mw_val, breaker_status, hz_offset, duration, subgraph, session],
+            outputs=all_out + [session],
         )
-        auto_btn.click(fn=on_auto_run, inputs=[task_select, seed_input, auto_steps], outputs=all_out)
+        auto_btn.click(fn=ui_auto, inputs=[task_select, seed_input, auto_steps, policy_choice, session],
+                       outputs=all_out + [session])
 
     return demo

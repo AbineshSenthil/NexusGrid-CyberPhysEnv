@@ -1,190 +1,66 @@
-"""
-Test Graders — proves each grader returns expected scores
-for known inputs (correct action, wrong order, timeout, zero action).
-"""
+"""Graders separate competent operation from doing nothing or acting randomly."""
 
-import sys
-import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), ".."))
+from __future__ import annotations
 
-from server.graders import (
-    grade_smoke_test,
-    grade_duck_curve,
-    grade_cascade_overload,
-    grade_phantom_injection,
-    grade_stuxnet_resonance,
-    grade_black_start,
-    grade_task,
-)
-from server.reward import RewardCalculator
+import statistics
+
+import pytest
+
+from policies import ExpertPolicy, NoopPolicy, RandomPolicy
+from server.graders import grade_task, served_factor
+from server.rubric import TASK_RUBRICS, get_task_rubric_specs
+from server.scenarios import EVAL_SEED_START, MAX_TICKS
+from tests.conftest import run_policy
+
+SEEDS = [EVAL_SEED_START + i for i in range(6)]
 
 
-class TestSmokeTestGrader:
-    def test_valid_dispatch_scores_1(self):
-        actions = [{"action_type": "dispatch_generation", "mw": 100}]
-        assert grade_smoke_test(actions, {}) == 1.0
-
-    def test_no_action_scores_0(self):
-        assert grade_smoke_test([], {}) == 0.0
-
-    def test_wrong_action_scores_0(self):
-        actions = [{"action_type": "advance_tick"}]
-        assert grade_smoke_test(actions, {}) == 0.0
-
-    def test_negative_mw_scores_0(self):
-        actions = [{"action_type": "dispatch_generation", "mw": -100}]
-        assert grade_smoke_test(actions, {}) == 0.0
+@pytest.mark.parametrize("task_id", sorted(TASK_RUBRICS))
+def test_rubric_weights_sum_to_one(task_id):
+    assert sum(r["weight"] for r in get_task_rubric_specs(task_id)) == pytest.approx(1.0)
 
 
-class TestDuckCurveGrader:
-    def test_perfect_frequency_scores_high(self):
-        state = {"frequency_history": [60.0, 59.8, 59.7, 59.8, 60.0]}
-        actions = [
-            {"action_type": "dispatch_generation", "tick": 1},
-            {"action_type": "dispatch_generation", "tick": 2},
-        ]
-        score = grade_duck_curve(actions, state)
-        assert score >= 0.5  # Frequency stayed above 59.5
-
-    def test_frequency_crash_scores_0(self):
-        state = {"frequency_history": [60.0, 59.5, 59.0, 58.5]}
-        actions = []
-        assert grade_duck_curve(actions, state) == 0.0
+@pytest.mark.parametrize("task_id", sorted(MAX_TICKS))
+def test_trivial_policies_score_low_and_expert_high(env, task_id):
+    noop = statistics.mean(run_policy(env, NoopPolicy(), task_id, s) for s in SEEDS)
+    rand = statistics.mean(run_policy(env, RandomPolicy(s), task_id, s) for s in SEEDS)
+    expert = statistics.mean(run_policy(env, ExpertPolicy(), task_id, s) for s in SEEDS)
+    assert noop <= 0.25, f"do-nothing scores {noop:.2f} on task {task_id}"
+    assert rand <= 0.35, f"random scores {rand:.2f} on task {task_id}"
+    assert expert >= 0.85, f"expert scores {expert:.2f} on task {task_id}"
 
 
-class TestCascadeOverloadGrader:
-    def test_full_correct_response(self):
-        actions = [
-            {"action_type": "toggle_circuit_breaker", "status": "OPEN"},
-        ]
-        state = {"critical_nodes_shed": 0, "full_restoration_tick": 5}
-        score = grade_cascade_overload(actions, state)
-        assert score >= 0.8
-
-    def test_no_action_scores_0(self):
-        state = {"critical_nodes_shed": 2}
-        assert grade_cascade_overload([], state) == 0.0
+def test_scores_are_clipped(env):
+    assert grade_task(99, [], {}) == 0.0
+    state = {"done": True, "frequency_history": [60.0] * 4, "max_ticks": 3}
+    assert 0.0 <= grade_task(0, [], state) <= 1.0
 
 
-class TestPhantomInjectionGrader:
-    def test_correct_order_full_score(self):
-        actions = [
-            {"action_type": "advance_tick", "tick": 0},
-            {"action_type": "run_state_estimation", "tick": 1, "result": {"consistent": False}},
-            {"action_type": "quarantine_scada_node", "tick": 2, "node_id": "NODE_14"},
-            {"action_type": "dispatch_generation", "tick": 3, "node_id": "NODE_09", "mw": 100},
-        ]
-        score = grade_phantom_injection(actions, {"spoof_target": "NODE_14"})
-        assert score == 1.0
-
-    def test_quarantine_without_estimation_scores_0(self):
-        actions = [
-            {"action_type": "quarantine_scada_node", "tick": 1},
-        ]
-        score = grade_phantom_injection(actions, {})
-        assert score == 0.0
-
-    def test_estimation_only_scores_partial(self):
-        actions = [
-            {"action_type": "run_state_estimation", "tick": 1, "result": {"consistent": False}},
-        ]
-        score = grade_phantom_injection(actions, {})
-        assert score == 0.2
+def test_served_factor_penalises_load_shedding():
+    assert served_factor({"served_history": [1.0, 1.0, 1.0]}) == 1.0
+    assert served_factor({"served_history": [1.0, 0.89, 0.89]}) == pytest.approx(0.5, abs=1e-6)
 
 
-class TestStuxnetResonanceGrader:
-    def test_correct_injection_requires_ramp_down_and_reroute_for_full_score(self):
-        actions = [
-            {"action_type": "inject_counter_signal", "tick": 0, "hz_offset": -0.5},
-            {"action_type": "dispatch_generation", "tick": 1, "node_id": "NODE_17", "mw": -200},
-            {"action_type": "dispatch_generation", "tick": 2, "node_id": "NODE_09", "mw": 300},
-        ]
-        score = grade_stuxnet_resonance(actions, {})
-        assert score == 1.0
-
-    def test_correct_injection_without_ramp_down_stays_partial(self):
-        actions = [
-            {"action_type": "inject_counter_signal", "tick": 0, "hz_offset": -0.5},
-        ]
-        score = grade_stuxnet_resonance(actions, {})
-        assert score == 0.4
-
-    def test_wrong_offset_partial(self):
-        actions = [
-            {"action_type": "inject_counter_signal", "hz_offset": -0.3},
-        ]
-        score = grade_stuxnet_resonance(actions, {})
-        assert score == 0.2
-
-    def test_cutting_turbine_scores_0(self):
-        actions = [
-            {"action_type": "toggle_circuit_breaker", "edge_id": "LINE_22", "status": "OPEN"},
-        ]
-        assert grade_stuxnet_resonance(actions, {}) == 0.0
+def test_duck_curve_collapse_scores_zero():
+    state = {"done": True, "frequency_history": [60.0, 59.5, 58.9], "max_ticks": 15}
+    assert grade_task(1, [], state) == 0.0
 
 
-class TestBlackStartGrader:
-    def test_hydro_dispatch_checkpoint_a(self):
-        actions = [
-            {"action_type": "dispatch_generation", "node_id": "NODE_01", "mw": 500},
-        ]
-        state = {"hydro_stable_ticks": 0, "energized_node_count": 1}
-        score = grade_black_start(actions, state)
-        assert score >= 0.02  # Checkpoint A × load_fraction
-
-    def test_no_action_scores_0(self):
-        assert grade_black_start([], {}) == 0.0
-
-    def test_critical_restore_requires_checkpoint_c(self):
-        actions = [
-            {"action_type": "dispatch_generation", "node_id": "NODE_01", "mw": 500},
-        ]
-        state = {
-            "hydro_stable_ticks": 3,
-            "energized_node_count": 10,
-            "max_island_count": 1,
-            "successful_mergers": 0,
-            "premature_mergers": 0,
-            "critical_nodes_restored": True,
-            "load_restored_fraction": 0.84,
-            "transformer_failures": 0,
-        }
-        assert grade_black_start(actions, state) == 0.42
+def test_quarantine_without_evidence_costs_points():
+    actions = [
+        {"action_type": "run_state_estimation", "tick": 2,
+         "result": {"consistent": False, "violation_node": "NODE_09"}},
+        {"action_type": "quarantine_scada_node", "tick": 3, "node_id": "NODE_09", "result": {"success": True}},
+    ]
+    state = {"done": True, "attack_target": "NODE_09", "attack_start_tick": 2,
+             "frequency_history": [60.0] * 19, "served_history": [1.0] * 19, "max_ticks": 18}
+    clean = grade_task(3, actions, {**state, "refused_quarantines": 0})
+    sloppy = grade_task(3, actions, {**state, "refused_quarantines": 2})
+    assert clean == pytest.approx(1.0)
+    assert sloppy == pytest.approx(clean - 0.2)
 
 
-class TestRewardCalculator:
-    def test_fault_isolation_reward_only_paid_once_per_episode(self):
-        reward_calc = RewardCalculator()
-        base_kwargs = {
-            "action_type": "toggle_circuit_breaker",
-            "action_params": {},
-            "frequency_hz": 60.0,
-            "overloaded_edges": [],
-            "critical_nodes_shed": 0,
-            "is_proactive": False,
-            "spoof_detected": False,
-            "has_read_logs_before_estimation": False,
-        }
-
-        first = reward_calc.compute_tick_reward(fault_isolated=True, **base_kwargs)
-        second = reward_calc.compute_tick_reward(fault_isolated=True, **base_kwargs)
-
-        assert first["fault_isolation"] == 0.20
-        assert second["fault_isolation"] == 0.0
-
-
-class TestGradeTaskRouter:
-    def test_routes_correctly(self):
-        """grade_task should route to the correct grader."""
-        # Task 0 with valid action
-        actions = [{"action_type": "dispatch_generation", "mw": 100}]
-        assert grade_task(0, actions, {}) == 1.0
-
-        # Invalid task ID
-        assert grade_task(99, [], {}) == 0.0
-
-    def test_score_clamped(self):
-        """Scores should always be in [0, 1]."""
-        for task_id in range(6):
-            score = grade_task(task_id, [], {})
-            assert 0.0 <= score <= 1.0
+def test_disconnecting_the_oscillating_unit_scores_zero():
+    state = {"done": True, "target_disconnected": True, "best_counter_signal": "correct",
+             "attack_neutralized": True, "frequency_history": [60.0] * 13}
+    assert grade_task(4, [], state) == 0.0

@@ -1,52 +1,51 @@
 [build-system]
-requires = ["setuptools>=45", "wheel"]
+requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "openenv-nexusgrid"
-version = "2.0.0"
-description = "NexusGrid-CyberPhysEnv: National power grid defense environment for OpenEnv"
+version = "3.0.0"
+description = "NexusGrid: a seeded power-grid operations benchmark (DC power flow, protection, cyber-physical attacks) for RL and LLM agents on OpenEnv"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Abinesh Senthilkumar" }]
 requires-python = ">=3.10"
 dependencies = [
-    # Core OpenEnv runtime
-    "openenv-core[core]>=0.2.2",
-    # Physics simulation
-    "numpy>=1.24.0",
-    "networkx>=3.0",
-    # API server
-    "fastapi>=0.115.0",
-    "uvicorn>=0.24.0",
-    # Data models
-    "pydantic>=2.0.0",
-    # LLM client (for inference.py)
-    "openai>=1.0.0",
-    # Environment variable loading
-    "python-dotenv>=1.0.0",
-    # Dashboard for HF Spaces
-    "gradio>=4.0.0",
-    "plotly>=5.18.0",
+    "openenv-core[core]>=0.2.3,<0.4",
+    "numpy>=1.26,<3",
+    "pydantic>=2.7,<3",
+    "fastapi>=0.115",
+    "uvicorn>=0.30",
+    "openai>=1.40",
+    "python-dotenv>=1.0",
 ]
 
 [project.optional-dependencies]
-dev = [
-    "pytest>=8.0.0",
-    "pytest-cov>=4.0.0",
-    "pytest-asyncio>=0.23.0",
-    "httpx>=0.27.0",
-]
-dashboard = [
-    "gradio>=4.0.0",
-    "plotly>=5.18.0",
-]
+dashboard = ["gradio>=5.30,<7", "plotly>=5.18"]
+rl = ["torch>=2.3", "gymnasium>=0.29", "stable-baselines3>=2.3", "sb3-contrib>=2.3", "matplotlib>=3.8"]
+grpo = ["torch>=2.3", "transformers>=4.51", "trl>=0.19", "peft>=0.13", "datasets>=3.0", "accelerate>=1.0",
+        "bitsandbytes>=0.45", "matplotlib>=3.8"]
+dev = ["pytest>=8", "pytest-asyncio>=0.23", "httpx>=0.27", "ruff>=0.6", "gradio>=5.30,<7", "plotly>=5.18"]
 
 [project.scripts]
-server = "server.app:main"
+nexusgrid-server = "server.app:main"
+nexusgrid-eval = "scripts.evaluate:main"
+
+[project.urls]
+Repository = "https://github.com/AbineshSenthil/NexusGrid-CyberPhysEnv"
+Space = "https://huggingface.co/spaces/Abineshsdata/Nexus-Grid"
 
 [tool.setuptools]
-include-package-data = true
-packages = ["server"]
-py-modules = ["client", "inference", "models"]
+packages = ["server", "scripts", "training"]
+py-modules = ["client", "gym_env", "inference", "models", "policies"]
+
+[tool.setuptools.package-data]
+server = ["data/*.json"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
+
+[tool.ruff]
+line-length = 120
+extend-exclude = [".venv", "runs"]
