@@ -45,6 +45,10 @@ server = ["data/*.json"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = "test_*.py"
+# The repository root is also an OpenEnv package (__init__.py). Import tests by path, with the root on
+# sys.path, so the checkout folder's name (e.g. NexusGrid-CyberPhysEnv in CI) need not be a module name.
+addopts = "--import-mode=importlib"
+pythonpath = ["."]
 
 [tool.ruff]
 line-length = 120
